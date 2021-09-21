@@ -1,4 +1,4 @@
-<p align="center"><img src="https://postimg.cc/G9KtwSjv" width="400"></p>
+<p align="center"><img src="https://i.postimg.cc/KvSMT6kp/flecha-sola.gif" width="400"></p>
 
 ## Notas de aprendizaje
 

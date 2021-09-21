@@ -16,7 +16,7 @@
         
         <thead>
           <tr>
-            <th>ID</th>
+            <th wire:click="order_id" role="button">ID</th>
             <th>Titulo</th>
             <th>Autor</th>
             <th>Editor</th>

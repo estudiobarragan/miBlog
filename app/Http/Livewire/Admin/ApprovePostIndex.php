@@ -13,7 +13,7 @@ class ApprovePostIndex extends Component
 
   protected $paginationTheme = "bootstrap";
 
-  public $search, $lAdmin, $lEditor;
+  public $search, $lAdmin, $lEditor, $order_id;
 
   public function updatingSearch()
   {
@@ -23,6 +23,7 @@ class ApprovePostIndex extends Component
   {
     $this->lAdmin = auth()->user()->hasRole('Admin');
     $this->lEditor = auth()->user()->hasRole('Editor');
+    $this->order_id = "desc";
   }
 
   public function render()
@@ -38,9 +39,18 @@ class ApprovePostIndex extends Component
         ['user_id', '!=', auth()->user()->id],
       ])
       ->where('name', 'LIKE', '%' . $this->search . '%')
-      ->latest('id')
+      ->orderBy('id', $this->order_id)
       ->paginate(10);
 
     return view('livewire.admin.approve-post-index', compact('posts'));
+  }
+  public function order_id()
+  {
+    if ($this->order_id == "desc") {
+      $this->order_id = "asc";
+    } else {
+      $this->order_id = "desc";
+    }
+    return;
   }
 }

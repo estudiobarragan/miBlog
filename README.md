@@ -11,53 +11,54 @@
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   [Simple, fast routing engine](https://laravel.com/docs/routing).
+-   [Powerful dependency injection container](https://laravel.com/docs/container).
+-   Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+-   Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+-   Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+-   [Robust background job processing](https://laravel.com/docs/queues).
+-   [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+## Notas de aprendizaje
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Trabajar con emails
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Configurar una una cuenta con mailtrap y colocar credenciales en el archivo .env. Posteriormente es necesario generar un archivo maileable el cual servira para generar la vista donde se enviara la informacion por mail. Para ello se debe utilizar el comando:
 
-## Laravel Sponsors
+-   php artisan make:mail ApprovedPost
+    Esto generara en la carpeta mail, un archivo ApprovedPost.php. Alli se parametrizara el contenido que luego la vista va a tomar. Una comando para esto seria en la funcion build():
+-   return $this->view('mail.approved-post')->subject('Curso aprovado');
+    Aca vemos que el subject del mail lo podemos cargar ahi. Si quisieramos que la vista tenga variables, por ejemplo $post, se deben generar las variables publicas:
+-   public $post
+    En el constructor, se colocaria:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+-   public function \_\_construct(Post $post)
+-   $this->post = $post;
 
-### Premium Partners
+Con esto la vista tendria disponible la variable $post. Esta vista, se puede genear con ! y enter y se diseñara segun el gusto del que envia. Para enviar se puede ir al controlador:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
+-   $mail = new ApprovedPost($post);
+-   Mail::to($course->teacher->email)->send($mail); opcionalmente
+-   Mail::to($course->teacher->email)->queue($mail);
 
-## Contributing
+### Trabajar con colas
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Para el trabajo con colas, primeramente es necesario configurar la variable de ambiente QUEUE_CONNECTION y pasarla de su estado sync (que envia al momento el correo) por database. Esto significa que comenzara a grabarse en una tabla llamada job. Luego es necesario ejecutar:
 
-## Code of Conduct
+-   php artisan queue:table
+-   php artisan migrate
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Luego es necesario ir al controlador donde se enviaba el correo y cambiar:
+Mail::to($post->user->email)->send($mail) por
+Mail::to($post->user->email)->queue($mail)
 
-## Security Vulnerabilities
+Para ejecutar las colas que esten pendientes debo ejecutar
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+php artisan queue:work
+
+Hecho esto, se quedara escuchando a la espera de un nuevo job.
 
 ## License
 

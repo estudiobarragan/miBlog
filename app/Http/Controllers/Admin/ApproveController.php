@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ApproveRequest;
+use App\Mail\ApprovedPost;
+use App\Mail\RejectPost;
 use App\Models\Approve;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Livewire\WithPagination;
 
 class ApproveController extends Controller
@@ -113,9 +116,25 @@ class ApproveController extends Controller
       $post = Post::where('id', $approve->post_id)->first();
       $post->update(['state_id' => 3]);
 
+      // Aviso al autor de que fue aprobado
+      $mail = new ApprovedPost($post);
+      /* Mail::to($post->user->email)->send($mail); */
+      Mail::to($post->user->email)->queue($mail);
+
       return redirect()->route('admin.approves.index')->with('success', 'Ha aprobado el post en ediccion. Muchas Gracias !');
+    } else {
+
+      // Rechaza
+      $post = Post::where('id', $approve->post_id)->first();
+      $post->update(['state_id' => 1]);
+      $approve->update($request->all());
+
+
+      // Aviso al autor de que fue rechazado
+      $mail = new RejectPost($post, $approve);
+      Mail::to($post->user->email)->queue($mail);
     }
-    return [$request->all(), $approve];
+    return redirect()->route('admin.approves.index')->with('success', 'Ha rechazado el post en ediccion. Muchas Gracias !');
   }
 
   /**

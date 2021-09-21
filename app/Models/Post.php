@@ -1,0 +1,72 @@
+<?php
+
+namespace App\Models;
+
+use App\Models\Categoria;
+use App\Models\Comment;
+use App\Models\Image;
+use App\Models\Tag;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+
+class Post extends Model
+{
+  use HasFactory;
+
+  protected $guarded = ['id', 'created_at', 'updated_at'];
+
+  public function getRouteKeyName()
+  {
+    return "slug";
+  }
+
+  // Relacion 1 a 1
+  public function approve()
+  {
+    return $this->hasOne(Approve::class);
+  }
+
+  // Relacion 1 a N inversa
+  public function user()
+  {
+    return $this->belongsTo(User::class);
+  }
+  public function editor()
+  {
+    return $this->belongsTo(User::class);
+  }
+  public function publicador()
+  {
+    return $this->belongsTo(User::class);
+  }
+
+  public function state()
+  {
+    return $this->belongsTo(State::class);
+  }
+
+  public function categoria()
+  {
+    return $this->belongsTo(Categoria::class);
+  }
+
+  // Relacion 1 a 1 polomorfica
+  public function image()
+  {
+    return $this->morphOne(Image::class, 'imageable');
+  }
+
+  // Relacion 1 a N polomorfica
+  public function comments()
+  {
+    return $this->morphMany(Comment::class, 'commentable');
+  }
+
+  // Relacion N a N polimorfica
+  public function tags()
+  {
+    return $this->morphToMany(Tag::class, 'taggable');
+  }
+}

@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Admin;
 
 use App\Models\Post;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -23,7 +24,7 @@ class ApprovePostIndex extends Component
   {
     $this->lAdmin = auth()->user()->hasRole('Admin');
     $this->lEditor = auth()->user()->hasRole('Editor');
-    $this->order_id = "desc";
+    $this->order_id = Session::get('order_id', "desc");
   }
 
   public function render()
@@ -51,6 +52,7 @@ class ApprovePostIndex extends Component
     } else {
       $this->order_id = "desc";
     }
+    Session::put('order_id', $this->order_id);
     return;
   }
 }

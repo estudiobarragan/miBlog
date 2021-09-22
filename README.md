@@ -39,6 +39,18 @@ php artisan queue:work
 
 Hecho esto, se quedara escuchando a la espera de un nuevo job.
 
+## Variables de sesion
+
+Sirve para recordar opciones de un usuario. Se graba con:
+
+-   Session::put('order_id', $this->order_id);
+-   Session::put( key , value);
+
+se usa con:
+
+-   $this->order_id = Session::get('order_id', "desc");
+-   $variable = Session::get(key, default);
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

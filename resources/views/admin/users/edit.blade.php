@@ -21,6 +21,9 @@
               {!! Form::checkbox('roles[]', $role->id, null, ['class'=>'mr-1']) !!}
               {{$role->name}}
             </label>
+            @error('roles')
+              <small class="text-danger">{{$message}}</small>
+            @enderror
           </div>
 
       @endforeach

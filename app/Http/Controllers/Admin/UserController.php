@@ -47,6 +47,13 @@ class UserController extends Controller
    */
   public function update(Request $request, User $user)
   {
+
+    if ($user->hasRole('Admin') && !in_array(1, $request->roles)) {
+      $adminCount = User::role('admin')->count();
+      if ($adminCount == 1) {
+        return redirect()->back()->withInput()->withErrors(['roles' => 'No puede eliminar el rol Administrador']);
+      }
+    }
     $user->roles()->sync($request->roles);
 
     return redirect()->route('admin.users.index')->with('success', 'Roles actualizados satisfactoriamente');

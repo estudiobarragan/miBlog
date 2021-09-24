@@ -8,6 +8,7 @@ use App\Mail\ApprovedPost;
 use App\Mail\RejectPost;
 use App\Models\Approve;
 use App\Models\Post;
+use App\Notifications\PostNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Livewire\WithPagination;
@@ -17,6 +18,14 @@ class ApproveController extends Controller
   use WithPagination;
 
   protected $paginationTheme = "bootstrap";
+
+  public function  __construct()
+  {
+    $this->middleware('can:admin.approves.index')->only('index');
+    $this->middleware('can:admin.approves.edit')->only('edit', 'update', 'show');
+    $this->middleware('can:admin.approves.create')->only('store');
+    $this->middleware('can:admin.approves.reject')->only('reject');
+  }
 
   /**
    * Display a listing of the resource.
@@ -28,22 +37,6 @@ class ApproveController extends Controller
     return view('admin.approve.index');
   }
 
-  /**
-   * Show the form for creating a new resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function create()
-  {
-    //
-  }
-
-  /**
-   * Store a newly created resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @return \Illuminate\Http\Response
-   */
   public function store(Request $request)
   {
     $slug = $request['slug'];
@@ -121,6 +114,8 @@ class ApproveController extends Controller
       /* Mail::to($post->user->email)->send($mail); */
       Mail::to($post->user->email)->queue($mail);
 
+      $post->user->notify(new PostNotification($post, $approve));
+
       return redirect()->route('admin.approves.index')->with('success', 'Ha aprobado el post en ediccion. Muchas Gracias !');
     } else {
 
@@ -133,20 +128,12 @@ class ApproveController extends Controller
       // Aviso al autor de que fue rechazado
       $mail = new RejectPost($post, $approve);
       Mail::to($post->user->email)->queue($mail);
+
+      $post->user->notify(new PostNotification($post, $approve));
     }
     return redirect()->route('admin.approves.index')->with('success', 'Ha rechazado el post en ediccion. Muchas Gracias !');
   }
 
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function destroy($id)
-  {
-    //
-  }
   public function reject()
   {
     return redirect()->route('admin.approves.index')->with('info', 'Usted ha rechazado ser el editor del post');

@@ -22,6 +22,6 @@ Route::resource('tags', TagController::class)->names('admin.tags')->except('show
 
 Route::resource('posts', PostController::class)->names('admin.posts')->except('show');
 
-Route::resource('approves', ApproveController::class)->names('admin.approves');
+Route::resource('approves', ApproveController::class)->names('admin.approves')->except('create', 'destroy');
 
 Route::post('approves/reject', [ApproveController::class, 'reject'])->name('admin.approves.reject');

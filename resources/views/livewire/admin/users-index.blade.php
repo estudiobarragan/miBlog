@@ -16,7 +16,7 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>ID</th>
+              <th wire:click="order_id" role="button">ID</th>
               <th>Nombre</th>
               <th>Email</th>
               <th>Tarea</th>

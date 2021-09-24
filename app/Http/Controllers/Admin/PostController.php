@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
+use App\Models\Approve;
 use App\Models\Categoria;
 use App\Models\Post;
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
@@ -79,6 +81,8 @@ class PostController extends Controller
   public function update(PostRequest $request, Post $post)
   {
     $this->authorize('author', $post);
+
+
     $post->update([
       'name' => $request->name,
       'slug' => $request->slug,
@@ -87,6 +91,21 @@ class PostController extends Controller
       'extract' => $request->extract,
       'body' => $request->body
     ]);
+
+    // Si el estado es edicion y tiene un campo editor que no existe en la DB, se coloca null en su lugar
+    if ($request->state_id == 2) {
+      $editor = User::where('id', $post->user)->first();
+      if ($editor == null || !$editor->hasRole('Editor')) {
+        $post->update(['editor_id' => null]);
+
+        // si existe un registro approve previo, se borra, dado que el editor no existe
+        $approve = Approve::where('post_id', $post->id)->first();
+
+        if (!($approve === null)) {
+          $approve->delete();
+        }
+      }
+    }
 
     if ($request->file('file')) {
       $url = Storage::put('img', $request->file('file'));

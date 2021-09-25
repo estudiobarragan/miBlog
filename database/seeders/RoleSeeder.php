@@ -134,5 +134,30 @@ class RoleSeeder extends Seeder
       'name' => 'admin.approves.reject',
       'description' => 'Rechazar post en edicion'
     ])->syncRoles([$role3]);
+
+    Permission::create([
+      'name' => 'admin.publication.index',
+      'description' => 'Ver listado de post a programar'
+    ])->syncRoles([$role1, $role4]);
+    Permission::create([
+      'name' => 'admin.publication.create',
+      'description' => 'Crear aprobación para post'
+    ])->syncRoles([$role4]);
+    Permission::create([
+      'name' => 'admin.publication.edit',
+      'description' => 'Editar y actualizar  aprobación para post'
+    ])->syncRoles([$role4]);
+    Permission::create([
+      'name' => 'admin.publication.show',
+      'description' => 'Mostrar aprobación para post'
+    ])->syncRoles([$role4]);
+    Permission::create([
+      'name' => 'admin.publication.reject',
+      'description' => 'Rechazar post en edicion'
+    ])->syncRoles([$role4]);
+    Permission::create([
+      'name' => 'admin.publication.destroy',
+      'description' => 'Rechazar post en edicion'
+    ])->syncRoles([$role4]);
   }
 }

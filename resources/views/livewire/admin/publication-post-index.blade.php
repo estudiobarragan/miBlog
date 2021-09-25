@@ -1,116 +1,81 @@
-<div>
-    <div class="row">
-      <div class="col-2"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white">Lunes</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">Martes</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">Miercoles</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">Jueves</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">Viernes</div>
-      <div class="col-1 text-center bg-primary border border-1 border-white">Sabado</div>
-      <div class="col-1 text-center bg-primary border border-1 border-white">Domingo</div>
-    </div>
-    <div class="row">
-      <div class="col-2"></div>
-      <div class="col-1 text-center bg-success"></div>
-      <div class="col-1 text-center bg-success"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white">1</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">2</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">3</div>
-      <div class="col-1 text-center bg-primary border border-1 border-white">4</div>
-      <div class="col-1 text-center bg-primary border border-1 border-white">5</div>
+<div class="card">
+  <div class="card-header">    
+    <input wire:model="search" class="form-control" placeholder="Ingres el nombre de post a buscar">
+  </div>
+
+  @if($posts->count())
+    <div class="card-body">
+      <table class="table table-striped">
+        
+        <thead>
+          <tr>
+            <th wire:click="order_id" role="button">ID</th>
+            <th>Titulo</th>
+            <th>Autor</th>
+            <th>Publicador</th>
+            <th>Estado</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @foreach ($posts as $post)
+              <tr>
+                <td>{{$post->id}}</td>
+                <td>{{$post->name}}</td>
+                <td>{{$post->user->name}}</td>
+                <td>
+                  @isset($post->publicador)
+                    {{$post->publicador->name}}                    
+                  @endisset
+                </td>
+                <td width="20px;">
+                  <div class="{{$post->state->color}} text-center px-2 rounded shadow">
+                    {{$post->state->name}}
+                  </div>
+                </td>
+
+
+
+                 {{--  @can('admin.approves.show') --}}
+                    @if($post->publicador_id == null && $post->user_id != auth()->user()->id)
+                      <td class="text-center" width="10px;">
+                        <a href="{{ route( 'admin.approves.show', $post ) }}">
+                          <i class="far fa-thumbs-up"></i>
+                        </a>                          
+                      </td>
+                    @endif
+                  {{-- @endcan --}}
+
+
+                  {{-- @can('publicador',$post) --}}
+                    {{-- @can('admin.approves.edit') --}}
+ 
+                        <td class="text-center" width="10px;">
+                          <a href="{{ route( 'admin.approves.edit', $post ) }}">
+                            <i class="fas fa-user-edit"></i>
+                          </a>                          
+                        </td>
+
+                    {{-- @endcan --}}
+                  {{-- @endcan --}}
+
+              </tr>
+
+          @endforeach
+        </tbody>
+
+      </table>
     </div>
 
-    <div class="row">
-      <div class="col-2"><br><br><br><br></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary border border-1 border-white"></div>
+    <div class="card-footer">
+      {{$posts->links()}}
     </div>
-
-    <div class="row">
-      <div class="col-2"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white">6</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">7</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">8</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">9</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">10</div>
-      <div class="col-1 text-center bg-primary border border-1 border-white">11</div>
-      <div class="col-1 text-center bg-primary border border-1 border-white">12</div>
+  @else
+    <div class="card-body">
+      <strong>No hay ningun registro</strong>
     </div>
-    <div class="row">
-      <div class="col-2"><br><br><br><br></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary border border-1 border-white"></div>
-    </div>
-    <div class="row">
-      <div class="col-2"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white">13</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">14</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">15</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">16</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">17</div>
-      <div class="col-1 text-center bg-primary border border-1 border-white">18</div>
-      <div class="col-1 text-center bg-primary border border-1 border-white">19</div>
-    </div>
-    <div class="row">
-      <div class="col-2"><br><br><br><br></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary border border-1 border-white"></div>
-    </div>
-    <div class="row">
-      <div class="col-2"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white">20</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">21</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">22</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">23</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">24</div>
-      <div class="col-1 text-center bg-primary border border-1 border-white">25</div>
-      <div class="col-1 text-center bg-primary border border-1 border-white">26</div>
-    </div>
-    <div class="row">
-      <div class="col-2"><br><br><br><br></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary border border-1 border-white"></div>
-    </div>
-    <div class="row">
-      <div class="col-2"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white">27</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">28</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">29</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">30</div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary"></div>
-      <div class="col-1 text-center bg-primary"></div>
-    </div>
-    <div class="row">
-      <div class="col-2"><br><br><br><br></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary border border-1 border-white"></div>
-    </div>
+  @endif
 </div>
 
 

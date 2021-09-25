@@ -25,7 +25,7 @@ class PublicationController extends Controller
    */
   public function create()
   {
-    //
+    return view('admin.publication.create');
   }
 
   /**

@@ -301,6 +301,12 @@ return [
       'icon'    => 'fas fa-fw fa-file',
       'can'  => 'admin.approves.index',
     ],
+    [
+      'text'       => 'Publicar post',
+      'route'  => 'admin.publication.index',
+      'icon'    => 'fas fa-fw fa-file',
+      /* 'can'  => 'admin.publication.index', */
+    ],
   ],
 
   /*

@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\Admin\PublicationController;
 use App\Http\Controllers\Admin\ApproveController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\HomeController;
@@ -25,3 +25,5 @@ Route::resource('posts', PostController::class)->names('admin.posts')->except('s
 Route::resource('approves', ApproveController::class)->names('admin.approves')->except('create', 'destroy');
 
 Route::post('approves/reject', [ApproveController::class, 'reject'])->name('admin.approves.reject');
+
+Route::resource('publish', PublicationController::class)->names('admin.publication');

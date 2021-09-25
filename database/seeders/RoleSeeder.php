@@ -124,7 +124,11 @@ class RoleSeeder extends Seeder
     ])->syncRoles([$role3]);
     Permission::create([
       'name' => 'admin.approves.edit',
-      'description' => 'Editar, actualizar y mostrar aprobación para post'
+      'description' => 'Editar y actualizar  aprobación para post'
+    ])->syncRoles([$role3]);
+    Permission::create([
+      'name' => 'admin.approves.show',
+      'description' => 'Mostrar aprobación para post'
     ])->syncRoles([$role3]);
     Permission::create([
       'name' => 'admin.approves.reject',

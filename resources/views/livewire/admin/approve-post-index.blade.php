@@ -37,7 +37,7 @@
 
 
 
-                  @can('admin.approves.destroy')
+                  @can('admin.approves.show')
                     @if($post->editor_id == null && $post->user_id != auth()->user()->id)
                       <td class="text-center" width="10px;">
                         <a href="{{ route( 'admin.approves.show', $post ) }}">
@@ -49,7 +49,7 @@
 
 
                   @can('editor',$post)
-                    @can('admin.approves.destroy')
+                    @can('admin.approves.edit')
  
                         <td class="text-center" width="10px;">
                           <a href="{{ route( 'admin.approves.edit', $post ) }}">

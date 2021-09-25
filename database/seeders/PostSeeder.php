@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\Approve;
 use App\Models\Image;
 use App\Models\Post;
+use App\Models\Publication;
+use Carbon\Carbon;
 use Faker\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Seeder;
@@ -23,6 +25,9 @@ class PostSeeder extends Seeder
     $faker = Factory::create();
 
     $posts = Post::factory(300)->create();
+    $post4 = 0;
+    $post5 = 0;
+
     foreach ($posts as $post) {
       Image::factory(1)->create([
         'imageable_id' => $post->id,
@@ -48,6 +53,24 @@ class PostSeeder extends Seeder
           'feedback'      => $faker->text(),
           'approved'      => 1,
           'post_id'       => $post->id,
+        ]);
+      }
+      if ($post->state_id == 4) {
+        $post4 = $post4 + 1;
+        $fechaPub = Carbon::now()->subDays($post4);
+
+        Publication::create([
+          'dateTo' => $fechaPub,
+          'post_id' => $post->id,
+        ]);
+      }
+      if ($post->state_id >= 5) {
+        $post5 = $post5 + 1;
+        $fechaPub = Carbon::now()->addDays($post5);
+
+        Publication::create([
+          'dateTo' => $fechaPub,
+          'post_id' => $post->id,
         ]);
       }
     }

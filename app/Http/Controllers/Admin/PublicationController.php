@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Publication;
 use App\Http\Controllers\Controller;
+use App\Models\Post;
+use App\Models\Publication;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+
 
 class PublicationController extends Controller
 {
@@ -25,7 +29,26 @@ class PublicationController extends Controller
    */
   public function create()
   {
-    return view('admin.publication.create');
+    $aprogramar = Post::where([
+      ['state_id', 3],
+      ['publicador_id', auth()->user()->id],
+      ['user_id', '!=', auth()->user()->id],
+    ])
+      ->orWhere([
+        ['state_id', 3],
+        ['publicador_id', null],
+        ['user_id', '!=', auth()->user()->id],
+      ])
+      ->orderBy('id', 'asc')
+      ->get();
+    $programados = Post::where([
+      ['state_id', 4],
+      ['publicador_id', auth()->user()->id],
+      ['user_id', '!=', auth()->user()->id],
+    ])
+      ->orderBy('id', 'asc')
+      ->get();
+    return view('admin.publication.create', compact('aprogramar', 'programados'));
   }
 
   /**
@@ -82,5 +105,52 @@ class PublicationController extends Controller
   public function destroy(Publication $publication)
   {
     //
+  }
+
+  public function ajax(Request $request)
+  {
+
+    $data = $request->input('data');
+
+    return $data;
+    /*  $start = Carbon::createFromFormat('y-m-d', '01/09/2021');
+    $end = Carbon::createFromFormat('y-m-d', '30/09/2021');
+
+
+    $data = Publication::whereDate('dateTo', '>=', $start)
+      ->whereDate('end',   '<=', $end)
+      ->get(['id', 'title', 'dateTo']);
+    return Response::json('algo'); */
+  }
+  public function ajax_ask(Request $request)
+  {
+    $start = (!empty($request->input('start'))) ? ($request->input('start')) : ('');
+    $end = (!empty($request->input('end'))) ? ($request->input('end')) : ('');
+
+    $data = Publication::where('id', 1)->get();
+
+    /* return Response::json($data); */
+
+    return Response::json([
+      [
+        "title" => "Event 1",
+        "start" => "2021-09-05T09:00:00",
+        "end" => "2021-09-05T18:00:00"
+      ],
+    ]);
+
+    /* if (request()->ajax()) {
+
+      $start = (!empty($request->input('start'))) ? ($request->input('start')) : ('');
+      $end = (!empty($request->input('end'))) ? ($request->input('end')) : ('');
+
+      $data = Publication::whereDate('dateTo', '>=', $start)
+        ->whereDate('end',   '<=', $end)
+        ->get(['id', 'title', 'dateTo']);
+      return Response::json($data);
+
+    }
+
+    return $data; */
   }
 }

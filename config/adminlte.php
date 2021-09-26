@@ -302,7 +302,7 @@ return [
       'can'  => 'admin.approves.index',
     ],
     [
-      'text'       => 'Publicar post',
+      'text'       => 'Publicar posts',
       'route'  => 'admin.publication.index',
       'icon'    => 'fas fa-fw fa-file',
       /* 'can'  => 'admin.publication.index', */
@@ -376,6 +376,21 @@ return [
           'type' => 'css',
           'asset' => false,
           'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css',
+        ],
+      ],
+    ],
+    'FullCalendar' => [
+      'active' => true,
+      'files' => [
+        [
+          'type' => 'js',
+          'asset' => false,
+          'location' => '//cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js',
+        ],
+        [
+          'type' => 'css',
+          'asset' => false,
+          'location' => '//cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.css',
         ],
       ],
     ],

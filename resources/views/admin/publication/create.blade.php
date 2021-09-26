@@ -3,132 +3,47 @@
 @section('title', 'Barragan y Asociados')
 
 @section('content_header')
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth'
+      });
+      calendar.render();
+    });
+  </script>
 
-    <h1>Crear publicacion</h1>
+  <h1>Crear publicacion</h1>
+  {{-- {{ route('admin.publication.index')}} --}}
+  <a id='xbutton' class="btn btn-warning" onClick="addCarrito()" href="#">Terminar Programacion</a>
 @stop
 
 @section('content')
-  {{-- <div>
-    <div class="row">
-      <div class="col-2"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white">Lunes</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">Martes</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">Miercoles</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">Jueves</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">Viernes</div>
-      <div class="col-1 text-center bg-primary border border-1 border-white">Sabado</div>
-      <div class="col-1 text-center bg-primary border border-1 border-white">Domingo</div>
-    </div>
-    <div class="row">
-      <div class="col-2"></div>
-      <div class="col-1 text-center bg-success"></div>
-      <div class="col-1 text-center bg-success"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white">1</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">2</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">3</div>
-      <div class="col-1 text-center bg-primary border border-1 border-white">4</div>
-      <div class="col-1 text-center bg-primary border border-1 border-white">5</div>
-    </div>
+  @csrf
+  <div id='external-events'>
+    <p>
+      <strong>Post a programar</strong>
+    </p>
+    @foreach($aprogramar as $ap)
+      <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+        <div class='fc-event-main'>Post {{$ap->id}}</div>
+      </div>
+    @endforeach
 
-    <div class="row">
-      <div class="col-2"><br><br><br><br></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary border border-1 border-white"></div>
-    </div>
+   {{--  <p>
+      <input type='checkbox' id='drop-remove' />
+      <label for='drop-remove'>remove after drop</label>
+    </p> --}}
+  </div>
 
-    <div class="row">
-      <div class="col-2"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white">6</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">7</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">8</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">9</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">10</div>
-      <div class="col-1 text-center bg-primary border border-1 border-white">11</div>
-      <div class="col-1 text-center bg-primary border border-1 border-white">12</div>
-    </div>
-    <div class="row">
-      <div class="col-2"><br><br><br><br></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary border border-1 border-white"></div>
-    </div>
-    <div class="row">
-      <div class="col-2"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white">13</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">14</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">15</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">16</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">17</div>
-      <div class="col-1 text-center bg-primary border border-1 border-white">18</div>
-      <div class="col-1 text-center bg-primary border border-1 border-white">19</div>
-    </div>
-    <div class="row">
-      <div class="col-2"><br><br><br><br></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary border border-1 border-white"></div>
-    </div>
-    <div class="row">
-      <div class="col-2"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white">20</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">21</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">22</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">23</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">24</div>
-      <div class="col-1 text-center bg-primary border border-1 border-white">25</div>
-      <div class="col-1 text-center bg-primary border border-1 border-white">26</div>
-    </div>
-    <div class="row">
-      <div class="col-2"><br><br><br><br></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary border border-1 border-white"></div>
-    </div>
-    <div class="row">
-      <div class="col-2"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white">27</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">28</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">29</div>
-      <div class="col-1 text-center bg-success border border-1 border-white">30</div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary"></div>
-      <div class="col-1 text-center bg-primary"></div>
-    </div>
-    <div class="row">
-      <div class="col-2"><br><br><br><br></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-success border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary border border-1 border-white"></div>
-      <div class="col-1 text-center bg-primary border border-1 border-white"></div>
-    </div>
-  </div> --}}
- 
+  <div id='calendar-container'>
+    <div id='calendar'></div>
+  </div>
 @stop
 
-@section('css')
-  <link rel="stylesheet" href="/css/admin_custom.css">
+@section('css') 
    
-  {{-- <style>
+  <style>
     html, body {
       margin: 0;
       padding: 0;
@@ -137,10 +52,10 @@
     }
 
     #external-events {
-      position: fixed;
+      position: relative;
       z-index: 2;
-      top: 20px;
-      left: 20px;
+      top: 250px;
+      left: 0px;
       width: 150px;
       padding: 0 10px;
       border: 1px solid #ccc;
@@ -155,26 +70,29 @@
     #calendar-container {
       position: relative;
       z-index: 1;
-      margin-left: 200px;
+      margin-left: 150px;
     }
 
     #calendar {
       max-width: 1100px;
       margin: 20px auto;
     }
-  </style> --}}
+  </style>
 @stop
 
 @section('js')
 
-  {{-- <script>
+  <script>
     document.addEventListener('DOMContentLoaded', function() {
     var Calendar = FullCalendar.Calendar;
     var Draggable = FullCalendar.Draggable;
 
     var containerEl = document.getElementById('external-events');
     var calendarEl = document.getElementById('calendar');
-    var checkbox = document.getElementById('drop-remove');
+    /* var checkbox = document.getElementById('drop-remove'); */
+    var checked=true;
+
+    
 
     // initialize the external events
     // -----------------------------------------------------------------
@@ -190,25 +108,73 @@
 
     // initialize the calendar
     // -----------------------------------------------------------------
-
+    
     var calendar = new Calendar(calendarEl, {
       headerToolbar: {
-        left: 'prev,next today',
+        left: 'prev,next today addEventButton',
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay'
       },
+      events: '/admin/ajax',
       editable: true,
       droppable: true, // this allows things to be dropped onto the calendar
       drop: function(info) {
         // is the "remove after drop" checkbox checked?
-        if (checkbox.checked) {
+        if (checked) {
           // if so, remove the element from the "Draggable Events" list
           info.draggedEl.parentNode.removeChild(info.draggedEl);
         }
+      },
+      customButtons: {
+        addEventButton: {
+          text: 'Graba',
+          click: function() {
+            var aData=[];
+            calendar.getEvents().forEach(element => {
+              aData.push([element.title,element.startStr]);
+            });
+            /* Envio Ajax al controlador para grabar, vuelve aviso ok */
+            $.post('https://miblog.test/admin/ajax',
+              { _token: $('meta[name=csrf-token]').attr('content'), 
+                _method : 'PUT', 
+                data : aData
+              }, function(response){
+                  if(response != '')
+                    {
+                      console.log(response);
+                    }else{
+                      console.log('error')
+                  }
+            });
+          }
+        }
       }
-    });
 
+    });
     calendar.render();
   });
-  </script> --}}
+ </script>
+
+{{-- esta funcion sirve como ejemplo de conexion ajax para put --}}
+ <script>
+  function addCarrito(){
+
+    $(function(){
+      
+      $.post('https://miblog.test/admin/ajax',
+        { _token: $('meta[name=csrf-token]').attr('content'), 
+          _method : 'PUT', 
+          data : "{['ok, no lo puedo creeer','algo']}"
+        }, function(response){
+            if(response != '')
+              {
+              console.log(response);
+              }else{
+              console.log('error')
+            }
+
+        });
+    });
+  };
+</script>
 @stop

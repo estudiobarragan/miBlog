@@ -27,3 +27,6 @@ Route::resource('approves', ApproveController::class)->names('admin.approves')->
 Route::post('approves/reject', [ApproveController::class, 'reject'])->name('admin.approves.reject');
 
 Route::resource('publish', PublicationController::class)->names('admin.publication');
+
+Route::put('ajax', [PublicationController::class, 'ajax'])->name('admin.ajax-out');
+Route::get('ajax', [PublicationController::class, 'ajax_ask'])->name('admin.ajax-ask');

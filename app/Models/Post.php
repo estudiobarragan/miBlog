@@ -11,12 +11,18 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Maize\Markable\Markable;
+use Maize\Markable\Models\Bookmark;
 
 class Post extends Model
 {
   use HasFactory;
+  use Markable;
 
   protected $guarded = ['id', 'updated_at'];
+  protected static $marks = [
+    Bookmark::class,
+  ];
 
   public function getRouteKeyName()
   {

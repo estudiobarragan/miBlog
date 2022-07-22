@@ -1,6 +1,25 @@
 <x-app-layout>
   <div class="container py-8">
-    <h1 class="text-4xl font-bold text-gray-600">{{$post->name}}</h1>
+    <div class="inline-flex">
+      <div>
+        <h1 class="text-4xl font-bold text-gray-600">{{$post->name}}</h1>
+      </div>
+      <div class="">
+        @auth()
+          @if($post->user->id != Auth::user()->id)
+            @if(Maize\Markable\Models\Bookmark::has($post,Auth::user()))
+              <a href="{{route('posts.noseguir',['post',$post->id])}}" class="float-right rounded-full bg-blue-400 w-7 h-7 text-center pt-1 hover:bg-blue-100 hover:text-gray-600">
+                <i class="far fa-bookmark text-white"></i>
+              </a>
+            @else
+              <a href="{{route('posts.seguir',['post',$post->id])}}" class="float-right rounded-full w-7 h-7 text-center pt-1 text-blue-600 font-extrabold hover:bg-blue-200">
+                <i class="far fa-bookmark"></i>
+              </a>
+            @endif
+          @endif
+        @endauth()
+      </div>
+    </div>
 
     <div class="text-lg text-gray-500 mb-2">
       {!!$post->extract!!}
@@ -62,7 +81,18 @@
               </h1>
               
               @auth()
-                <a href="{{route('posts.seguir',['user',$post->user])}}" class="ml-20 bg-blue-200 hover:bg-blue-500 hover:text-white text-blu-500 text-center py-2 px-4 rounded">Seguir</a>
+                @if($post->user->id != Auth::user()->id)
+                  @if(Maize\Markable\Models\Favorite::has($post->user,Auth::user()))
+                    <a href="{{route('posts.noseguir',['user',$post->user])}}" class="ml-20 bg-red-200 hover:bg-red-500 hover:text-white text-red-800 text-sm py-1 px-2 rounded-3xl ">
+                      <i class="fa fa-user-minus"></i>
+                    </a>
+                  @else
+                    <a href="{{route('posts.seguir',['user',$post->user])}}" class="ml-20 bg-blue-200 hover:bg-blue-500 hover:text-white text-blue-800 text-sm py-1 px-2 rounded-3xl ">
+                      <i class="fa fa-user-plus"></i>
+                    </a>
+                  @endif
+                @endif
+                
               @endauth()
             </div>
           </div>

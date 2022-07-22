@@ -8,6 +8,8 @@ use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Maize\Markable\Models\Bookmark;
+use Maize\Markable\Models\Favorite;
 
 class PostController extends Controller
 {
@@ -133,22 +135,32 @@ class PostController extends Controller
 
   public function seguir($model, $obj)
   {
+
     if ($model == 'user') {
-      return User::findOrFail($obj);
+      if (User::findOrFail($obj) != Auth()->user()) {
+        Favorite::add(User::findOrFail($obj), auth()->user());
+      }
     } elseif ($model == 'tag') {
-      return Tag::findOrFail($obj);
+      Favorite::add(Tag::findOrFail($obj), auth()->user());
     } elseif ($model == 'category') {
-      return Categoria::findOrFail($obj);
+      Favorite::add(Categoria::findOrFail($obj), auth()->user());
+    } elseif ($model == 'post') {
+      Bookmark::add(Post::findOrFail($obj), auth()->user());
     }
+    return back();
   }
   public function noseguir($model, $obj)
   {
+
     if ($model == 'user') {
-      return User::findOrFail($obj);
+      Favorite::remove(User::findOrFail($obj), auth()->user());
     } elseif ($model == 'tag') {
-      return Tag::findOrFail($obj);
+      Favorite::remove(Tag::findOrFail($obj), auth()->user());
     } elseif ($model == 'category') {
-      return Categoria::findOrFail($obj);
+      Favorite::remove(Categoria::findOrFail($obj), auth()->user());
+    } elseif ($model == 'post') {
+      Bookmark::remove(Post::findOrFail($obj), auth()->user());
     }
+    return back();
   }
 }

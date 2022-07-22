@@ -8,7 +8,17 @@
       </div>
       <div>
         @auth()
-          <a href="{{route('posts.seguir',['user',$user])}}" class="w-20 ml-5 bg-blue-200 hover:bg-blue-500 hover:text-white text-blue-700 text-center py-2 px-4 rounded">Seguir</a>
+          @if($user != Auth::user())
+            @if(Maize\Markable\Models\Favorite::has($user,Auth::user()))
+              <a href="{{route('posts.noseguir',['user',$user])}}" class="w-20 ml-5 bg-red-200 hover:bg-red-500 hover:text-white text-red-800 text-sm py-1 px-2 rounded-3xl ">
+                <i class="fa fa-user-minus"></i>
+              </a>
+            @else
+              <a href="{{route('posts.seguir',['user',$user])}}" class="w-20 ml-5 bg-blue-200 hover:bg-blue-500 hover:text-white text-blue-800 text-sm py-1 px-2 rounded-3xl ">
+                <i class="fa fa-user-plus"></i>
+              </a>
+            @endif
+          @endif
         @endauth()
       </div>
     </div>

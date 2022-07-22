@@ -39,5 +39,19 @@
         {{'#'.$tag->name}}
       </a>
     @endforeach
+
+    @auth()
+      @if($post->user->id != Auth::user()->id)
+        @if(Maize\Markable\Models\Bookmark::has($post,Auth::user()))
+          <a href="{{route('posts.noseguir',['post',$post->id])}}" class="float-right rounded-full bg-blue-400 w-7 h-7 text-center pt-1">
+            <i class="far fa-bookmark text-white"></i>
+          </a>
+        @else
+          <a href="{{route('posts.seguir',['post',$post->id])}}" class="float-right rounded-full w-7 h-7 text-center pt-1 text-blue-600 font-extrabold hover:bg-blue-200">
+            <i class="far fa-bookmark"></i>
+          </a>
+        @endif
+      @endif
+    @endauth()
   </div>
 </article>

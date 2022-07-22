@@ -16,6 +16,8 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
+use Maize\Markable\Markable;
+use Maize\Markable\Models\Favorite;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -29,6 +31,7 @@ class User extends Authenticatable
   use TwoFactorAuthenticatable;
 
   use HasRoles;
+  use Markable;
   /**
    * The attributes that are mass assignable.
    *
@@ -36,6 +39,9 @@ class User extends Authenticatable
    */
   protected $fillable = [
     'name', 'email', 'password',
+  ];
+  protected static $marks = [
+    Favorite::class,
   ];
 
   /**

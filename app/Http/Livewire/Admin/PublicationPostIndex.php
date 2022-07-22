@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\Admin;
 
 use App\Models\Post;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -12,8 +14,12 @@ class PublicationPostIndex extends Component
   use WithPagination;
 
   protected $paginationTheme = "bootstrap";
+  public $showModal = false;
+  public $search, $lAdmin, $lPublicador, $order_id, $post, $fechaPublicar;
 
-  public $search, $lAdmin, $lPublicador, $order_id;
+  protected $rules = [
+    'start' => 'required',
+  ];
 
   public function updatingSearch()
   {
@@ -30,18 +36,9 @@ class PublicationPostIndex extends Component
   {
     $posts = Post::where([
       ['state_id', 3],
-      ['publicador_id', auth()->user()->id],
-      ['user_id', '!=', auth()->user()->id],
     ])
       ->orWhere([
         ['state_id', 4],
-        ['publicador_id', auth()->user()->id],
-        ['user_id', '!=', auth()->user()->id],
-      ])
-      ->orWhere([
-        ['state_id', 3],
-        ['publicador_id', null],
-        ['user_id', '!=', auth()->user()->id],
       ])
       ->where('name', 'LIKE', '%' . $this->search . '%')
       ->orderBy('id', $this->order_id)
@@ -58,5 +55,44 @@ class PublicationPostIndex extends Component
     }
     Session::put('order_id', $this->order_id);
     return;
+  }
+  public function edit($post)
+  {
+    $this->showModal = true;
+
+    if (array_key_exists('publication', $post)) {
+      $this->fechaPublicar = $post['publication']['start'];
+    } else {
+      $this->fechaPublicar = date('d-M-Y');
+    }
+    $this->post = $post;
+  }
+  public function close()
+  {
+    $this->showModal = false;
+  }
+  public function save()
+  {
+    $this->showModal = false;
+    $fecha = Carbon::createFromFormat('d-M-Y', $this->fechaPublicar)->format('Y-m-d');
+    if (array_key_exists('publication', $this->post)) {
+      $post = Post::findOrFail($this->post['id']);
+      $post->publication->update([
+        'start' => $fecha,
+      ]);
+    } else {
+      $post = Post::findOrFail($this->post['id']);
+      $post->publication()->create([
+        'title' => $post->name,
+        'start' => $fecha,
+        'post_id' => $post->id,
+      ]);
+    }
+    // Actualiza estado del post y datos del publicador
+    $post->update([
+      'state_id' => 4,
+      'publicador_id' => Auth()->user()->id,
+    ]);
+    /*   Cache::flush(); */
   }
 }

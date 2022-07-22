@@ -15,7 +15,9 @@ class CreatePublicationsTable extends Migration
   {
     Schema::create('publications', function (Blueprint $table) {
       $table->id();
-      $table->date('dateTo');
+      $table->string('title')->default('');
+      $table->dateTime('start');
+      $table->dateTime('end')->nullable();
       $table->foreignId('post_id')->constrained()->onDelete('cascade');
       $table->timestamps();
     });

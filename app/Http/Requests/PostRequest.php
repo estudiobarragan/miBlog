@@ -34,7 +34,7 @@ class PostRequest extends FormRequest
     if ($post) {
       $rules['slug'] = 'required|unique:posts,slug,' . $post->id;
     }
-    if ($this->state_id == 5) {
+    if ($this->state_id == 2) {
       $rules = array_merge($rules, [
         'category_id' => 'required',
         'tags' => 'required',

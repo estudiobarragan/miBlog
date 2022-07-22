@@ -32,11 +32,11 @@ class UserSeeder extends Seeder
       ]);
       if ($user->id > 1 && $user->id <= 10) {
         $user->assignRole(['Autor']);
-      } elseif ($user->id > 10 && $user->id <= 79) {
+      } elseif ($user->id > 10 && $user->id <= 88) {
         $user->assignRole(['Lector']);
-      } elseif ($user->id >= 80 && $user->id <= 89) {
+      } elseif ($user->id >= 89 && $user->id <= 98) {
         $user->assignRole(['Editor']);
-      } elseif ($user->id >= 90) {
+      } elseif ($user->id >= 99) {
         $user->assignRole(['Publicador']);
       }
     }

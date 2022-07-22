@@ -305,7 +305,7 @@ return [
       'text'       => 'Publicar posts',
       'route'  => 'admin.publication.index',
       'icon'    => 'fas fa-fw fa-file',
-      /* 'can'  => 'admin.publication.index', */
+      'can'  => 'admin.publication.index',
     ],
   ],
 
@@ -380,17 +380,17 @@ return [
       ],
     ],
     'FullCalendar' => [
-      'active' => true,
+      'active' => false,
       'files' => [
         [
           'type' => 'js',
           'asset' => false,
-          'location' => '//cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js',
+          'location' => '//cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.js',
         ],
         [
           'type' => 'css',
           'asset' => false,
-          'location' => '//cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.css',
+          'location' => '//cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.css',
         ],
       ],
     ],

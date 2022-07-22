@@ -1,4 +1,19 @@
-<nav class="bg-gray-800" x-data="{ open: false }" >
+@php
+  $nav_links=[
+    [
+      'name' => 'Dashboard',
+      'route'=> 'dashboard',
+      'active' => request()->routeIs('dashboard'),
+    ],
+    [
+      'name' => 'Prueba',
+      'route'=> '#',
+      'active' => request()->routeIs('prueba'),
+    ],
+  ]
+@endphp
+
+<nav class="bg-gray-100 shadow fixed top-0 w-full z-50" x-data="{ open: false }" >
   <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
     <div class="relative flex items-center justify-between h-16">
 
@@ -33,8 +48,10 @@
 
         {{-- Logotipo --}}
         <a href="/" class="flex-shrink-0 flex items-center">
-          <img class="block lg:hidden h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow">
-          <img class="hidden lg:block h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg" alt="Workflow">
+          <img class="block lg:hidden h-8 w-auto rounded-full" src="{{asset('img-default/byaLogo.png')}}" alt="estudio barragan">
+          <img class="hidden lg:block h-10 w-auto" src="{{asset('img-default/byaLogo.png')}}" alt="estudio barragan">
+          <p class="hidden lg:block text-blue-700 font-extrabold">BARRAGAN<br><br></p>
+          <p class="hidden lg:block text-blue-700 font-extrabold  -ml-24 pl-1 mt-4">& Asociados</p> 
         </a>
 
         {{-- Menu propiamente dicho lgS--}}
@@ -44,7 +61,7 @@
             {{-- <a href="#" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Dashboard</a> --}}
 
             @foreach ($categorias as $categoria)                
-              <a href="{{ route('posts.categoria',$categoria)  }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+              <a href="{{ route('posts.categoria',$categoria)  }}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
                 {{$categoria->name}}
               </a>
             @endforeach
@@ -67,9 +84,9 @@
           </button> --}}
           <div class="ml-3 relative" x-data="{ open: false }">
             <div x-on:click="open = true" type="button">
-              <button type="button" class="text-md text-white text-2xl relative">
+              <button type="button" class="text-md text-gray-600 text-2xl relative">
                 @if(count(auth()->user()->unreadNotifications))
-                  <span class="w-4 h-4 rounded-full absolute left-4 bottom-3 leading text-xs bg-red-500">
+                  <span class="w-4 h-4 rounded-full absolute left-4 bottom-3 leading text-xs bg-red-500 text-white">
                     {{count(auth()->user()->unreadNotifications)}}
                   </span>
                 @endif
@@ -139,10 +156,10 @@
         </div>     
       @else
         <div>
-          <a href="{{route( 'login' )}}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+          <a href="{{route( 'login' )}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-mediu m">
             Ingresar
           </a>
-          <a href="{{route( 'register' )}}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+          <a href="{{route( 'register' )}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-mediu  m">
             Registrar
           </a>
         </div>   
@@ -158,7 +175,7 @@
       {{-- <a href="#" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium" aria-current="page">Dashboard</a> --}}
 
       @foreach ($categorias as $categoria)          
-        <a href="{{ route('posts.categoria',$categoria) }}" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+        <a href="{{ route('posts.categoria',$categoria) }}" class="text-gray-600 hover:bg-gray-100 hover:text-gray-800 block px-3 py-2 rounded-md text-base font-medium">
           {{$categoria->name}}
         </a>
       @endforeach

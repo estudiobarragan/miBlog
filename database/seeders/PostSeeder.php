@@ -53,6 +53,7 @@ class PostSeeder extends Seeder
           'feedback'      => $faker->text(),
           'approved'      => 1,
           'post_id'       => $post->id,
+          'created_at'    => $post->created_at,
         ]);
       }
       if ($post->state_id == 4) {
@@ -60,17 +61,23 @@ class PostSeeder extends Seeder
         $fechaPub = Carbon::now()->subDays($post4);
 
         Publication::create([
-          'dateTo' => $fechaPub,
+          'start' => $fechaPub,
+          'end' => null,
+          'title' => $post->name,
           'post_id' => $post->id,
+          'created_at' => $fechaPub,
         ]);
       }
       if ($post->state_id >= 5) {
         $post5 = $post5 + 1;
-        $fechaPub = Carbon::now()->addDays($post5);
+        $fechaPub = Carbon::now()->subDays($post5);
 
         Publication::create([
-          'dateTo' => $fechaPub,
+          'start' => $fechaPub,
+          'end' => null,
+          'title' => $post->name,
           'post_id' => $post->id,
+          'created_at' => $fechaPub,
         ]);
       }
     }

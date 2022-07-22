@@ -47,9 +47,9 @@ class PostIndex extends Component
     } else {
       $posts = Post::where('id', 0)->paginate(8);
     }
+    $estados = $this->estados;
 
-
-    return view('livewire.admin.post-index', compact('posts', $this->estados));
+    return view('livewire.admin.post-index', compact('posts', 'estados'));
   }
   public function order_id()
   {

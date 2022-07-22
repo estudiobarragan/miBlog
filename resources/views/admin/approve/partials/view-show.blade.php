@@ -5,7 +5,7 @@
   <div class="col-sm-9">
     <hr>
     <h1>{{$post->name}}</h1>
-    <h5>{{$post->extract}}</h5>
+    <h5>{!!$post->extract!!}</h5>
     
     <div class="card">
       @if($post->image)
@@ -39,7 +39,7 @@
     <div class="row">
 
       <div class="col">
-        <p>{{$post->body}}</p>
+        <p>{!!$post->body!!}</p>
       </div>
     </div>
     

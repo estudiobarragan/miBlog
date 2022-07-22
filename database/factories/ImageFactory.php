@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Video;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Smknstd\FakerPicsumImages\FakerPicsumImagesProvider;
 
 class ImageFactory extends Factory
 {
@@ -24,8 +25,10 @@ class ImageFactory extends Factory
    */
   public function definition()
   {
+    $faker = \Faker\Factory::create();
+    $faker->addProvider(new FakerPicsumImagesProvider($faker));
     return [
-      'url' => 'img/' . $this->faker->image('public/storage/img', 640, 480, null, false)
+      'url' => 'img/' . $faker->image($dir = 'public/storage/img', $width = 640, $height = 480,  $fullPath = false),
     ];
   }
 }

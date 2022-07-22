@@ -141,23 +141,23 @@ class RoleSeeder extends Seeder
     ])->syncRoles([$role1, $role4]);
     Permission::create([
       'name' => 'admin.publication.create',
-      'description' => 'Crear aprobación para post'
+      'description' => 'Definir fecha de publicacion del post'
     ])->syncRoles([$role4]);
     Permission::create([
       'name' => 'admin.publication.edit',
-      'description' => 'Editar y actualizar  aprobación para post'
+      'description' => 'Modificar fecha de publicacion de un post'
     ])->syncRoles([$role4]);
     Permission::create([
       'name' => 'admin.publication.show',
-      'description' => 'Mostrar aprobación para post'
+      'description' => 'Mostrar fecha de publicacion de post'
     ])->syncRoles([$role4]);
     Permission::create([
-      'name' => 'admin.publication.reject',
-      'description' => 'Rechazar post en edicion'
-    ])->syncRoles([$role4]);
+      'name' => 'admin.publication.pause',
+      'description' => 'Pausar post -no visible / visible-'
+    ])->syncRoles([$role1]);
     Permission::create([
       'name' => 'admin.publication.destroy',
-      'description' => 'Rechazar post en edicion'
-    ])->syncRoles([$role4]);
+      'description' => 'Invisibilizar post'
+    ])->syncRoles([$role1]);
   }
 }

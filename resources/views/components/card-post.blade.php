@@ -34,7 +34,7 @@
   <hr>
   <div class="px-6 pt-4 pb-2">
     @foreach($post->tags as $tag)
-      <a class="inline-block bg-{{$tag->color}}-700 rounded-full px-3 py-1 text-sm text-{{$tag->color}}-100 mr-2" 
+      <a class="inline-block bg-{{$tag->color}}-700 rounded-full px-3 py-1 text-sm text-{{$tag->color}}-100 mr-2 shadow-xl" 
           href="{{route('posts.tag',$tag)}}">
         {{'#'.$tag->name}}
       </a>

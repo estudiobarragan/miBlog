@@ -1,6 +1,10 @@
 <x-app-layout>
   <div class="container py-8">
-    <h1 class="uppercase text-center text-3xl font-bold">Ultimos post</h1>
+    <div class="grid grid-cols-3">
+      <div class="col-span-2 text-right">
+        <h1 class="uppercase text-right text-base md:text-3xl font-bold py-2">Ultimos post</h1>
+      </div>
+    </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 

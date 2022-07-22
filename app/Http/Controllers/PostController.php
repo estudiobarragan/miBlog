@@ -18,6 +18,7 @@ class PostController extends Controller
    */
   public function index()
   {
+
     if (request()->page) {
       $key = 'posts' . request()->page;
     } else {
@@ -128,5 +129,26 @@ class PostController extends Controller
     $posts = $user->posts()->where('state_id', 5)->latest('id')->paginate(5);
 
     return view('posts.user', compact('posts', 'user'));
+  }
+
+  public function seguir($model, $obj)
+  {
+    if ($model == 'user') {
+      return User::findOrFail($obj);
+    } elseif ($model == 'tag') {
+      return Tag::findOrFail($obj);
+    } elseif ($model == 'category') {
+      return Categoria::findOrFail($obj);
+    }
+  }
+  public function noseguir($model, $obj)
+  {
+    if ($model == 'user') {
+      return User::findOrFail($obj);
+    } elseif ($model == 'tag') {
+      return Tag::findOrFail($obj);
+    } elseif ($model == 'category') {
+      return Categoria::findOrFail($obj);
+    }
   }
 }

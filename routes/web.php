@@ -13,3 +13,10 @@ Route::get('author/{user}', [PostController::class, 'user'])->name('posts.user')
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
   return view('dashboard');
 })->name('dashboard');
+
+Route::get('seguir/{model}/{obj}', [PostController::class, 'seguir'])
+  ->name('posts.seguir')
+  ->middleware(['auth:sanctum', 'verified']);
+Route::get('noseguir/{model}/{obj}', [PostController::class, 'noseguir'])
+  ->name('posts.noseguir')
+  ->middleware(['auth:sanctum', 'verified']);

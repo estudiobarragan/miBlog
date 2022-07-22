@@ -5,17 +5,18 @@ namespace App\Models;
 use App\Models\Categoria;
 use App\Models\Comment;
 use App\Models\Image;
+use App\Models\Publication;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Post extends Model
 {
   use HasFactory;
 
-  protected $guarded = ['id', 'created_at', 'updated_at'];
+  protected $guarded = ['id', 'updated_at'];
 
   public function getRouteKeyName()
   {
@@ -26,6 +27,10 @@ class Post extends Model
   public function approve()
   {
     return $this->hasOne(Approve::class);
+  }
+  public function publication()
+  {
+    return $this->hasOne(Publication::class);
   }
 
   // Relacion 1 a N inversa

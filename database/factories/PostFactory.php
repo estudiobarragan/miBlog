@@ -30,10 +30,10 @@ class PostFactory extends Factory
     $name = $this->faker->unique()->sentence();
     $state = $this->faker->randomElement([1, 2, 3, 4, 5]);
     if ($state >= 3) {
-      $editor =  $this->faker->randomElement([80, 81, 82, 83, 84, 85, 86, 87, 88, 89]);
+      $editor =  $this->faker->randomElement([89, 90, 91, 92, 93, 94, 95, 96, 97, 98]);
     }
     if ($state >= 4) {
-      $publicador =  $this->faker->randomElement([90, 91, 92, 93, 94, 95, 96, 97, 98, 99]);
+      $publicador =  $this->faker->randomElement([99, 100]);
     }
 
     return [
@@ -46,6 +46,7 @@ class PostFactory extends Factory
       'user_id' => $this->faker->randomElement([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
       'editor_id' => $editor,
       'publicador_id' => $publicador,
+      'created_at' => $this->faker->dateTimeBetween('-3 month,-1 week')
     ];
   }
 }

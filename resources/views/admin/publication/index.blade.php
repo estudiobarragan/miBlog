@@ -18,13 +18,13 @@
 @stop
 
 @section('content')
-  @can('admin.publication.create')
+{{--   @can('admin.publication.create')
     <div class="card-header d-grid d-md-flex justify-content-md-end">
       <a class="btn btn-primary text-end" href="{{route('admin.publication.create')}}">
         Programar
       </a>
     </div>
-  @endcan
+  @endcan --}}
   @livewire('admin.publication-post-index')
 @stop
 
@@ -33,5 +33,5 @@
 @stop
 
 @section('js')
-  
+
 @stop

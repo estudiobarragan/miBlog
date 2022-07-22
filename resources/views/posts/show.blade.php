@@ -61,8 +61,9 @@
                 {{$post->user->email}}
               </h1>
               
-              <a href="#" class="ml-20 bg-blue-200 hover:bg-blue-500 hover:text-white text-blu-500 text-center py-2 px-4 rounded">Seguir</a>
-
+              @auth()
+                <a href="{{route('posts.seguir',['user',$post->user])}}" class="ml-20 bg-blue-200 hover:bg-blue-500 hover:text-white text-blu-500 text-center py-2 px-4 rounded">Seguir</a>
+              @endauth()
             </div>
           </div>
         </div>

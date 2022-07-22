@@ -7,15 +7,7 @@
       <div class="">
         @auth()
           @if($post->user->id != Auth::user()->id)
-            @if(Maize\Markable\Models\Bookmark::has($post,Auth::user()))
-              <a href="{{route('posts.noseguir',['post',$post->id])}}" class="float-right rounded-full bg-blue-400 w-7 h-7 text-center pt-1 hover:bg-blue-100 hover:text-gray-600">
-                <i class="far fa-bookmark text-white"></i>
-              </a>
-            @else
-              <a href="{{route('posts.seguir',['post',$post->id])}}" class="float-right rounded-full w-7 h-7 text-center pt-1 text-blue-600 font-extrabold hover:bg-blue-200">
-                <i class="far fa-bookmark"></i>
-              </a>
-            @endif
+            @livewire('bookmark-card-post', ['post'=> $post])
           @endif
         @endauth()
       </div>
@@ -73,26 +65,16 @@
               @endif
             </div>
             <div class="float-center mt-2">
-              <h1 class="text-2xl font-bold text-gray-600 text-center">
+              <h1 class="text-xl font-bold text-gray-600 text-center">
                 {{$post->user->name}}
               </h1>
-              <h1 class="text-1xl font-bold text-blue-300 mb-4 text-center">
+              <h1 class="text-sm font-bold text-blue-300 mb-4 text-center">
                 {{$post->user->email}}
               </h1>
-              
               @auth()
-                @if($post->user->id != Auth::user()->id)
-                  @if(Maize\Markable\Models\Favorite::has($post->user,Auth::user()))
-                    <a href="{{route('posts.noseguir',['user',$post->user])}}" class="ml-20 bg-red-200 hover:bg-red-500 hover:text-white text-red-800 text-sm py-1 px-2 rounded-3xl ">
-                      <i class="fa fa-user-minus"></i>
-                    </a>
-                  @else
-                    <a href="{{route('posts.seguir',['user',$post->user])}}" class="ml-20 bg-blue-200 hover:bg-blue-500 hover:text-white text-blue-800 text-sm py-1 px-2 rounded-3xl ">
-                      <i class="fa fa-user-plus"></i>
-                    </a>
-                  @endif
-                @endif
-                
+                <div class="text-center">
+                  @livewire('follow-model',['user' => $post->user])
+                </div>
               @endauth()
             </div>
           </div>

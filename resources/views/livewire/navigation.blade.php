@@ -60,11 +60,12 @@
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
             {{-- <a href="#" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Dashboard</a> --}}
 
-            @foreach ($categorias as $categoria)                
-              <a href="{{ route('posts.categoria',$categoria)  }}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
-                {{$categoria->name}}
+            @auth
+              <a href="#" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
+                {{__('Mis post')}}
               </a>
-            @endforeach
+            @endauth
+
 
            
           </div>
@@ -173,12 +174,12 @@
     <div class="px-2 pt-2 pb-3 space-y-1">
       <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
       {{-- <a href="#" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium" aria-current="page">Dashboard</a> --}}
-
-      @foreach ($categorias as $categoria)          
-        <a href="{{ route('posts.categoria',$categoria) }}" class="text-gray-600 hover:bg-gray-100 hover:text-gray-800 block px-3 py-2 rounded-md text-base font-medium">
-          {{$categoria->name}}
+ 
+      @auth
+        <a href="#" class="text-gray-600 hover:bg-gray-100 hover:text-gray-800 block px-3 py-2 rounded-md text-base font-medium">
+          {{__('Mis post')}}
         </a>
-      @endforeach
+      @endauth
 
       
     </div>

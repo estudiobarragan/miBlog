@@ -31,7 +31,7 @@ class PostController extends Controller
       $posts = Post::join('publications', 'publications.post_id', '=', 'posts.id')
         ->where('state_id', 5)
         ->orderBy('publications.start', 'DESC')
-        ->latest('publications.id')
+        ->latest('posts.id')
         ->paginate(5);
       Cache::put($key, $posts);
     }
@@ -126,18 +126,39 @@ class PostController extends Controller
       ->with('publication')
       ->paginate(5);
 
-    return view('posts.categoria', compact('posts', 'categoria'));
+    $categorias = Categoria::all();
+    $etiquetas = Tag::all();
+    $usuarios = User::with('roles')->get();
+    $autores = $usuarios->where(function ($user, $key) {
+      return $user->hasRole('Autor');
+    });
+
+    return view('posts.categoria', compact('posts', 'categoria', 'categorias', 'etiquetas', 'autores'));
   }
   public function tag(Tag $tag)
   {
     $posts = $tag->posts()->where('state_id', 5)->with('publication')->paginate(5);
 
-    return view('posts.tag', compact('posts', 'tag'));
+    $categorias = Categoria::all();
+    $etiquetas = Tag::all();
+    $usuarios = User::with('roles')->get();
+    $autores = $usuarios->where(function ($user, $key) {
+      return $user->hasRole('Autor');
+    });
+
+    return view('posts.tag', compact('posts', 'tag', 'categorias', 'etiquetas', 'autores'));
   }
   public function user(User $user)
   {
     $posts = $user->posts()->where('state_id', 5)->with('publication')->paginate(5);
 
-    return view('posts.user', compact('posts', 'user'));
+    $categorias = Categoria::all();
+    $etiquetas = Tag::all();
+    $usuarios = User::with('roles')->get();
+    $autores = $usuarios->where(function ($user, $key) {
+      return $user->hasRole('Autor');
+    });
+
+    return view('posts.user', compact('posts', 'user', 'categorias', 'etiquetas', 'autores'));
   }
 }

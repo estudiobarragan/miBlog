@@ -1,35 +1,6 @@
 <x-app-layout>
   <div class="container py-4">
-    <div class="bg-gray-400 h-10 w-full mb-2 z-50 flex">
-      <div x-data="{open:false}" class="flex">
-        <div class="text-white ml-2">
-          {{__('Categorias ')}}
-          <i class="fas fa-caret-down cursor-pointer" x-on:click="open=!open" @click.outside="open = false"></i>
-        </div>
-        <div x-show="open" class="bg-blue-100 shadow-lg rounded-b-lg text-sm overscroll-auto w-32 ml-4 pl-2 h-screen">
-          @foreach ($categorias as $categoria)
-            <li>
-              <a href="{{ route('posts.categoria', $categoria) }}">{{$categoria->name}}</a>
-            </li>
-          @endforeach
-        </div>
-      </div>
-      <div x-data="{open:false}" class="ml-32 flex">
-        <div class="text-white ml-2">
-          {{__('Etiquetas ')}}
-          <i class="fas fa-caret-down cursor-pointer" x-on:click="open=!open" @click.outside="open = false"></i>
-        </div>
-        <div x-show="open" class="bg-blue-100 shadow-lg rounded-b-lg text-sm overscroll-auto w-32 ml-4 pl-2 h-screen">
-          @foreach ($etiquetas as $etiqueta)
-            <li>
-              <a href="{{ route('posts.tag', $etiqueta) }}">{{$etiqueta->name}}</a>
-            </li>
-          @endforeach
-        </div>
-      </div>
-    </div>
-
-
+    <x-barra :categorias="$categorias" :etiquetas="$etiquetas" :autores="$autores"></x-barra>
 
     <div class="grid grid-cols-3">
       <div class="col-span-2 text-right">

@@ -1,6 +1,6 @@
 @props(['post'])
 
-<article class="mb-8 bg-white shadow-lg rounded-lg overflow-hidden">
+<article class="mb-8 bg-white shadow-lg rounded-lg overflow-hidden z-10">
   <div class="relative">
     @if($post->image)
       <img class="w-full h-72 object-cover object-center" src="{{Storage::url($post->image->url)}}" alt="">

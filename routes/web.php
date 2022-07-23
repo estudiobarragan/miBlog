@@ -14,9 +14,9 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
   return view('dashboard');
 })->name('dashboard');
 
-Route::get('seguir/{model}/{obj}', [PostController::class, 'seguir'])
-  ->name('posts.seguir')
-  ->middleware(['auth:sanctum', 'verified']);
-Route::get('noseguir/{model}/{obj}', [PostController::class, 'noseguir'])
-  ->name('posts.noseguir')
-  ->middleware(['auth:sanctum', 'verified']);
+// TODO agregar with a todo where
+// TODO poner barra en negro con categorias etiquetas y autores
+// TODO agregar opcion en el menu mis post
+// TODO Trabajar las notificaciones
+// TODO agregar bilbiografia al profile del usuario y consulta
+// TODO No deberia recargaase la pagina al cambiar de pagina (paginator)

@@ -8,8 +8,6 @@ use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Maize\Markable\Models\Bookmark;
-use Maize\Markable\Models\Favorite;
 
 class PostController extends Controller
 {
@@ -30,11 +28,21 @@ class PostController extends Controller
     if (Cache::has($key)) {
       $posts = Cache::get($key);
     } else {
-      $posts = Post::where('state_id', 5)->latest('id')->paginate(5);
+      $posts = Post::join('publications', 'publications.post_id', '=', 'posts.id')
+        ->where('state_id', 5)
+        ->orderBy('publications.start', 'DESC')
+        ->latest('publications.id')
+        ->paginate(5);
       Cache::put($key, $posts);
     }
+    $categorias = Categoria::all();
+    $etiquetas = Tag::all();
+    $usuarios = User::with('roles')->get();
+    $autores = $usuarios->where(function ($user, $key) {
+      return $user->hasRole('Autor');
+    });
 
-    return view('posts.index', compact('posts'));
+    return view('posts.index', compact('posts', 'categorias', 'etiquetas', 'autores'));
   }
 
   /**
@@ -115,52 +123,21 @@ class PostController extends Controller
   {
     $posts = Post::where('categoria_id', $categoria->id)
       ->where('state_id', 5)
-      ->latest('id')
+      ->with('publication')
       ->paginate(5);
 
     return view('posts.categoria', compact('posts', 'categoria'));
   }
   public function tag(Tag $tag)
   {
-    $posts = $tag->posts()->where('state_id', 5)->latest('id')->paginate(5);
+    $posts = $tag->posts()->where('state_id', 5)->with('publication')->paginate(5);
 
     return view('posts.tag', compact('posts', 'tag'));
   }
   public function user(User $user)
   {
-    $posts = $user->posts()->where('state_id', 5)->latest('id')->paginate(5);
+    $posts = $user->posts()->where('state_id', 5)->with('publication')->paginate(5);
 
     return view('posts.user', compact('posts', 'user'));
-  }
-
-  public function seguir($model, $obj)
-  {
-
-    if ($model == 'user') {
-      if (User::findOrFail($obj) != Auth()->user()) {
-        Favorite::add(User::findOrFail($obj), auth()->user());
-      }
-    } elseif ($model == 'tag') {
-      Favorite::add(Tag::findOrFail($obj), auth()->user());
-    } elseif ($model == 'category') {
-      Favorite::add(Categoria::findOrFail($obj), auth()->user());
-    } elseif ($model == 'post') {
-      Bookmark::add(Post::findOrFail($obj), auth()->user());
-    }
-    return back();
-  }
-  public function noseguir($model, $obj)
-  {
-
-    if ($model == 'user') {
-      Favorite::remove(User::findOrFail($obj), auth()->user());
-    } elseif ($model == 'tag') {
-      Favorite::remove(Tag::findOrFail($obj), auth()->user());
-    } elseif ($model == 'category') {
-      Favorite::remove(Categoria::findOrFail($obj), auth()->user());
-    } elseif ($model == 'post') {
-      Bookmark::remove(Post::findOrFail($obj), auth()->user());
-    }
-    return back();
   }
 }

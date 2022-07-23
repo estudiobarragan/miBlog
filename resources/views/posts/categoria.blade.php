@@ -1,7 +1,7 @@
 <x-app-layout>
   <div class="container py-8">
 
-    <x-barra :categorias="$categorias" :etiquetas="$etiquetas" :autores="$autores"></x-barra>
+    @livewire('barra-consulta')
 
     <div class="grid grid-cols-3 py-2">
       <div class="col-span-2">

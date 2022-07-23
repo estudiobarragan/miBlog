@@ -14,9 +14,9 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
   return view('dashboard');
 })->name('dashboard');
 
+// TODO trabajar query para tags y users que queden ordenados
 // TODO agregar with a todo where
-// TODO poner barra en negro con categorias etiquetas y autores
-// TODO agregar opcion en el menu mis post
+// TODO activar opcion en el menu mis post
 // TODO Trabajar las notificaciones
 // TODO agregar bilbiografia al profile del usuario y consulta
-// TODO No deberia recargaase la pagina al cambiar de pagina (paginator)
+// TODO No deberia recargaase la pagina al cambiar de pagina (paginator) cambiar a livewire

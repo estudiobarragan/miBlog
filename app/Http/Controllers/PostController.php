@@ -29,20 +29,16 @@ class PostController extends Controller
       $posts = Cache::get($key);
     } else {
       $posts = Post::join('publications', 'publications.post_id', '=', 'posts.id')
-        ->where('state_id', 5)
+        ->select('posts.*', 'publications.start')
+        ->where('posts.state_id', 5)
         ->orderBy('publications.start', 'DESC')
-        ->latest('posts.id')
+        ->latest('publications.id')
         ->paginate(5);
+
       Cache::put($key, $posts);
     }
-    $categorias = Categoria::all();
-    $etiquetas = Tag::all();
-    $usuarios = User::with('roles')->get();
-    $autores = $usuarios->where(function ($user, $key) {
-      return $user->hasRole('Autor');
-    });
 
-    return view('posts.index', compact('posts', 'categorias', 'etiquetas', 'autores'));
+    return view('posts.index', compact('posts',));
   }
 
   /**
@@ -121,44 +117,31 @@ class PostController extends Controller
 
   public function categoria(Categoria $categoria)
   {
-    $posts = Post::where('categoria_id', $categoria->id)
+    $posts = Post::join('publications', 'publications.post_id', '=', 'posts.id')
+      ->select('posts.*', 'publications.start')
+      ->where('posts.state_id', 5)
+      ->where('categoria_id', $categoria->id)
+      ->orderBy('publications.start', 'DESC')
+      ->latest('publications.id')
+      ->paginate(5);
+
+    return view('posts.categoria', compact('posts', 'categoria'));
+  }
+  public function tag(Tag $tag)
+  {
+    $posts = $tag->posts()
+      ->where('state_id', 5)
+      ->with('publication')
+      ->paginate(5);
+    return view('posts.tag', compact('posts', 'tag'));
+  }
+  public function user(User $user)
+  {
+    $posts = $user->posts()
       ->where('state_id', 5)
       ->with('publication')
       ->paginate(5);
 
-    $categorias = Categoria::all();
-    $etiquetas = Tag::all();
-    $usuarios = User::with('roles')->get();
-    $autores = $usuarios->where(function ($user, $key) {
-      return $user->hasRole('Autor');
-    });
-
-    return view('posts.categoria', compact('posts', 'categoria', 'categorias', 'etiquetas', 'autores'));
-  }
-  public function tag(Tag $tag)
-  {
-    $posts = $tag->posts()->where('state_id', 5)->with('publication')->paginate(5);
-
-    $categorias = Categoria::all();
-    $etiquetas = Tag::all();
-    $usuarios = User::with('roles')->get();
-    $autores = $usuarios->where(function ($user, $key) {
-      return $user->hasRole('Autor');
-    });
-
-    return view('posts.tag', compact('posts', 'tag', 'categorias', 'etiquetas', 'autores'));
-  }
-  public function user(User $user)
-  {
-    $posts = $user->posts()->where('state_id', 5)->with('publication')->paginate(5);
-
-    $categorias = Categoria::all();
-    $etiquetas = Tag::all();
-    $usuarios = User::with('roles')->get();
-    $autores = $usuarios->where(function ($user, $key) {
-      return $user->hasRole('Autor');
-    });
-
-    return view('posts.user', compact('posts', 'user', 'categorias', 'etiquetas', 'autores'));
+    return view('posts.user', compact('posts', 'user'));
   }
 }

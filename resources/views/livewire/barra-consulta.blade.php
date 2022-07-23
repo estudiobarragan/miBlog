@@ -1,5 +1,3 @@
-@props(['categorias','etiquetas','autores'])
-
 <div class="bg-gray-400 h-10 w-full mb-2 flex">
   {{-- Categorias --}}
   <div x-data="{open:false}" class="flex">

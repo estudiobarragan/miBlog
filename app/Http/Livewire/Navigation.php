@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Categoria;
 use App\Models\Post;
+use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
@@ -21,18 +22,15 @@ class Navigation extends Component
   }
   public function publicar()
   {
-    $posts = Post::where('state_id', 4)->get();
-    if ($posts->count() > 0) {
-      foreach ($posts as $post) {
-        if ($post->publication->start <= date('d-M-Y')) {
-          $post->publication->update([
-            'start' => date('Y-m-d'),
-          ]);
-          $post->update(['state_id' => 5]);
-        }
-      }
-      Cache::flush();
+    $posts = Post::where('state_id', 4)->where('publicar', '<=', date('Y/m/d'))->get();
+
+    foreach ($posts as $post) {
+      $post->update([
+        'publicar' => Date('Y-m-d h:i'),
+        'state_id' => 5
+      ]);
     }
+    Cache::flush();
     return;
   }
 }

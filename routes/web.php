@@ -14,7 +14,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
   return view('dashboard');
 })->name('dashboard');
 
-// TODO trabajar query para tags y users que queden ordenados
+
 // TODO agregar with a todo where
 // TODO activar opcion en el menu mis post
 // TODO Trabajar las notificaciones

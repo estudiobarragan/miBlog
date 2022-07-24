@@ -21,10 +21,15 @@
       {!!$post->extract!!}
     </div>
 
-    <div class="flow-root mt-2 ">
+    <div class="flex place-content-between mt-2 ">
       <div class="text-gray-700 text-base float-left">
         <strong>{{$post->updated_at->format('j F, Y')}}</strong>
       </div>
+      @auth()
+        <div class="flex content-between">
+          @livewire('show-reaction-post',['post'=>$post])
+        </div>
+      @endauth
       <div class="text-gray-700 text-base float-right  hover:bg-gray-100">
         <a href="{{ route('posts.user',$post->user) }}"><strong>{{$post->user->name}}</strong></a>
       </div>
@@ -39,7 +44,7 @@
         {{'#'.$tag->name}}
       </a>
     @endforeach
-
+    
     @auth()
       @if($post->user->id != Auth::user()->id)
         <div class="float-right">

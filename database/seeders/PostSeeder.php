@@ -59,26 +59,12 @@ class PostSeeder extends Seeder
       if ($post->state_id == 4) {
         $post4 = $post4 + 1;
         $fechaPub = Carbon::now()->subDays($post4);
-
-        Publication::create([
-          'start' => $fechaPub,
-          'end' => null,
-          'title' => $post->name,
-          'post_id' => $post->id,
-          'created_at' => $fechaPub,
-        ]);
+        $post->update(['publicar' => $fechaPub]);
       }
       if ($post->state_id >= 5) {
         $post5 = $post5 + 1;
         $fechaPub = Carbon::now()->subDays($post5);
-
-        Publication::create([
-          'start' => $fechaPub,
-          'end' => null,
-          'title' => $post->name,
-          'post_id' => $post->id,
-          'created_at' => $fechaPub,
-        ]);
+        $post->update(['publicar' => $fechaPub]);
       }
     }
   }

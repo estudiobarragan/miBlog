@@ -5,15 +5,14 @@ namespace App\Models;
 use App\Models\Categoria;
 use App\Models\Comment;
 use App\Models\Image;
-use App\Models\Publication;
 use App\Models\Tag;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Maize\Markable\Markable;
 use Maize\Markable\Models\Bookmark;
+use Maize\Markable\Models\Reaction;
 
 class Post extends Model
 {
@@ -23,21 +22,22 @@ class Post extends Model
   protected $guarded = ['id', 'updated_at'];
   protected static $marks = [
     Bookmark::class,
+    Reaction::class,
   ];
 
   public function getRouteKeyName()
   {
     return "slug";
   }
+  protected function getPublicarAttribute($value)
+  {
+    return date_format(new DateTime($value), 'd-M-Y');
+  }
 
   // Relacion 1 a 1
   public function approve()
   {
     return $this->hasOne(Approve::class);
-  }
-  public function publication()
-  {
-    return $this->hasOne(Publication::class);
   }
 
   // Relacion 1 a N inversa

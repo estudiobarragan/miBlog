@@ -39,12 +39,28 @@
           </div>
         </figure>
 
-        <div class="flow-root">
-          <div class="mt-2 text-gray-700 float-left">
+        <div class="mt-2 flex place-content-between">
+          <div class="text-gray-700 items-center text-sm">
             <strong>Publicado el: {{$post->updated_at->format('j F, Y')}}</strong>
           </div>
-          <div class="mt-2 text-gray-700 float-right">
-            <a href="{{ route('posts.user',$post->user) }}"><strong>Autor: {{$post->user->name}}</strong></a>            
+
+          <div class="items-center grid lg:grid-cols-2 sm:grid-cols-1">
+            @auth()
+              <div class="inline-flex lg:ml-20 space-x-1">
+                @livewire('reaction-post',['type'=>'thumbup', 'post'=>$post, 'group'=>'+'])            
+                @livewire('reaction-post',['type'=>'heart', 'post'=>$post, 'group'=>'+'])            
+                @livewire('reaction-post',['type'=>'star', 'post'=>$post, 'group'=>'+']) 
+              </div>
+              <div class="inline-flex space-x-1 ml-2">
+                @livewire('reaction-post',['type'=>'thumbdown', 'post'=>$post, 'group'=>'-'])
+                @livewire('reaction-post',['type'=>'brokenheart', 'post'=>$post, 'group'=>'-'])
+                @livewire('reaction-post',['type'=>'unhappy', 'post'=>$post, 'group'=>'-'])
+              </div>
+            @endauth
+          </div>
+
+          <div class="text-gray-700 items-center text-sm">
+            <a href="{{ route('posts.user',$post->user) }}"><strong>Autor: {{$post->user->name}}</strong></a>
           </div>
         </div>
 

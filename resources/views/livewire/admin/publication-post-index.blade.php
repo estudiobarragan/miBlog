@@ -51,7 +51,7 @@
                   @if($post->publicador_id == null)
                     {{$post->state->name}}
                   @else
-                    {{$post->publication->start}}
+                    {{$post->publicar}}
                   @endif
                 </div>
               </td>

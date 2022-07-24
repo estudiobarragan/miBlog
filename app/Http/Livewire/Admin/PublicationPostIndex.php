@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+use function PHPUnit\Framework\isNull;
+
 class PublicationPostIndex extends Component
 {
   use WithPagination;
@@ -60,12 +62,12 @@ class PublicationPostIndex extends Component
   {
     $this->showModal = true;
 
-    if (array_key_exists('publication', $post)) {
-      $this->fechaPublicar = $post['publication']['start'];
-    } else {
+    if ($post['publicar'] == null) {
       $this->fechaPublicar = date('d-M-Y');
+    } else {
+      $this->fechaPublicar = $post['publicar'];
     }
-    $this->post = $post;
+    $this->post = Post::findOrFail($post['id']);
   }
   public function close()
   {
@@ -75,24 +77,12 @@ class PublicationPostIndex extends Component
   {
     $this->showModal = false;
     $fecha = Carbon::createFromFormat('d-M-Y', $this->fechaPublicar)->format('Y-m-d');
-    if (array_key_exists('publication', $this->post)) {
-      $post = Post::findOrFail($this->post['id']);
-      $post->publication->update([
-        'start' => $fecha,
-      ]);
-    } else {
-      $post = Post::findOrFail($this->post['id']);
-      $post->publication()->create([
-        'title' => $post->name,
-        'start' => $fecha,
-        'post_id' => $post->id,
-      ]);
-    }
+
     // Actualiza estado del post y datos del publicador
-    $post->update([
+    $this->post->update([
       'state_id' => 4,
+      'publicar' => $fecha,
       'publicador_id' => Auth()->user()->id,
     ]);
-    /*   Cache::flush(); */
   }
 }

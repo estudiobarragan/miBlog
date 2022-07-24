@@ -29,6 +29,7 @@ class CreatePostsTable extends Migration
       $table->foreign('publicador_id')->references('id')->on('users')->onDelete('set null');
       $table->foreign('categoria_id')->references('id')->on('categorias')->onDelete('set null');
       $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade');
+      $table->timestamp('publicar')->nullable();
       $table->timestamps();
     });
   }

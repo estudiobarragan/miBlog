@@ -28,11 +28,8 @@ class PostController extends Controller
     if (Cache::has($key)) {
       $posts = Cache::get($key);
     } else {
-      $posts = Post::join('publications', 'publications.post_id', '=', 'posts.id')
-        ->select('posts.*', 'publications.start')
-        ->where('posts.state_id', 5)
-        ->orderBy('publications.start', 'DESC')
-        ->latest('publications.id')
+      $posts = Post::where('state_id', 5)
+        ->orderBy('publicar', 'desc')
         ->paginate(5);
 
       Cache::put($key, $posts);
@@ -75,7 +72,7 @@ class PostController extends Controller
       ->where('state_id', 5)
       ->where('id', '!=', $post->id)
       ->latest('id')
-      ->take(4)
+      ->take(5)
       ->get();
 
     return view('posts.show', compact('post', 'similares'));
@@ -117,12 +114,9 @@ class PostController extends Controller
 
   public function categoria(Categoria $categoria)
   {
-    $posts = Post::join('publications', 'publications.post_id', '=', 'posts.id')
-      ->select('posts.*', 'publications.start')
-      ->where('posts.state_id', 5)
-      ->where('categoria_id', $categoria->id)
-      ->orderBy('publications.start', 'DESC')
-      ->latest('publications.id')
+    $posts = $categoria->posts()
+      ->where('state_id', 5)
+      ->orderBy('publicar', 'desc')
       ->paginate(5);
 
     return view('posts.categoria', compact('posts', 'categoria'));
@@ -131,15 +125,16 @@ class PostController extends Controller
   {
     $posts = $tag->posts()
       ->where('state_id', 5)
-      ->with('publication')
+      ->orderBy('publicar', 'desc')
       ->paginate(5);
+
     return view('posts.tag', compact('posts', 'tag'));
   }
   public function user(User $user)
   {
     $posts = $user->posts()
       ->where('state_id', 5)
-      ->with('publication')
+      ->orderBy('publicar', 'desc')
       ->paginate(5);
 
     return view('posts.user', compact('posts', 'user'));

@@ -1,6 +1,6 @@
-<div class="bg-gray-400 h-10 w-full mb-2 flex">
+<div class="bg-gray-400 h-10 w-full mb-2 flex fixed z-30">
   {{-- Categorias --}}
-  <div x-data="{open:false}" class="flex">
+  <div  x-cloak x-data="{open:false}" class="flex">
     <div class="z-10">
       <div class="text-white ml-2">
         {{__('Categorias ')}}
@@ -17,7 +17,7 @@
   </div>
 
   {{-- Etiquetas --}}
-  <div x-data="{open:false}" class="ml-2 md:ml-12 flex">
+  <div x-cloak x-data="{open:false}" class="ml-2 md:ml-12 flex">
     <div class="z-10">
       <div class="text-white ml-2">
         {{__('Etiquetas ')}}
@@ -34,7 +34,7 @@
   </div>
 
   {{-- Autores --}}
-  <div x-data="{open:false}" class="ml-2 md:ml-12 flex">
+  <div x-cloak x-data="{open:false}" class="ml-2 md:ml-12 flex">
     <div class="z-10">
       <div class="text-white ml-2">
         {{__('Autores ')}}

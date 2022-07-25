@@ -6,11 +6,14 @@ use App\Models\Approve;
 use App\Models\Image;
 use App\Models\Post;
 use App\Models\Publication;
+use App\Models\User;
 use Carbon\Carbon;
+use Faker\Core\Number;
 use Faker\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Seeder;
-
+use Maize\Markable\Models\Bookmark;
+use Maize\Markable\Models\Reaction;
 
 class PostSeeder extends Seeder
 {
@@ -58,13 +61,21 @@ class PostSeeder extends Seeder
       }
       if ($post->state_id == 4) {
         $post4 = $post4 + 1;
-        $fechaPub = Carbon::now()->subDays($post4);
+        $fechaPub = Carbon::now()->addDays($post4);
         $post->update(['publicar' => $fechaPub]);
       }
       if ($post->state_id >= 5) {
-        $post5 = $post5 + 1;
-        $fechaPub = Carbon::now()->subDays($post5);
+        $fechaPub = $faker->dateTimeBetween($post->created_at, Carbon::now(), null);
         $post->update(['publicar' => $fechaPub]);
+        for ($i = 1; $i <= 10; $i++) {
+          $user = User::where('id', $faker->numberBetween(11, 88))->first();
+          Bookmark::add($post, $user);
+        }
+        for ($i = 1; $i <= 10; $i++) {
+          $react = $faker->randomElement(['thumbup', 'thumbdown', 'heart', 'star', 'brokenheart', 'unhappy']);
+          $user = User::where('id', $faker->numberBetween(11, 88))->first();
+          Reaction::add($post, $user, $react);
+        }
       }
     }
   }

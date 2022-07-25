@@ -8,9 +8,11 @@ use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Livewire\WithPagination;
 
 class PostController extends Controller
 {
+  use WithPagination;
   /**
    * Display a listing of the resource.
    *
@@ -36,6 +38,7 @@ class PostController extends Controller
     }
 
     return view('posts.index', compact('posts',));
+    /* return view('posts.index'); */
   }
 
   /**

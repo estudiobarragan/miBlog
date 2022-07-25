@@ -89,7 +89,9 @@
               </h1>
               @auth()
                 <div class="text-center">
-                  @livewire('follow-model',['user' => $post->user])
+                  @if($post->user->id != Auth::user()->id)
+                    @livewire('follow-model',['user' => $post->user])
+                  @endif
                 </div>
               @endauth()
             </div>

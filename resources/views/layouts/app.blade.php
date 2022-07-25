@@ -16,6 +16,9 @@
         
         <script src="https://kit.fontawesome.com/59daab7027.js" crossorigin="anonymous"></script>
         @livewireStyles
+        <style>
+          [x-cloak] { display: none }
+        </style>
 
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>

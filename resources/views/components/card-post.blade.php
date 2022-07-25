@@ -7,8 +7,24 @@
       @else
       <img class="w-full h-72 object-cover object-center" src="{{asset('/img-default/post-default.webp')}}" alt="">    
     @endif
+    @php 
+      $fabC='+';
+      $fabA='+';
+    @endphp
+    @auth
+      @if(Maize\Markable\Models\Favorite::has($post->categoria,Auth::user()))
+        @php ($fabC='#')
+      @endif
+      @if(Auth::user() != $post->user)
+        @if(Maize\Markable\Models\Favorite::has($post->user,Auth::user()))
+          @php ($fabA='#')
+        @endif
+      @endif
+    @endauth
     <div class="absolute left-0 top-0 text-gray-100 bg-red-500 rounded-full px-3 py-1 text-sm hover:bg-gray-500">
-      <a href="{{ route('posts.categoria',$post->categoria) }}"><strong>{{ $post->categoria->name }}</strong></a>
+      <a href="{{ route('posts.categoria',$post->categoria) }}">
+        <strong>{{$fabC.$post->categoria->name }}</strong>
+      </a>
     </div>
   </div>
 
@@ -31,7 +47,7 @@
         </div>
       @endauth
       <div class="text-gray-700 text-base float-right  hover:bg-gray-100">
-        <a href="{{ route('posts.user',$post->user) }}"><strong>{{$post->user->name}}</strong></a>
+        <a href="{{ route('posts.user',$post->user) }}"><strong>{{$fabA.$post->user->name}}</strong></a>
       </div>
     </div>
     
@@ -39,9 +55,14 @@
   <hr>
   <div class="px-6 pt-4 pb-2">
     @foreach($post->tags as $tag)
+      @if(Maize\Markable\Models\Favorite::has($tag,Auth::user()))
+        @php ($fabT='#')
+      @else
+        @php ($fabT='+')
+      @endif
       <a class="inline-block bg-{{$tag->color}}-700 rounded-full px-3 py-1 text-sm text-{{$tag->color}}-100 mr-2 shadow-xl hover:bg-gray-500" 
           href="{{route('posts.tag',$tag)}}">
-        {{'#'.$tag->name}}
+        {{$fabT.$tag->name}}
       </a>
     @endforeach
     

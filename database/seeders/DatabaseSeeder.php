@@ -7,6 +7,7 @@ use App\Models\Categoria;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Models\Video;
+use Database\Seeders\FollowSeeder;
 use Database\Seeders\PostSeeder;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\StateSeeder;
@@ -32,6 +33,7 @@ class DatabaseSeeder extends Seeder
     Categoria::factory(5)->create();
     $this->call(StateSeeder::class);
     Tag::factory(8)->create();
+    $this->call(FollowSeeder::class);
     $this->call(PostSeeder::class);
     $this->call(VideoSeeder::class);
   }

@@ -27,12 +27,12 @@
             <img class="w-full h-80 object-cover object-center" src="{{asset('/img-default/post-default.webp')}}" alt="">
           @endif
           <div class="absolute left-0 top-0 text-gray-100 bg-red-500 rounded-full px-3 py-1 text-sm">
-            <a href="{{ route('posts.categoria',$post->categoria) }}"><strong>{{ $post->categoria->name }}</strong></a>
+            <a href="#"><strong>{{ $post->categoria->name }}</strong></a>
           </div>
           <div class="absolute left-0 bottom-0 ">
             @foreach($post->tags as $tag)
               <a class="inline-block bg-{{$tag->color}}-700 rounded-full px-3 py-1 text-sm text-{{$tag->color}}-100 mr-2" 
-                  href="{{route('posts.tag',$tag)}}">
+                  href="#">
                 {{'#'.$tag->name}}
               </a>
             @endforeach
@@ -60,7 +60,7 @@
           </div>
 
           <div class="text-gray-700 items-center text-sm">
-            <a href="{{ route('posts.user',$post->user) }}"><strong>Autor: {{$post->user->name}}</strong></a>
+            <a href="#"><strong>Autor: {{$post->user->name}}</strong></a>
           </div>
         </div>
 

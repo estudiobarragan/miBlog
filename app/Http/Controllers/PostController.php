@@ -74,6 +74,7 @@ class PostController extends Controller
    */
   public function show(Post $post)
   {
+
     $this->authorize('published', $post);
     $similares = Post::where('categoria_id', $post->categoria_id)
       ->where('state_id', 5)
@@ -117,33 +118,5 @@ class PostController extends Controller
   public function destroy($id)
   {
     //
-  }
-
-  public function categoria(Categoria $categoria)
-  {
-    $posts = $categoria->posts()
-      ->where('state_id', 5)
-      ->orderBy('publicar', 'desc')
-      ->paginate(5);
-
-    return view('posts.categoria', compact('posts', 'categoria'));
-  }
-  public function tag(Tag $tag)
-  {
-    $posts = $tag->posts()
-      ->where('state_id', 5)
-      ->orderBy('publicar', 'desc')
-      ->paginate(5);
-
-    return view('posts.tag', compact('posts', 'tag'));
-  }
-  public function user(User $user)
-  {
-    $posts = $user->posts()
-      ->where('state_id', 5)
-      ->orderBy('publicar', 'desc')
-      ->paginate(5);
-
-    return view('posts.user', compact('posts', 'user'));
   }
 }

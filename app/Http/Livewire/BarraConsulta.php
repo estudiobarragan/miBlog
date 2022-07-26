@@ -19,4 +19,21 @@ class BarraConsulta extends Component
     });
     return view('livewire.barra-consulta', compact('categorias', 'etiquetas', 'autores'));
   }
+  public function autor(User $user)
+  {
+    $this->emit('askAutor', $user);
+    return;
+  }
+  public function categoria($categoria)
+  {
+    $categoria = Categoria::find($categoria['id']);
+    $this->emit('askCategoria', $categoria);
+    return;
+  }
+  public function etiqueta($etiqueta)
+  {
+    $etiqueta = Tag::find($etiqueta['id']);
+    $this->emit('askEtiqueta', $etiqueta);
+    return;
+  }
 }

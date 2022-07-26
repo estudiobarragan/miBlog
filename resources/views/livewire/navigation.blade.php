@@ -61,9 +61,9 @@
             {{-- <a href="#" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Dashboard</a> --}}
 
             @auth
-              <a href="{{route('posts.misposts')}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
+              {{-- <a href="{{route('posts.misposts')}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
                 {{__('Mis post')}}
-              </a>
+              </a> --}}
             @endauth
 
 

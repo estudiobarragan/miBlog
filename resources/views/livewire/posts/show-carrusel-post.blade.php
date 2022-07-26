@@ -28,10 +28,20 @@
     {{$posts->links()}}
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-2 lg:gap-4 xl:gap-6">
     @foreach ($posts as $post)
-      @livewire('posts.show-card-post',['post'=>$post,'indice'=> $loop->index, key('post-'.$ms) ])
+    
+      @livewire('posts.show-card-carrusel-post',['post'=>$post,'indice'=> 1, key('post-'.$ms) ])
+     
     @endforeach
+    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
   </div>
 
 </div>

@@ -8,11 +8,11 @@ use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Livewire\WithPagination;
+use Livewire\Livewire;
 
 class PostController extends Controller
 {
-  use WithPagination;
+
   /**
    * Display a listing of the resource.
    *
@@ -21,7 +21,7 @@ class PostController extends Controller
   public function index()
   {
 
-    if (request()->page) {
+    /* if (request()->page) {
       $key = 'posts' . request()->page;
     } else {
       $key =  'posts';
@@ -35,12 +35,16 @@ class PostController extends Controller
         ->paginate(5);
 
       Cache::put($key, $posts);
-    }
-
-    return view('posts.index', compact('posts',));
-    /* return view('posts.index'); */
+    } */
+    $type = 'Ultimos Posts';
+    return view('posts.misposts', compact('type',));
   }
 
+  public function misposts()
+  {
+    $type = 'Mis Posts';
+    return view('posts.misposts', compact('type'));
+  }
   /**
    * Show the form for creating a new resource.
    *

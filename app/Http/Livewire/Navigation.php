@@ -11,6 +11,7 @@ use Livewire\Component;
 
 class Navigation extends Component
 {
+
   public function mount()
   {
     $this->publicar();

@@ -13,6 +13,7 @@ use Faker\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Seeder;
 use Maize\Markable\Models\Bookmark;
+use Maize\Markable\Models\Like;
 use Maize\Markable\Models\Reaction;
 
 class PostSeeder extends Seeder
@@ -72,8 +73,14 @@ class PostSeeder extends Seeder
           Bookmark::add($post, $user);
         }
         for ($i = 1; $i <= 10; $i++) {
-          $react = $faker->randomElement(['thumbup', 'thumbdown', 'heart', 'star', 'brokenheart', 'unhappy']);
+          $like = $faker->boolean(80);
           $user = User::where('id', $faker->numberBetween(11, 88))->first();
+          if ($like) {
+            Like::add($post, $user);
+            $react = $faker->randomElement(['thumbup', 'heart', 'star']);
+          } else {
+            $react = $faker->randomElement(['thumbdown', 'brokenheart', 'unhappy']);
+          }
           Reaction::add($post, $user, $react);
         }
       }

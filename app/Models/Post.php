@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Maize\Markable\Markable;
 use Maize\Markable\Models\Bookmark;
+use Maize\Markable\Models\Like;
 use Maize\Markable\Models\Reaction;
 
 class Post extends Model
@@ -23,6 +24,7 @@ class Post extends Model
   protected static $marks = [
     Bookmark::class,
     Reaction::class,
+    Like::class,
   ];
 
   public function getRouteKeyName()

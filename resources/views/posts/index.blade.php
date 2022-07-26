@@ -18,6 +18,7 @@
         <article class="@if($loop->first) md:col-span-2 @endif">
           <x-card-post :post="$post"></x-card-post>
         </article>
+        
       @endforeach
     </div>
 

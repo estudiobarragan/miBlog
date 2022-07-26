@@ -10,6 +10,10 @@ class FollowModel extends Component
 {
   public $tag, $categoria, $user;
 
+  /* public function mount($tag)
+  {
+    $this->tag = $tag;
+  } */
   public function render()
   {
     return view('livewire.follow-model');

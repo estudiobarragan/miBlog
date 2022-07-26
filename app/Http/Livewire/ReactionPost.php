@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use Maize\Markable\Models\Like;
 use Maize\Markable\Models\Reaction;
 
 class ReactionPost extends Component
@@ -24,8 +25,10 @@ class ReactionPost extends Component
     Reaction::add($this->post, auth()->user(), $this->type);
     if ($this->group == '+') {
       $this->emit('pos');
+      Like::add($this->post, auth()->user());
     } else {
       $this->emit('neg');
+      Like::remove($this->post, auth()->user());
     }
   }
   public function unreact()

@@ -37,7 +37,7 @@ class PostController extends Controller
       Cache::put($key, $posts);
     } */
     $type = 'Ultimos Posts';
-    return view('posts.misposts', compact('type',));
+    return view('posts.index', compact('type',));
   }
 
   public function misposts()

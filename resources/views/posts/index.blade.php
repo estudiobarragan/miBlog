@@ -1,5 +1,13 @@
 <x-app-layout>
+
   <div class="container py-4">
+
+    @livewire('barra-consulta')
+    
+    @livewire('posts.show-index-post')
+  </div>
+
+ {{--  <div class="container py-4">
 
     @livewire('barra-consulta')
 
@@ -22,5 +30,5 @@
       @endforeach
     </div>
 
-  </div>
+  </div> --}}
 </x-app-layout>

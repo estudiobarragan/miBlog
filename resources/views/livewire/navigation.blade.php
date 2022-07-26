@@ -65,8 +65,6 @@
                 {{__('Mis post')}}
               </a> --}}
             @endauth
-
-
            
           </div>
         </div>
@@ -98,7 +96,7 @@
               </button>
 
               <!-- Notificaciones dropdown -->
-              <div x-show="open" x-on:click.away="open = false" class="origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-xl py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+              <div  x-cloak x-show="open" x-on:click.away="open = false" class="origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-xl py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                 <!-- Active: "bg-gray-100", Not Active: "" -->
                 @foreach(auth()->user()->unreadNotifications as $notification)
                   <div class="flex">
@@ -176,9 +174,9 @@
       {{-- <a href="#" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium" aria-current="page">Dashboard</a> --}}
  
       @auth
-        <a href="#" class="text-gray-600 hover:bg-gray-100 hover:text-gray-800 block px-3 py-2 rounded-md text-base font-medium">
+        {{-- <a href="#" class="text-gray-600 hover:bg-gray-100 hover:text-gray-800 block px-3 py-2 rounded-md text-base font-medium">
           {{__('Mis post')}}
-        </a>
+        </a> --}}
       @endauth
 
       

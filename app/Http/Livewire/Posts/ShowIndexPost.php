@@ -17,9 +17,13 @@ class ShowIndexPost extends Component
   public $value;
 
   protected $listeners = ['askAutor', 'askCategoria', 'askEtiqueta'];
-
+  public function change()
+  {
+    $this->resetPage();
+  }
   public function render()
   {
+
     if ($this->type == 'Ultimos Posts') {
       $posts = Post::where('state_id', 5)->with(['user', 'categoria', 'tags'])
         ->orderBy('publicar', 'desc')
@@ -53,6 +57,7 @@ class ShowIndexPost extends Component
   {
     $this->type = "Autor";
     $this->value = $user;
+    $this->change();
 
     return;
   }
@@ -61,6 +66,7 @@ class ShowIndexPost extends Component
     $categoria = Categoria::find($categoria['id']);
     $this->type = "Categoria";
     $this->value = $categoria;
+    $this->change();
 
     return;
   }
@@ -68,6 +74,8 @@ class ShowIndexPost extends Component
   {
     $this->value = Tag::find($etiqueta['id']);
     $this->type = "Etiqueta";
+    $this->change();
+
     return;
   }
 }

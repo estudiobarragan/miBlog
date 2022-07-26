@@ -16,9 +16,9 @@
         @endauth()
       @endif
       @if($type=="Etiqueta")
-        : {{ $this->value->name}}-{{$ms}}
+        : {{ $this->value->name}}
         @auth()
-          @livewire('follow-model',['tag' => $this->value, 'key'=>'tag-'.$ms])
+          @livewire('follow-model',['tag' => $this->value,key('tag-'.$ms)])
         @endauth()
       @endif
     </h1>

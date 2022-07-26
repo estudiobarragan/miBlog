@@ -1,6 +1,5 @@
 <div class="justify-items-start">
   @if(isset($tag))
-    {{Maize\Markable\Models\Favorite::has($tag,Auth::user())}}-{{$tag->name}}
     @if(Maize\Markable\Models\Favorite::has($tag,Auth::user()))
       <a wire:click="tag_unlike" class="w-20 ml-5 bg-red-200 hover:bg-red-500 hover:text-white text-red-800 text-sm py-1 px-2 rounded-3xl ">
         <i class="fa fa-user-minus"></i>

@@ -53,21 +53,14 @@ class ShowCarruselPost extends Component
     $this->cantidad = session('cantidad-post', 1);
 
     if ($this->type == 'Etiquetas') {
-
-      $posts = Tag::whereHasFavorite(auth()->user())
-        ->join('posts', 'tag.posts.id', '=', 'posts.id')
+      $tags = Tag::whereHasFavorite(auth()->user())
+        ->pluck('id')->toArray();
+      $this->posts = Post::leftJoin('taggables', 'taggables.taggable_id', '=', 'posts.id')
+        ->leftJoin('tags', 'taggables.tag_id', '=', 'tags.id')
+        ->whereIn('tags.id', $tags)
         ->select('posts.*')
+        ->distinct()
         ->get();
-      dd('final ', $posts);
-      /* $etiquetas->each(function ($item, $post) { */
-      /* foreach ($etiquetas as $etq) {
-        if (empty($posts)) {
-          $posts = $etq->posts->where('state_id', 5);
-        } else {
-          $posts->merge($etq->posts->where('state_id', 5));
-          //dd('2', $posts);
-        }
-      }; */
     }
 
     if ($this->type == 'Categorias') {

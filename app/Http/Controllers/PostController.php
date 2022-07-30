@@ -40,9 +40,16 @@ class PostController extends Controller
     return view('posts.index', compact('type',));
   }
 
-  public function misposts()
+  public function misposts(int $id)
   {
-    $type = 'Mis Posts';
+
+    if ($id == 1) {
+      $type = 'Guardados';
+    } elseif ($id == 2) {
+      $type = 'Categorias';
+    } elseif ($id == 3) {
+      $type = 'Etiquetas';
+    }
     return view('posts.misposts', compact('type'));
   }
   /**

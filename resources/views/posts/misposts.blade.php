@@ -3,6 +3,6 @@
 
     @livewire('barra-consulta')
     
-    @livewire('posts.show-carrusel-post')
+    @livewire('posts.show-carrusel-post',['type'=>$type])
   </div>
 </x-app-layout>

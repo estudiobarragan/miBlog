@@ -7,10 +7,8 @@
     @endif
 
     <div class="absolute left-0 top-0 text-gray-100 bg-red-500 rounded-full px-3 py-1 text-sm hover:bg-gray-500">
-      {{-- <a href="{{ route('posts.categoria',$post->categoria) }}"> --}}
-      <a wire:click="categoria({{$post->categoria}})" class="cursor-pointer">
-        <strong>{{$fabCategory.$post->categoria->name }}</strong>
-      </a>
+      
+      <a><strong>{{$fabCategory.$post->categoria->name }}</strong></a>
     </div>
   </div>
 
@@ -33,7 +31,7 @@
         </div>
       @endauth
       <div class="text-gray-700 text-base float-right  hover:bg-gray-100">
-        <a wire:click="autor({{$post->user}})" class="cursor-pointer">
+        <a>
           <strong>{{$fabAuthor.$post->user->name}}</strong>
         </a>
       </div>
@@ -44,8 +42,8 @@
   
   <div class="px-6 pt-4 pb-2">
     @foreach($post->tags as $tag)
-      <a class="inline-block bg-{{$tag->color}}-700 rounded-full px-3 py-1 text-sm text-{{$tag->color}}-100 mr-2 shadow-xl hover:bg-gray-500 cursor-pointer" 
-          wire:click="etiqueta({{$tag}})">{{$fabTag[$loop->index].$tag->name}}
+      <a class="inline-block bg-{{$tag->color}}-700 rounded-full px-3 py-1 text-sm text-{{$tag->color}}-100 mr-2 shadow-xl hover:bg-gray-500">
+        {{$fabTag[$loop->index].$tag->name}}
       </a>
     @endforeach
     

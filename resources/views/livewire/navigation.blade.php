@@ -61,9 +61,15 @@
             {{-- <a href="#" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Dashboard</a> --}}
 
             @auth
-              {{-- <a href="{{route('posts.misposts')}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
+              <a href="{{route('posts.misposts',1)}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
                 {{__('Mis post')}}
-              </a> --}}
+              </a>
+              <a href="{{route('posts.misposts',2)}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
+                {{__('Mis categorias')}}
+              </a>
+              <a href="{{route('posts.misposts',3)}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
+                {{__('Mis etiquetas')}}
+              </a>
             @endauth
            
           </div>
@@ -174,9 +180,9 @@
       {{-- <a href="#" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium" aria-current="page">Dashboard</a> --}}
  
       @auth
-        {{-- <a href="#" class="text-gray-600 hover:bg-gray-100 hover:text-gray-800 block px-3 py-2 rounded-md text-base font-medium">
+        <a href="#" class="text-gray-600 hover:bg-gray-100 hover:text-gray-800 block px-3 py-2 rounded-md text-base font-medium">
           {{__('Mis post')}}
-        </a> --}}
+        </a>
       @endauth
 
       

@@ -28,7 +28,7 @@
         @foreach ($etiquetas as $etiqueta)
           <li>
             {{-- <a href="{{ route('posts.tag', $etiqueta) }}">{{$etiqueta->name}}</a> --}}
-            <a wire:click="etiqueta({{$etiqueta}})">{{$etiqueta->name}}</a>
+            <a wire:click="etiqueta({{$etiqueta}})" class="cursor-pointer">{{$etiqueta->name}}</a>
       </a>
           </li>
         @endforeach

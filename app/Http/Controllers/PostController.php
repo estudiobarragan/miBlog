@@ -49,6 +49,8 @@ class PostController extends Controller
       $type = 'Categorias';
     } elseif ($id == 3) {
       $type = 'Etiquetas';
+    } elseif ($id == 4) {
+      $type = 'Autores';
     }
     return view('posts.misposts', compact('type'));
   }

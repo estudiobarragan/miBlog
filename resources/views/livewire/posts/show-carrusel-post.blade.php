@@ -1,9 +1,4 @@
 <div>
-  <div class="mt-4 text-center">
-    <h1 class="md:uppercase md:text-3xl sm:text-xs font-bold inline-flex">
-    </h1>
-  </div>
-
   @if($total>=1)
     <div class="flex place-content-around">
 

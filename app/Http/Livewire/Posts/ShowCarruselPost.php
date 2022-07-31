@@ -15,7 +15,7 @@ class ShowCarruselPost extends Component
 {
   use WithPagination;
 
-  public $type = 'Etiquetas';
+  public $type = 'Guardados';
   public $posts;
   public $cantidad = 1;
   public $curPage = 1;
@@ -27,29 +27,7 @@ class ShowCarruselPost extends Component
 
   public function mount()
   {
-    /*
-    if ($this->type == 'Guardados') {
-      $posts = Post::where('state_id', 5)->with(['user', 'categoria', 'tags'])
-        ->orderBy('publicar', 'desc');
-    }
 
-     if ($this->type == 'Mis Posts') {
-      $posts = Post::where('state_id', 5)->with(['user', 'categoria', 'tags'])
-        ->orderBy('publicar', 'desc')
-        ->paginate(4);
-    }
-    if ($this->type == 'Autor') {
-      $posts = Post::where('state_id', 5)->with(['user', 'categoria', 'tags'])->where('user_id', '=', $this->value->id)
-        ->orderBy('publicar', 'desc')
-        ->paginate(4);
-    }
-    
-    }
-    if ($this->type == 'Etiqueta') {
-      $posts = $this->value->posts()->where('state_id', 5)->with(['user', 'categoria', 'tags'])
-        ->orderBy('publicar', 'desc')
-        ->paginate(4);
-    } */
     $this->cantidad = session('cantidad-post', 1);
 
     if ($this->type == 'Etiquetas') {
@@ -77,6 +55,16 @@ class ShowCarruselPost extends Component
       $this->posts = Post::where('state_id', 5)
         ->with(['user', 'categoria', 'tags'])
         ->whereHasBookmark(auth()->user())
+        ->orderBy('publicar', 'desc')
+        ->get();
+    }
+
+    if ($this->type == 'Autores') {
+      $autores = User::whereHasFavorite(auth()->user())->get()->pluck('id');
+
+      $this->posts = Post::whereIn('user_id', $autores)
+        ->where('state_id', 5)
+        ->with('user', 'categoria', 'tags')
         ->orderBy('publicar', 'desc')
         ->get();
     }

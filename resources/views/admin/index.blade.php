@@ -3,11 +3,11 @@
 @section('title', 'Barragan y Asociados')
 
 @section('content_header')
-    <h1>B&A</h1>
+
 @stop
 
 @section('content')
-    <p>Welcome to this beautiful admin panel.</p>
+    @livewire('admin.show-notification')
 @stop
 
 @section('css')

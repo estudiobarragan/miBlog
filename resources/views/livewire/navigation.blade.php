@@ -70,6 +70,9 @@
               <a href="{{route('posts.misposts',3)}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
                 {{__('Mis etiquetas')}}
               </a>
+              <a href="{{route('posts.misposts',4)}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
+                {{__('Mis autores')}}
+              </a>
             @endauth
            
           </div>
@@ -106,7 +109,7 @@
                 <!-- Active: "bg-gray-100", Not Active: "" -->
                 @foreach(auth()->user()->unreadNotifications as $notification)
                   <div class="flex">
-                    <a href="#" class="block px-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">
+                    <a href="{{route('admin.home')}}" class="block px-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">
                       {{$notification->data['name']}}
                     </a>
                     <div class="text-sm text-gray-400 m-auto ">
@@ -180,11 +183,23 @@
       {{-- <a href="#" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium" aria-current="page">Dashboard</a> --}}
  
       @auth
-        <a href="#" class="text-gray-600 hover:bg-gray-100 hover:text-gray-800 block px-3 py-2 rounded-md text-base font-medium">
+        {{-- <a href="#" class="text-gray-600 hover:bg-gray-100 hover:text-gray-800 block px-3 py-2 rounded-md text-base font-medium">
+          {{__('Mis post')}}
+        </a> --}}
+
+        <a href="{{route('posts.misposts',1)}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
           {{__('Mis post')}}
         </a>
-      @endauth
-
+        <a href="{{route('posts.misposts',2)}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
+          {{__('Mis categorias')}}
+        </a>
+        <a href="{{route('posts.misposts',3)}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
+          {{__('Mis etiquetas')}}
+        </a>
+        <a href="{{route('posts.misposts',4)}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
+          {{__('Mis autores')}}
+        </a>
+        @endauth
       
     </div>
   </div>

@@ -14,7 +14,4 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 
 // TODO agregar with a todo where
-// TODO activar opcion en el menu mis post
-// TODO Trabajar las notificaciones
-// TODO agregar bilbiografia al profile del usuario y consulta
-// TODO No deberia recargaase la pagina al cambiar de pagina (paginator) cambiar a livewire
+// TODO Agregar Crud comentarios

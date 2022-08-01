@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
+use Spatie\Permission\Models\Role;
 
 class PostController extends Controller
 {
@@ -91,8 +92,12 @@ class PostController extends Controller
       ->latest('id')
       ->take(5)
       ->get();
+    $role = '';
+    foreach ($post->user->roles as $rol) {
+      $role = $role . $rol->name . ' ';
+    }
 
-    return view('posts.show', compact('post', 'similares'));
+    return view('posts.show', compact('post', 'similares', 'role'));
   }
 
   /**

@@ -71,7 +71,7 @@
 
       {{-- Contenido relacionado --}}
       <aside>
-        <div class="card bg-gray-100 mb-2 shadow-lg border-2">
+        <div class="card bg-gray-100 mb-2 shadow-lg border-2" x-data="{open:false}">
           <div class="card-body flow-root">
             <div class="float-left">
               @if($post->user->profile_photo_path)
@@ -81,11 +81,14 @@
               @endif
             </div>
             <div class="float-center mt-2">
-              <h1 class="text-xl font-bold text-gray-600 text-center">
-                {{$post->user->name}}
+              <h1 class="text-xl font-bold text-gray-600 text-center cursor-pointer">
+                <a @click="open = !open">{{$post->user->name}}</a>
               </h1>
-              <h1 class="text-sm font-bold text-blue-300 mb-4 text-center">
-                {{$post->user->email}}
+              <h1 class="text-sm font-bold text-blue-300 text-center cursor-pointer">
+                <a @click="open = !open">{{$post->user->email}}</a>
+              </h1>
+              <h1 class="text-sm font-bold text-blue-300 mb-4 text-center cursor-pointer">
+                <a @click="open = !open">{{$role}}</a>
               </h1>
               @auth()
                 <div class="text-center">
@@ -95,6 +98,14 @@
                 </div>
               @endauth()
             </div>
+          </div>
+
+          <div class="card-footer">
+            @if(isset($post->user->profile))
+              <div x-cloak x-show="open" @click.away="open = false">
+                @livewire('show-profile',['author'=>$post->user] )
+              </div>
+            @endif
           </div>
         </div>
         <h1 class="text-2xl font-bold text-gray-600 my-6 text-center">

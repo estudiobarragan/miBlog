@@ -18,7 +18,7 @@
             <th>Post</th></th>
             <th>Titulo</th>
             <th>Estado</th>
-            <th>Evaluado</th>
+            <th>Notificacion</th>
             <th>Leida</th>
           </thead>
           <tbody>
@@ -49,17 +49,23 @@
                           {{$notify->data['title']}}
                         </a>
                       </td>
-                    @else
-                      <td>{{$notify->data['title']}}</td>
                     @endif
                   @endcan
+                @endcan
+                @if($post->state->id ==5)
+                  <td>
+                    <a href="{{env('APP_URL')}}/posts/{{$post->slug}}">{{$notify->data['title']}}</a>
+                  </td>
                 @else
                   <td>{{$notify->data['title']}}</td>
-                @endcan
+                @endif                  
                 
-                
-                <td class="fs-6">{{$estado}}</td>
-                <td class="fs-6">{{$notify->created_at}}</td>
+                @if($estado=='Calendario' || $estado=='Publicado')
+                  <td class="fs-6">{{$estado}}<br>{{$post->publicar}}</td>
+                @else
+                  <td class="fs-6">{{$estado}}</td>
+                @endif
+                <td class="fs-6">{{ $notify->created_at->diffForHumans()}}</td>
                 
                 <td class="btn btn-primary btn-sm" wire:click="markread({{$notify}})">
                   leida? 

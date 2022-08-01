@@ -85,11 +85,11 @@ class PublicationController extends Controller
    */
   public function destroy(Publication $publication)
   {
-    // Cancela publicacion no la borra Estado 7
+    // 
   }
 
   public function pause(Publication $publication, $new_state)
   {
-    // Pausa post Estado 6, si esta en 6 vuelve a 5
+    //
   }
 }

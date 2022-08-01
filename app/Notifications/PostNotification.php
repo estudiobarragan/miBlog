@@ -60,10 +60,27 @@ class PostNotification extends Notification
    */
   public function toArray($notifiable)
   {
+    $fecha = null;
     if ($this->approve->approved == 3) {
       $name = 'Post rechazado';
     } elseif ($this->approve->approved == 1) {
       $name = 'Post aprobado';
+    }
+    if ($this->post->state->id == 4) {
+      $name = 'Post programado';
+      $fecha = $this->post->publicar;
+    }
+    if ($this->post->state->id == 5) {
+      $name = 'Post publicado';
+      $fecha = $this->post->publicar;
+    }
+    if ($this->post->state->id == 6) {
+      $name = 'Post suspendido';
+      $fecha = $this->post->publicar;
+    }
+    if ($this->post->state->id == 7) {
+      $name = 'Post cancelado';
+      $fecha = $this->post->publicar;
     }
 
     return [
@@ -75,6 +92,7 @@ class PostNotification extends Notification
       'time' => Carbon::now()->diffForHumans(),
       'estado' => $this->post->state->name,
       'edicion' => $this->approve->approved,
+      'publicar' => $fecha,
     ];
   }
 }

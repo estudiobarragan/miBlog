@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ApproveRequest;
 use App\Mail\ApprovedPost;
+use App\Mail\ProgramPost;
 use App\Mail\RejectPost;
 use App\Models\Approve;
 use App\Models\Post;

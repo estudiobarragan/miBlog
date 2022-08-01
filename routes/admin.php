@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ApproveController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\admin\ProfileController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
@@ -28,4 +29,4 @@ Route::post('approves/reject', [ApproveController::class, 'reject'])->name('admi
 
 Route::resource('publish', PublicationController::class)->names('admin.publication');
 
-/* Route::put('ajax', [PublicationController::class, 'ajax'])->name('admin.ajax-out'); */
+Route::resource('profile', ProfileController::class)->names('admin.profile');

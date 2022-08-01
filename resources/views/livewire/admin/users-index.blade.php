@@ -37,9 +37,11 @@
                     @endforeach
                   </td>
                   <td width="10px;">
-                    <a class="btn btn-primary" href="{{route('admin.users.edit',$user)}}">
-                      Editar
-                    </a>
+                    @can('admin.users.edit')
+                      <a class="btn btn-primary" href="{{route('admin.users.edit',$user)}}">
+                        Editar
+                      </a>
+                    @endcan
                   </td>
                 </tr>
             @endforeach

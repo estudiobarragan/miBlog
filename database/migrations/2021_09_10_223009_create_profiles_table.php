@@ -15,11 +15,17 @@ class CreateProfilesTable extends Migration
   {
     Schema::create('profiles', function (Blueprint $table) {
       $table->id();
-      $table->string('title');
-      $table->text('biografia');
-      $table->string('website');
       $table->unsignedBigInteger('user_id')->unique();
       $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+      $table->string('title')->nullable();
+      $table->text('biografia')->nullable();
+      $table->string('website')->nullable();
+      $table->string('telegram')->nullable();
+      $table->string('facebook')->nullable();
+      $table->string('instagram')->nullable();
+      $table->string('twitter')->nullable();
+      $table->string('tiktok')->nullable();
+      $table->json('others')->nullable();
       $table->timestamps();
     });
   }

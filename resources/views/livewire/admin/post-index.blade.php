@@ -65,13 +65,33 @@
                     </div>
                   </td>
 
+                  @can('admin.publication.pause')
+                    @if($post->state->id ==5 || $post->state->id ==6)
+                      <td width="10px;">
+                        <a class="btn btn-primary btn-sm" wire:click="pausar({{$post->id}})">
+                          <i class="far fa-pause-circle"></i>
+                        </a>
+                      </td>
+                    @endif
+                  @endcan
+
+                  @can('admin.publication.destroy')
+                    @if($post->state->id ==6 || $post->state->id ==7 )
+                      <td width="10px;">
+                        <a class="btn btn-danger btn-sm" wire:click="cancelar({{$post->id}})">
+                          <i class="fas fa-ban"></i>
+                        </a>
+                      </td>
+                    @endif
+                  @endcan
+
                   @can('admin.posts.edit')
                     @can('author',$post)
                       @if($post->state->id ==1)
                         <td width="10px;">
                           <a class="btn btn-primary btn-sm" href="{{route('admin.posts.edit',$post)}}">
                             <i class="fas fa-edit"></i>
-                          </a>
+                          </a>                          
                         </td>
                       @endif
                     @endcan
@@ -103,6 +123,7 @@
             <strong>No hay ningun registro</strong>
           </div>
         @endif
+        
     </div>
 
     @if($posts->count())

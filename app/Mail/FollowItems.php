@@ -2,28 +2,25 @@
 
 namespace App\Mail;
 
-use App\Models\Approve;
-use App\Models\Post;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class RejectPost extends Mailable
+class FollowItems extends Mailable
 {
-  public $post, $approve;
-
   use Queueable, SerializesModels;
+  public $post, $frase;
 
   /**
    * Create a new message instance.
    *
    * @return void
    */
-  public function __construct(Post $post, Approve $approve)
+  public function __construct($post, $frase)
   {
     $this->post = $post;
-    $this->approve = $approve;
+    $this->frase = $frase;
   }
 
   /**
@@ -33,7 +30,7 @@ class RejectPost extends Mailable
    */
   public function build()
   {
-    return $this->view('mail.reject-course')
-      ->subject('Post rechazado');
+    return $this->view('mail.follow-item')
+      ->subject('Post publicado');
   }
 }

@@ -32,6 +32,6 @@ class ProgramPost extends Mailable
   public function build()
   {
     return $this->view('mail.program-course')
-      ->subject('Curso con fecha de publicacion programada');
+      ->subject('Post con fecha de publicacion programada');
   }
 }

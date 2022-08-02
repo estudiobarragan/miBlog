@@ -34,6 +34,6 @@ class SuspendPost extends Mailable
   {
     $admin = User::first();
     return $this->view('mail.suspend-post', compact('admin'))
-      ->subject('Curso suspendido');
+      ->subject('Post suspendido');
   }
 }

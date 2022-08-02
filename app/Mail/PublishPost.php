@@ -30,6 +30,6 @@ class PublishPost extends Mailable
   public function build()
   {
     return $this->view('mail.publish-post')
-      ->subject('Curso publicado');
+      ->subject('Post publicado');
   }
 }

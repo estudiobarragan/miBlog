@@ -7,7 +7,11 @@
 @stop
 
 @section('content')
-    @livewire('admin.show-notification')
+
+    @if (auth()->user()->unreadNotifications->count() > 0) 
+      @livewire('admin.show-notification')
+    @endif
+    @livewire('admin.show-statistics')
 @stop
 
 @section('css')

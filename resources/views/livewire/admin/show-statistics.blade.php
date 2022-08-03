@@ -53,7 +53,7 @@
       <canvas id="barChart" width="200" height="125"></canvas>
     </div>
 
-  </div>
+  </div>  
 
   <div class="row">
     <div class="col info-box">
@@ -101,21 +101,33 @@
     </div>
   </div>
 
+  {{-- Grafico categorias y etiquetas --}}
+  <div class="row align-middle mt-2 py-2 mx-auto">
+    <div class="col-5 mr-2">
+      <canvas id="etqBarChart" width="400" height="250"></canvas>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-5 ml-2">
+      <canvas id="catBarChart" width="400" height="250"></canvas>
+    </div>
+  </div>
+
   {{-- Grafico lineal --}}
   <div class="row items-center">
-    <div class="col-2"></div>
+    <div class="col-2">
+
+    </div>
     <div class="col-8">
       <canvas id="lineChart" width="200" height="125"></canvas>
     </div>
   </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  /* Post creados en el tiempo */
-  new Chart(document.getElementById("lineChart"), {
-    
-    type: 'line',
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    /* Post creados en el tiempo */
+    new Chart(document.getElementById("lineChart"), {
+      type: 'line',
       data: {
         labels: ['nov-21','dic-21','ene-22','feb-22','mar-22','abr-22','may-22','jun-22','jul-22','ago-22'],
         datasets: [{ 
@@ -133,49 +145,96 @@
       }
     });
 
-  /* Post publicados */
-  new Chart(document.getElementById("doughtnutChart"), {
-    type: 'doughnut',
-      data: {
-        labels: ["Borrador", "Edicion", "Programacion", "Calendario", "Publicados"],
-        datasets: [
-          {
-            label: "Post publicados",
-            backgroundColor: ["#1c39bb", "#ffae42","#b0000d","#00868b","#006b3c"],
-            data: [{{$posts->where('state_id',1)->count()}},{{$posts->where('state_id',2)->count()}},
-                  {{$posts->where('state_id',3)->count()}},{{$posts->where('state_id',4)->count()}},
-                  {{$posts->where('state_id',5)->count()}}]
-          }
-        ]
-      },
-      options: {
-        legend: { display: true },
-        title: {
-          display: true,
-          text: "Post publicados segun estado."
-        }
-      }
-  });
-
-  /* Usuarios registrados */
-  new Chart(document.getElementById("barChart"), {
-    type: 'bar',
+    /* Post publicados */
+    new Chart(document.getElementById("doughtnutChart"), {
+      type: 'doughnut',
         data: {
-          labels: ["Autores", "Editores", "Publicadores", "Lectores", "Administradores"],
+          labels: ["Borrador", "Edicion", "Programacion", "Calendario", "Publicados"],
           datasets: [
             {
-              label: "Usuarios registrados: {{$users->count()}}",
+              label: "Post publicados",
               backgroundColor: ["#1c39bb", "#ffae42","#b0000d","#00868b","#006b3c"],
-              data: [{{$cant_aut}},{{$cant_edt}},{{$cant_pub}},{{$cant_lec}},{{$cant_adm}}]
+              data: [{{$posts->where('state_id',1)->count()}},{{$posts->where('state_id',2)->count()}},
+                    {{$posts->where('state_id',3)->count()}},{{$posts->where('state_id',4)->count()}},
+                    {{$posts->where('state_id',5)->count()}}]
             }
           ]
         },
         options: {
-          legend: { display: false },
+          legend: { display: true },
           title: {
             display: true,
-            text: 'Usuarios registrados segun roles'
+            text: "Post publicados segun estado."
           }
         }
     });
-</script>
+
+    /* Usuarios registrados */
+    new Chart(document.getElementById("barChart"), {
+      type: 'bar',
+      data: {
+        labels: ["Autores", "Editores", "Publicadores", "Lectores", "Administradores"],
+        datasets: [
+          {
+            label: "Usuarios registrados: {{$users->count()}}",
+            backgroundColor: ["#1c39bb", "#ffae42","#b0000d","#00868b","#006b3c"],
+            data: [{{$cant_aut}},{{$cant_edt}},{{$cant_pub}},{{$cant_lec}},{{$cant_adm}}]
+          }
+        ]
+      },
+      options: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: 'Usuarios registrados segun roles'
+        }
+      }
+    });
+    
+    /* etiquetas */ 
+    var dataEtq = @js($this->dataEtq); 
+    new Chart(document.getElementById("etqBarChart"), {
+      type: 'bar',
+      data: {
+        labels: dataEtq.label,
+        datasets: [
+          {
+            label: "Etiquetas mas usadas",
+            backgroundColor: ["#1c39bb", "#ffae42","#b0000d","#00868b","#006b3c"],
+            data: dataEtq.data,
+          }
+        ]
+      },
+      options: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: 'Etiquetas mas usadas'
+        }
+      }
+    });
+    
+    /* categorias */  
+    var dataCat = @js($this->dataCat);
+    new Chart(document.getElementById("catBarChart"), {
+      type: 'bar',
+      data: {
+        labels: dataCat.label,
+        datasets: [
+          {
+            label: "Categorias mas usadas",
+            backgroundColor: ["#1c39bb", "#ffae42","#b0000d","#00868b","#006b3c"],
+            data: dataCat.data,
+          }
+        ]
+      },
+      options: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: 'Categorias mas usadas'
+        }
+      }
+    });
+  </script>
+</div>

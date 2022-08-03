@@ -1,6 +1,6 @@
 <div class="bg-gray-400 h-10 w-full mb-2 flex fixed z-30">
   {{-- Categorias --}}
-  <div  x-cloak x-data="{open:false}" class="flex">
+  <div  x-cloak x-data="{open:false}" class="flex {{$soloFilter}}">
     <div class="z-10">
       <div class="text-white ml-2">
         {{__('Categorias ')}}
@@ -18,7 +18,7 @@
   </div>
 
   {{-- Etiquetas --}}
-  <div x-cloak x-data="{open:false}" class="ml-2 md:ml-12 flex">
+  <div x-cloak x-data="{open:false}" class="ml-2 md:ml-12 flex {{$soloFilter}}">
     <div class="z-10">
       <div class="text-white ml-2">
         {{__('Etiquetas ')}}
@@ -37,7 +37,7 @@
   </div>
 
   {{-- Autores --}}
-  <div x-cloak x-data="{open:false}" class="ml-2 md:ml-12 flex">
+  <div x-cloak x-data="{open:false}" class="ml-2 md:ml-12 flex {{$soloFilter}}">
     <div class="z-10">
       <div class="text-white ml-2">
         {{__('Autores ')}}
@@ -50,6 +50,17 @@
           </li>
         @endforeach
       </div>
+    </div>
+  </div>
+
+  {{-- Search --}}
+  <div class="ml-2 align-top md:ml-12 flex-grow">
+    <div class="z-10">
+      <div class="text-white ml-2">
+        {{__('Buscar: ')}}
+        <input wire:keydown.enter="buscar" wire:model="filter" class="text-sm text-gray-600 h-8 py-2 w-4/6" type="text" name="buscar" placeholder="Que esta buscando?"/>
+      </div>
+   
     </div>
   </div>
 </div>

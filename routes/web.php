@@ -16,5 +16,5 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 // TODO agregar with a todo where
 // TODO Agregar Crud comentarios
 // TODO Adelanto (post programados para salir-solo extracto)
-// TODO Barra de serch
 // TODO Backup
+// TODO Agregar estadisticas de reacciones, de entrada a leerlo (por autor, etq y cat)

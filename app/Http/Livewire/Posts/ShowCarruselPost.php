@@ -27,7 +27,6 @@ class ShowCarruselPost extends Component
 
   public function mount()
   {
-
     $this->cantidad = session('cantidad-post', 1);
 
     if ($this->type == 'Etiquetas') {
@@ -67,6 +66,10 @@ class ShowCarruselPost extends Component
         ->with('user', 'categoria', 'tags')
         ->orderBy('publicar', 'desc')
         ->get();
+    }
+    $cantidad = $this->posts->count();
+    if ($cantidad > 0 && $cantidad < $this->cantidad) {
+      $this->cantidad = $cantidad;
     }
   }
 

@@ -9,8 +9,15 @@ use Livewire\Component;
 
 class BarraConsulta extends Component
 {
+  public $filter = '';
+  public $search;
+  public $soloFilter = '';
   public function render()
   {
+    if ($this->search) {
+      $this->soloFilter = 'hidden';
+    }
+
     $categorias = Categoria::all();
     $etiquetas = Tag::all();
     $usuarios = User::with('roles')->get();
@@ -35,5 +42,9 @@ class BarraConsulta extends Component
     $etiqueta = Tag::find($etiqueta['id']);
     $this->emit('askEtiqueta', $etiqueta);
     return;
+  }
+  public function buscar()
+  {
+    $this->emit('search', $this->filter);
   }
 }

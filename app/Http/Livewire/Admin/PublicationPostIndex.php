@@ -2,13 +2,11 @@
 
 namespace App\Http\Livewire\Admin;
 
-use App\Mail\ApprovedPost;
 use App\Mail\ProgramPost;
 use App\Models\Post;
 use App\Notifications\PostNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -89,7 +87,7 @@ class PublicationPostIndex extends Component
     /* Notificacion de programacion del post */
     $mail = new ProgramPost($this->post);
     Mail::to($this->post->user->email)->queue($mail);
-    /* Notification::send($this->post->user, new PostNotification($this->post, $this->post->approve)); */
+
     $this->post->user->notify(new PostNotification($this->post, $this->post->approve));
   }
 }

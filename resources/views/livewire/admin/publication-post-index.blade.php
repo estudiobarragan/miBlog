@@ -93,30 +93,27 @@
     <div class="modal" @if($showModal) style="display:block"@endif>
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <form wire:submit.prevent="save">
-            <div class="modal-header">
-              <h5 class="modal-title">Fecha de publicacion</h5>
-              <button wire:click="close" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              {{-- <input wire:model="fechaPublicar"class="form-control"/> --}}
-              <div class="form-group">
-                <div class='input-group date' id='datetimepicker'>
-                  <input wire:model="fechaPublicar" type='text' class="form-control" />
-                </div>
+
+          <div class="modal-header">
+            <h5 class="modal-title">Fecha de publicacion</h5>
+            <button wire:click="close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <div class="input-group date">
+                <input wire:model="fechaPublicar" class="form-control hidden" id="datepicker">
               </div>
             </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-primary">Save changes</button>
-              <button wire:click="close" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </form>
+          </div>
+          <div class="modal-footer">
+            <button wire:click="save" type="submit" class="btn btn-primary">Save changes</button>
+            <button wire:click="close" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+
         </div>
-
       </div>
-
     </div>
   @else
     <div class="card-body">
@@ -124,6 +121,17 @@
     </div>
   @endif
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+  <script>
+    var picker = new Pikaday({
+        field: document.getElementById('datepicker'),
+        onSelect: function() {
+            @this.set('fechaPublicar',this.getMoment().format('DD-MMM-YYYY'));
+        }
+    });
+  </script>
+  
 </div>
 
 

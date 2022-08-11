@@ -2,11 +2,8 @@
 
 namespace App\Http\Livewire\Admin;
 
-use App\Mail\ProgramPost;
 use App\Models\Post;
-use App\Notifications\PostNotification;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Mail;
+use App\Services\PostService;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -18,6 +15,7 @@ class PublicationPostIndex extends Component
   protected $paginationTheme = "bootstrap";
   public $showModal = false;
   public $search, $lAdmin, $lPublicador, $order_id, $post, $fechaPublicar;
+  private $postService;
 
   protected $rules = [
     'start' => 'required',
@@ -26,6 +24,10 @@ class PublicationPostIndex extends Component
   public function updatingSearch()
   {
     $this->resetPage();
+  }
+  public function boot(PostService $postService)
+  {
+    $this->postService = $postService;
   }
   public function mount()
   {
@@ -76,18 +78,13 @@ class PublicationPostIndex extends Component
   public function save()
   {
     $this->showModal = false;
-    $fecha = Carbon::createFromFormat('d-M-Y', $this->fechaPublicar)->format('Y-m-d');
 
-    // Actualiza estado del post y datos del publicador
-    $this->post->update([
-      'state_id' => 4,
-      'publicar' => $fecha,
-      'publicador_id' => Auth()->user()->id,
-    ]);
-    /* Notificacion de programacion del post */
-    $mail = new ProgramPost($this->post);
-    Mail::to($this->post->user->email)->queue($mail);
+    $this->postService->programar($this->post, date('Y-m-d', strtotime($this->fechaPublicar)));
+    $this->postService->publicar();
+  }
 
-    $this->post->user->notify(new PostNotification($this->post, $this->post->approve));
+  public function publicar()
+  {
+    $this->postService->publicar();
   }
 }

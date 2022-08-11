@@ -380,17 +380,19 @@ return [
       ],
     ],
     'FullCalendar' => [
-      'active' => false,
+      'active' => true,
       'files' => [
         [
           'type' => 'js',
           'asset' => false,
-          'location' => '//cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.js',
+          'location' => '//cdn.jsdelivr.net/npm/fullcalendar@5.3.1/main.min.js',
+          /* 'location' => '//cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.js', */
         ],
         [
           'type' => 'css',
           'asset' => false,
-          'location' => '//cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.css',
+          'location' => '//cdn.jsdelivr.net/npm/fullcalendar@5.3.1/main.min.css',
+          /* 'location' => '//cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.css', */
         ],
       ],
     ],

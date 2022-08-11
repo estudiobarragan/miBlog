@@ -23,7 +23,7 @@
 
     <div class="flex place-content-between mt-2 ">
       <div class="text-gray-700 text-base float-left">
-        <strong>{{$post->updated_at->format('j F, Y')}}</strong>
+        <strong>{{ Illuminate\Support\Carbon::parse($post->publicar)->format('j F, Y')}}</strong>
       </div>
       @auth()
         <div class="flex content-between">

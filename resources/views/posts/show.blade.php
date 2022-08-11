@@ -41,7 +41,7 @@
 
         <div class="mt-2 flex place-content-between">
           <div class="text-gray-700 items-center text-sm">
-            <strong>Publicado el: {{$post->updated_at->format('j F, Y')}}</strong>
+            <strong>Publicado el: {{ Illuminate\Support\Carbon::parse($post->publicar)->format('j F, Y')}}</strong>
           </div>
 
           <div class="items-center grid lg:grid-cols-2 sm:grid-cols-1">

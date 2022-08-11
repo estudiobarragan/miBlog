@@ -27,6 +27,8 @@ Route::resource('approves', ApproveController::class)->names('admin.approves')->
 
 Route::post('approves/reject', [ApproveController::class, 'reject'])->name('admin.approves.reject');
 
+Route::get('publish/calendario', [PublicationController::class, 'calendario'])->name('admin.publication.calendario');
+
 Route::resource('publish', PublicationController::class)->names('admin.publication');
 
 Route::resource('profile', ProfileController::class)->names('admin.profile');

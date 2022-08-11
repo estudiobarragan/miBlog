@@ -77,19 +77,12 @@ class PublicationController extends Controller
     //
   }
 
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  \App\Models\Publication  $publication
-   * @return \Illuminate\Http\Response
-   */
   public function destroy(Publication $publication)
   {
     // 
   }
-
-  public function pause(Publication $publication, $new_state)
+  public function calendario()
   {
-    //
+    return view('admin.publication.calendario');
   }
 }

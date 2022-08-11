@@ -89,7 +89,7 @@ class PostController extends Controller
     $similares = Post::where('categoria_id', $post->categoria_id)
       ->where('state_id', 5)
       ->where('id', '!=', $post->id)
-      ->latest('id')
+      ->orderBy('publicar', 'desc')
       ->take(5)
       ->get();
     $role = '';

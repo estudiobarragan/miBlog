@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Posts;
 use App\Models\Categoria;
 use App\Models\Tag;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 use Livewire\Component;
 use Maize\Markable\Models\Favorite;
 

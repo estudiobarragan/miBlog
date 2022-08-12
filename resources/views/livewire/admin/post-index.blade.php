@@ -101,13 +101,16 @@
                     @can('author',$post)
                       @if($post->state->id ==1)
                         <td width="10px;">
-                          <form action="{{route('admin.posts.destroy',$post)}}" method="POST">
+                          {{-- <form action="{{route('admin.posts.destroy',$post)}}" method="POST">
                             @csrf
                             @method('delete')
                             <button class="btn btn-danger btn-sm" type="submit">
                               <i class="fas fa-trash-alt"></i>
                             </button>
-                          </form>
+                          </form> --}}
+                          <a wire:click="confirmDestroy({{$post}})" class="btn btn-primary btn-sm" href="#">
+                            <i class="fas fa-trash-alt"></i>
+                          </a>
                         </td>
                       @endif
                     @endcan
@@ -133,11 +136,39 @@
     @endif
 
 </div>
-@section('css')
-    {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
-@stop
+@push('css')
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.26/sweetalert2.min.css">
+@endpush
 
-@section('js')
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-@stop
+@push('js')
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.26/sweetalert2.all.min.js"></script>
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+      @this.on('triggerDelete', postID => {
+        Swal.fire({
+          title: '¿Esta seguro?',
+          text: 'Post borrador sera eliminado!',
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#aaa',
+          confirmButtonText: 'Borrar!'
+        }).then((result) => {
+          //if user clicks on delete
+          if (result.value) {
+            // calling destroy method to delete
+            @this.call('destroy',postID)
+            // success response
+            Swal.fire({title: 'Post borrado satisfactoriamente!', icon: 'success'});
+          } else {
+              Swal.fire({
+                title: 'Operacion Cancelada!',
+                icon: 'success'
+              });
+            }
+        });
+      });
+    })
+  </script>
+@endpush

@@ -39,18 +39,14 @@
                   <td>{{$rol->name}}</td>
                   @can('admin.roles.edit')
                     <td width="10px;">
-                      <a href="{{route('admin.roles.edit',$rol)}}" class="btn btn-primary btn-sm">Editar</a>
+                      <a href="{{route('admin.roles.edit',$rol)}}" class="btn btn-primary btn-sm">
+                        <i class="far fa-edit"></i>
+                      </a>
                     </td>
                   @endcan
                   @can('admin.roles.destroy')
                     <td width="10px;">
-                      <form action="{{route('admin.roles.destroy',$rol)}}" method="post">
-                        @csrf
-                        @method('delete')
-                        <button type="submit" class="btn btn-danger btn-sm">
-                          Eliminar
-                        </button>
-                      </form>
+                       @livewire('admin.show-modal-delete', ['model' => $rol,'ruta'=>'/admin/roles', 'key'=>$rol->id])
                     </td>
                   @endcan
                 </tr>
@@ -62,4 +58,11 @@
 
       </div>
     </div>
+@stop
+@section('css')
+    
+@stop
+
+@section('js')
+    
 @stop

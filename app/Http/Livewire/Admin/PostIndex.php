@@ -5,6 +5,8 @@ namespace App\Http\Livewire\Admin;
 use App\Models\Post;
 use App\Models\State;
 use App\Services\PostService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -12,6 +14,7 @@ use Livewire\WithPagination;
 class PostIndex extends Component
 {
   use WithPagination;
+  use AuthorizesRequests;
 
   protected $paginationTheme = "bootstrap";
 
@@ -19,6 +22,8 @@ class PostIndex extends Component
   public $causasP = "invisible";
   public $causasC = "invisible";
   private $postService;
+
+
 
   public function boot(PostService $postService)
   {
@@ -82,42 +87,30 @@ class PostIndex extends Component
       $this->compare = "=";
     }
   }
+
+  public function confirmDestroy($post)
+  {
+    $this->emit('triggerDelete', $post['id']);
+  }
+
+  public function destroy($id)
+  {
+    $post = Post::find($id);
+    $this->authorize('author', $post);
+    $post->delete();
+    Cache::flush();
+
+    session()->flash('success', 'Post eliminado satisfactoriamente');
+  }
+
   public function pausar($id)
   {
     $this->causasP = "hidden";
     $this->postService->pausar($id);
-    /* $post = Post::findOrFail($id);
-    if ($post->state_id == 6) {
-      $post->update([
-        'state_id' => 5,
-      ]);
-    } elseif ($post->state_id == 5) {
-      $post->update([
-        'state_id' => 6,
-      ]);
-      /* Notificacion de programacion del post */
-    /* $mail = new SuspendPost($post);
-      Mail::to($post->user->email)->queue($mail); // Notify author
-      $post->user->notify(new PostNotification($post, $post->approve)); // Notify author
-    } */
   }
 
   public function cancelar($id)
   {
     $this->postService->cancelar($id);
-    /* $post = Post::findOrFail($id);
-    if ($post->state_id == 7) {
-      $post->update([
-        'state_id' => 6,
-      ]);
-    } elseif ($post->state_id == 6) {
-      $post->update([
-        'state_id' => 7,
-      ]); */
-    /* Notificacion de programacion del post */
-    /* $mail = new CancelPost($post);
-      Mail::to($post->user->email)->queue($mail); // Notify author
-      $post->user->notify(new PostNotification($post, $post->approve)); // Notify author 
-    }*/
   }
 }

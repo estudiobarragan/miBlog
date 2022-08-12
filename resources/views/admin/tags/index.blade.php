@@ -40,19 +40,13 @@
                 @can('admin.tags.edit')                  
                   <td width="10px;">
                     <a class="btn btn-primary btn-sm" href="{{route('admin.tags.edit',$tag)}}">
-                      Editar
+                      <i class="far fa-edit"></i>
                     </a>
                   </td>
                 @endcan
                 @can('admin.tags.destroy')  
                   <td width="10px;">
-                    <form action="{{route('admin.tags.destroy',$tag)}}" method="POST">
-                      @csrf
-                      @method('delete')
-                      <button type="submit" class="btn btn-danger btn-sm">
-                        Eliminar
-                      </button>
-                    </form>
+                    @livewire('admin.show-modal-delete', ['model' => $tag,'ruta'=>'/admin/tags', 'key'=>$tag->id])
                   </td>
                 @endcan
                 

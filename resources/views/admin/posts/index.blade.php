@@ -12,3 +12,11 @@
 @section('content')
     @livewire('admin.post-index')
 @stop
+
+@section('css')
+
+@stop
+
+@section('js')
+
+@stop

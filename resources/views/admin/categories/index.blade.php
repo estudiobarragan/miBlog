@@ -41,19 +41,13 @@
                 @can('admin.categories.edit')
                   <td width="10px;">
                     <a class="btn btn-primary btn-sm" href="{{route('admin.categories.edit',$category)}}">
-                      Editar
+                      <i class="far fa-edit"></i>
                     </a>
                   </td>
                 @endcan
                 @can('admin.categories.destroy')
                   <td width="10px;">
-                    <form action="{{route('admin.categories.destroy',$category)}}" method="POST">
-                      @csrf
-                      @method('delete')
-                      <button type="submit" class="btn btn-danger btn-sm">
-                        Eliminar
-                      </button>
-                    </form>
+                    @livewire('admin.show-modal-delete', ['model' => $category,'ruta'=>'/admin/categories', 'key'=>$category->id])
                   </td>
                 @endcan
               </tr>

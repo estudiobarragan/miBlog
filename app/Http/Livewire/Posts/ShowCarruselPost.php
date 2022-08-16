@@ -32,9 +32,11 @@ class ShowCarruselPost extends Component
     if ($this->type == 'Etiquetas') {
       $tags = Tag::whereHasFavorite(auth()->user())
         ->pluck('id')->toArray();
-      $this->posts = Post::leftJoin('taggables', 'taggables.taggable_id', '=', 'posts.id')
+      $this->posts = Post::select('id', 'slug', 'name', 'user_id', 'state_id', 'publicar', 'categoria_id', 'extract')
+        ->leftJoin('taggables', 'taggables.taggable_id', '=', 'posts.id')
         ->leftJoin('tags', 'taggables.tag_id', '=', 'tags.id')
         ->whereIn('tags.id', $tags)
+        ->where('state_id', 5)
         ->select('posts.*')
         ->distinct()
         ->get();
@@ -43,7 +45,8 @@ class ShowCarruselPost extends Component
     if ($this->type == 'Categorias') {
       $categorias = Categoria::whereHasFavorite(auth()->user())->get()->pluck('id');
 
-      $this->posts = Post::whereIn('categoria_id', $categorias)
+      $this->posts = Post::select('id', 'slug', 'name', 'user_id', 'state_id', 'publicar', 'categoria_id', 'extract')
+        ->whereIn('categoria_id', $categorias)
         ->where('state_id', 5)
         ->with('user', 'categoria', 'tags')
         ->orderBy('publicar', 'desc')
@@ -51,17 +54,29 @@ class ShowCarruselPost extends Component
     }
 
     if ($this->type == 'Guardados') {
-      $this->posts = Post::where('state_id', 5)
+      $this->posts = Post::select('id', 'slug', 'name', 'user_id', 'state_id', 'publicar', 'categoria_id', 'extract')
+        ->where('state_id', 5)
         ->with(['user', 'categoria', 'tags'])
         ->whereHasBookmark(auth()->user())
         ->orderBy('publicar', 'desc')
         ->get();
     }
 
+    if ($this->type == 'Proximos') {
+      $this->posts = Post::select('id', 'slug', 'name', 'user_id', 'state_id', 'publicar', 'categoria_id', 'extract')
+        ->where('state_id', 4)
+        ->with(['user', 'categoria', 'tags'])
+        ->where('publicar', '>=', today())
+        ->where('publicar', '<=', date_add(today(), date_interval_create_from_date_string("8 days")))
+        ->orderBy('publicar', 'asc')
+        ->get();
+    }
+
     if ($this->type == 'Autores') {
       $autores = User::whereHasFavorite(auth()->user())->get()->pluck('id');
 
-      $this->posts = Post::whereIn('user_id', $autores)
+      $this->posts = Post::select('id', 'slug', 'name', 'user_id', 'state_id', 'publicar', 'categoria_id', 'extract')
+        ->whereIn('user_id', $autores)
         ->where('state_id', 5)
         ->with('user', 'categoria', 'tags')
         ->orderBy('publicar', 'desc')

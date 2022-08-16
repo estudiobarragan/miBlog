@@ -7,14 +7,31 @@
     @endif
 
     <div class="absolute left-0 top-0 text-gray-100 bg-red-500 rounded-full px-3 py-1 text-sm hover:bg-gray-500">
-      
       <a><strong>{{$fabCategory.$post->categoria->name }}</strong></a>
     </div>
+    @if(strtotime($post->publicar) == strtotime(today()))
+      <div class="absolute right-0 top-0 text-gray-100 bg-green-500 rounded-full px-3 py-1 text-sm">
+        <a>
+          <strong>¡Nuevo!</strong>
+        </a>
+      </div>
+    @endif
+    @if($post->state_id==4)
+      <div class="absolute right-0 bottom-0 text-gray-100 bg-blue-500 rounded-full px-3 py-1 text-sm">
+        <a>
+          <strong>¡Proximamente!</strong>
+        </a>
+      </div>
+    @endif
   </div>
 
   <div class="px-6 py-4">
     <h1 class="font-bold text-xl mb-2 hover:bg-gray-100">
-      <a href="{{route('posts.show',$post)}}">{{$post->name}}</a>
+      @if($post->state_id == 5)
+        <a href="{{route('posts.show',$post)}}">{{$post->name}}</a>
+      @else
+        <a>{{$post->name}}</a>
+      @endif
     </h1>
 
     <div class="text-gray-700 text-base">

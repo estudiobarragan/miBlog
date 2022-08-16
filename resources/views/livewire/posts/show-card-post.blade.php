@@ -12,6 +12,13 @@
         <strong>{{$fabCategory.$post->categoria->name }}</strong>
       </a>
     </div>
+    @if(strtotime($post->publicar) == strtotime(today()))
+      <div class="absolute right-0 top-0 text-gray-100 bg-green-500 rounded-full px-3 py-1 text-sm">
+        <a>
+          <strong>¡Nuevo!</strong>
+        </a>
+      </div>
+    @endif
   </div>
 
   <div class="px-6 py-4">

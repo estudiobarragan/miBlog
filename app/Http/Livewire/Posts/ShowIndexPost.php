@@ -27,28 +27,41 @@ class ShowIndexPost extends Component
   public function render()
   {
     if ($this->type == 'Ultimos Posts') {
-      $posts = Post::where('state_id', 5)->with(['user', 'categoria', 'tags'])
+      $posts = Post::select('id', 'slug', 'name', 'user_id', 'state_id', 'publicar', 'categoria_id', 'extract')
+        ->where('state_id', 5)
+        ->with(['user', 'categoria', 'tags'])
         ->where('name', 'LIKE', '%' . $this->search . '%')
         ->orderBy('publicar', 'desc')
         ->paginate(5);
     }
     if ($this->type == 'Mis Posts') {
-      $posts = Post::where('state_id', 5)->with(['user', 'categoria', 'tags'])
+      $posts = Post::select('id', 'slug', 'name', 'user_id', 'state_id', 'publicar', 'categoria_id', 'extract')
+        ->where('state_id', 5)
+        ->with(['user', 'categoria', 'tags'])
         ->orderBy('publicar', 'desc')
         ->paginate(5);
     }
     if ($this->type == 'Autor') {
-      $posts = Post::where('state_id', 5)->with(['user', 'categoria', 'tags'])->where('user_id', '=', $this->value->id)
+      $posts = Post::select('id', 'slug', 'name', 'user_id', 'state_id', 'publicar', 'categoria_id', 'extract')
+        ->where('state_id', 5)
+        ->with(['user', 'categoria', 'tags'])
+        ->where('user_id', '=', $this->value->id)
         ->orderBy('publicar', 'desc')
         ->paginate(5);
     }
     if ($this->type == 'Categoria') {
-      $posts = Post::where('state_id', 5)->with(['user', 'categoria', 'tags'])->where('categoria_id', '=', $this->value->id)
+      $posts = Post::select('id', 'slug', 'name', 'user_id', 'state_id', 'publicar', 'categoria_id', 'extract')
+        ->where('state_id', 5)
+        ->with(['user', 'categoria', 'tags'])
+        ->where('categoria_id', '=', $this->value->id)
         ->orderBy('publicar', 'desc')
         ->paginate(5);
     }
     if ($this->type == 'Etiqueta') {
-      $posts = $this->value->posts()->where('state_id', 5)->with(['user', 'categoria', 'tags'])
+      $posts = $this->value->posts()
+        ->select('posts.id', 'slug', 'name', 'user_id', 'state_id', 'publicar', 'categoria_id', 'extract')
+        ->where('state_id', 5)
+        ->with(['user', 'categoria', 'tags'])
         ->orderBy('publicar', 'desc')
         ->paginate(5);
     }

@@ -73,6 +73,9 @@
               <a href="{{route('posts.misposts',4)}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
                 {{__('Mis autores')}}
               </a>
+              <a href="{{route('posts.misposts',5)}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
+                {{__('Próximos')}}
+              </a>
             @endauth
            
           </div>
@@ -198,6 +201,9 @@
         </a>
         <a href="{{route('posts.misposts',4)}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
           {{__('Mis autores')}}
+        </a>
+        <a href="{{route('posts.misposts',5)}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
+          {{__('Próximos')}}
         </a>
         @endauth
       

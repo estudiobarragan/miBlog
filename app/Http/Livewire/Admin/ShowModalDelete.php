@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin;
 
+use Illuminate\Queue\Listener;
 use Livewire\Component;
 
 class ShowModalDelete extends Component

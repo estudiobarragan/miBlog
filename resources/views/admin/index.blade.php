@@ -20,6 +20,5 @@
 @stop
 
 @section('js')
-    <script> console.log('Hi!'); </script>
     <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
 @stop

@@ -96,7 +96,7 @@
             @php($post=$posts[$i])
             @php($ms = rand())
 
-            <div class="{{$ancho}}">
+            <div class="{{$ancho}} mx-auto">
                 @livewire('posts.show-card-carrusel-post',['post'=>$post, key('post-'.$ms) ])      
             </div>
           @endfor

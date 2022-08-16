@@ -19,11 +19,31 @@
         </a>
       </div>
     @endif
+    <div class="absolute left-0 bottom-0">
+      @foreach($post->tags as $tag)
+        <a class="inline-block bg-{{$tag->color}}-700 rounded-full px-3 py-1 text-sm text-{{$tag->color}}-100 mr-2 shadow-xl hover:bg-gray-500 cursor-pointer" 
+            wire:click="etiqueta({{$tag}})">{{$fabTag[$loop->index].$tag->name}}
+        </a>
+      @endforeach
+    </div>
   </div>
 
   <div class="px-6 py-4">
     <h1 class="font-bold text-xl mb-2 hover:bg-gray-100">
       <a href="{{route('posts.show',$post)}}">{{$post->name}}</a>
+    
+      <div class="float-right flex">
+        <div>
+          @livewire('show-like-post', ['post'=> $post])
+        </div>
+        @auth()
+          @if($post->user->id != Auth::user()->id)
+            <div class="inline-flex">
+              @livewire('bookmark-card-post', ['post'=> $post])
+            </div>
+          @endif
+        @endauth()
+      </div>
     </h1>
 
     <div class="text-gray-700 text-base">
@@ -48,7 +68,7 @@
     </div>
     
   </div>
-  <hr>
+  {{-- <hr>
   
   <div class="px-6 pt-4 pb-2">
     @foreach($post->tags as $tag)
@@ -69,6 +89,5 @@
         @endif
       @endauth()
     </div>
-      
-  </div>
+  </div> --}}
 </div>

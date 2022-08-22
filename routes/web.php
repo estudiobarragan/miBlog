@@ -12,8 +12,16 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
   return view('dashboard');
 })->name('dashboard');
 
-
+// FEACTURE
 // TODO Agregar Crud comentarios
 // TODO Backup
 // TODO Agregar estadisticas de reacciones, de entrada a leerlo (por autor, etq y cat)
 // TODO duallist box boostrap
+// TODO Insert chunk para seedear post
+// TODO Notificaciones de like, guardados, etc.
+
+// ERRORS
+// TODO ver si el faill de queue es porque quiere avisar de un post programado que ya vario a publicado.
+// TODO Ver si es posible programar tareas a realizar (como ejemplo publicar calendario)
+// TODO Corregir que no me permita reaccionar a mis propios post
+// TODO Ver porque coloca dos veces una misma notificacion 

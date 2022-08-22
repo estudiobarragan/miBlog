@@ -67,6 +67,11 @@
         <div class="text-base text-gray-500 mt-4 text-justify">
           {!!$post->body!!}
         </div>
+        <br><hr>
+
+        {{-- Comentarios --}}
+        @livewire('comments.show-post-comment',['post'=>$post])
+
       </div>
 
       {{-- Contenido relacionado --}}

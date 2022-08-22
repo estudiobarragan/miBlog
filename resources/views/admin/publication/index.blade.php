@@ -7,9 +7,11 @@
     <div class="col-10">
       <h1>Programacion de posts</h1>
     </div>
-    <div class="col-2 float-right">
-      <a href="{{route('admin.publication.calendario')}}" class="btn btn-success">Calendario</a>
-    </div>
+    @can('admin.publication.create')
+      <div class="col-2 float-right">
+        <a href="{{route('admin.publication.calendario')}}" class="btn btn-success">Calendario</a>
+      </div>
+    @endcan
   </div>
   
   @if(session('info'))    

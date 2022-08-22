@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Approve;
+use App\Models\Categoria;
+use App\Models\Comment;
 use App\Models\Image;
 use App\Models\Post;
 use App\Models\Publication;
@@ -12,6 +14,7 @@ use Faker\Core\Number;
 use Faker\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 use Maize\Markable\Models\Bookmark;
 use Maize\Markable\Models\Like;
 use Maize\Markable\Models\Reaction;
@@ -31,6 +34,7 @@ class PostSeeder extends Seeder
     $posts = Post::factory(300)->create();
     $post4 = 0;
     $post5 = 0;
+    $usuarios = User::all()->pluck('id');
 
     foreach ($posts as $post) {
       Image::factory(1)->create([
@@ -84,6 +88,77 @@ class PostSeeder extends Seeder
           Reaction::add($post, $user, $react);
         }
       }
+
+      $user = $faker->randomElement($usuarios);
+      Comment::create([
+        'user_id' => $user,
+        'mensaje' => $faker->paragraph($faker->numberBetween(1, 5)),
+        'commentable_id' => $post->id,
+        'commentable_type' => 'App\Models\Post',
+      ]);
+      $user = $faker->randomElement($usuarios);
+      $coment = Comment::create([
+        'user_id' => $user,
+        'mensaje' => $faker->paragraph($faker->numberBetween(1, 5)),
+        'commentable_id' => $post->id,
+        'commentable_type' => 'App\Models\Post',
+      ]);
+      $user = $faker->randomElement($usuarios);
+      $coment2 = Comment::create([
+        'user_id' => $user,
+        'mensaje' => $faker->paragraph($faker->numberBetween(1, 5)),
+        'commentable_id' => $coment->id,
+        'commentable_type' => 'App\Models\Comment',
+      ]);
+      $user = $faker->randomElement($usuarios);
+      Comment::create([
+        'user_id' => $user,
+        'mensaje' => $faker->paragraph($faker->numberBetween(1, 5)),
+        'commentable_id' => $coment2->id,
+        'commentable_type' => 'App\Models\Comment',
+      ]);
+      $user = $faker->randomElement($usuarios);
+      Comment::create([
+        'user_id' => $user,
+        'mensaje' => $faker->paragraph($faker->numberBetween(1, 5)),
+        'commentable_id' => $coment2->id,
+        'commentable_type' => 'App\Models\Comment',
+      ]);
+      $user = $faker->randomElement($usuarios);
+      Comment::create([
+        'user_id' => $user,
+        'mensaje' => $faker->paragraph($faker->numberBetween(1, 5)),
+        'commentable_id' => $post->id,
+        'commentable_type' => 'App\Models\Post',
+      ]);
+      $user = $faker->randomElement($usuarios);
+      $coment = Comment::create([
+        'user_id' => $user,
+        'mensaje' => $faker->paragraph($faker->numberBetween(1, 5)),
+        'commentable_id' => $post->id,
+        'commentable_type' => 'App\Models\Post',
+      ]);
+      $user = $faker->randomElement($usuarios);
+      $coment2 = Comment::create([
+        'user_id' => $user,
+        'mensaje' => $faker->paragraph($faker->numberBetween(1, 5)),
+        'commentable_id' => $coment->id,
+        'commentable_type' => 'App\Models\Comment',
+      ]);
+      $user = $faker->randomElement($usuarios);
+      Comment::create([
+        'user_id' => $user,
+        'mensaje' => $faker->paragraph($faker->numberBetween(1, 5)),
+        'commentable_id' => $coment2->id,
+        'commentable_type' => 'App\Models\Comment',
+      ]);
+      $user = $faker->randomElement($usuarios);
+      Comment::create([
+        'user_id' => $user,
+        'mensaje' => $faker->paragraph($faker->numberBetween(1, 5)),
+        'commentable_id' => $coment2->id,
+        'commentable_type' => 'App\Models\Comment',
+      ]);
     }
   }
 }

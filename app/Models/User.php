@@ -92,7 +92,7 @@ class User extends Authenticatable
   // Relacion 1 a N polimorfica
   public function comments()
   {
-    return $this->morphMany(Comment::class, 'commentable');
+    return $this->hasMany(Comment::class);
   }
 
   // Relacion 1 a 1 polomorfica

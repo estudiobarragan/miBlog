@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
@@ -98,8 +99,8 @@ class PostController extends Controller
     foreach ($post->user->roles as $rol) {
       $role = $role . $rol->name . ' ';
     }
-
-    return view('posts.show', compact('post', 'similares', 'role'));
+    $comments = $post->comments;
+    return view('posts.show', compact('post', 'similares', 'role', 'comments'));
   }
 
   /**

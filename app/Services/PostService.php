@@ -11,6 +11,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Notifications\PostNotification;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -42,7 +43,7 @@ class PostService
 
   public function publicar()
   {
-    $posts = Post::where('state_id', 4)->where('publicar', '<=', date('Y/m/d'))->get();
+    $posts = Post::where('state_id', 4)->where('publicar', '<=', date('Y-m-d'))->get();
 
     foreach ($posts as $post) {
       $post->update([

@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
     $this->postService = new PostService;
     $schedule->call(function () {
       $this->postService->publicar();
-    })->daily();
+    })->dailyAt('13:00');
   }
 
   /**
@@ -42,7 +42,7 @@ class Kernel extends ConsoleKernel
    */
   protected function scheduleTimezone()
   {
-    return 'America/Chicago';
+    return 'America/Argentina/Buenos_Aires';
   }
 
   /**

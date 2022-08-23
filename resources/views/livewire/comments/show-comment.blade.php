@@ -42,7 +42,7 @@
 
     {{-- si tiene replicas --}}
     @if($comment->replies->count()!=0)
-      <p wire:click="showReplies(true)" class="{{$ver}} cursor-pointer text-sm font-bold ml-14  -mt-7 mb-1">
+      <p wire:click="showReplies(true)" class="{{$ver}} cursor-pointer text-sm font-bold ml-14  -mt-3 mb-1">
         <i class="fas fa-ellipsis-h text-red-400 font-bold"></i>
       </p>
       @if($verRep=='visible')

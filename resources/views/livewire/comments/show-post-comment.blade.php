@@ -1,7 +1,7 @@
 <div>
   {{-- Comentarios --}}
   
-  <div class="flex justify-between">
+  <div class="flex justify-between mr-3">
     @auth
       <button wire:click="toogle">
         Comentar el post:<i class="fas fa-comment pl-1 text-green-400 pt-2 cursor-pointer"></i>
@@ -9,7 +9,8 @@
     @endauth
     <div class="justify-right" >
       <a wire:click="$emit('abrirReply')" class="align-right cursor-pointer"><i class="fas fa-plus text-blue-400"></i></a>
-      <a wire:click="$emit('cerrarReply')" class="align-right cursor-pointer"><i class="fas fa-minus text-blue-400"></i></a>
+      <a wire:click="$emit('cerrarReply')" class="align-right cursor-pointer ml-2"><i class="fas fa-minus text-blue-400"></i></a>
+      
     </div>
   </div>
 

@@ -12,9 +12,9 @@ class ModalInputComment extends Component
   public $comentario, $comentario_id, $post_id;
   public $verModal = 'visible';
 
-  /* protected $rules = [
+  protected $validationAttributes = [
     'comentario' => 'required',
-  ]; */
+  ];
 
   public function cerrarModal()
   {
@@ -46,6 +46,7 @@ class ModalInputComment extends Component
       Log::debug($this->comentario);
       Log::debug($this->comentario_id);
     }
+    $this->comentario = "";
     $this->emit('refresh');
   }
   public function mount($comentario_id = 0, $post_id = 0)

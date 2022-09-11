@@ -62,7 +62,7 @@
 
             @auth
               <a href="{{route('posts.misposts',1)}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
-                {{__('Mis post')}}
+                {{__('Mis posts')}}
               </a>
               <a href="{{route('posts.misposts',2)}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
                 {{__('Mis categorias')}}
@@ -187,11 +187,11 @@
  
       @auth
         {{-- <a href="#" class="text-gray-600 hover:bg-gray-100 hover:text-gray-800 block px-3 py-2 rounded-md text-base font-medium">
-          {{__('Mis post')}}
+          {{__('Mis posts')}}
         </a> --}}
 
         <a href="{{route('posts.misposts',1)}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
-          {{__('Mis post')}}
+          {{__('Mis posts')}}
         </a>
         <a href="{{route('posts.misposts',2)}}" class="text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border hover:border-b-gray-600 px-3 py-2 rounded-md text-sm font-medium">
           {{__('Mis categorias')}}

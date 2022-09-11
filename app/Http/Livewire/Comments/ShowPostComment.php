@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Comments;
 
+use App\Models\Post;
 use Livewire\Component;
 
 class ShowPostComment extends Component
@@ -13,7 +14,9 @@ class ShowPostComment extends Component
 
   public function refresh()
   {
-    // dd('por aca');
+    if ($this->verModal == 'invisible') {
+      $this->verModal = 'visible';
+    }
   }
   public function toogle()
   {
@@ -23,6 +26,10 @@ class ShowPostComment extends Component
     } else {
       $this->verModal = 'visible';
     }
+  }
+  public function mount(Post $post)
+  {
+    $this->post = $post;
   }
 
   public function render()

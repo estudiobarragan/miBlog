@@ -88,6 +88,7 @@ class PostController extends Controller
   public function show(Post $post)
   {
 
+    $post->load('categoria', 'tags', 'comments', 'user');
     $this->authorize('published', $post);
     $similares = Post::where('categoria_id', $post->categoria_id)
       ->where('state_id', 5)
@@ -99,7 +100,8 @@ class PostController extends Controller
     foreach ($post->user->roles as $rol) {
       $role = $role . $rol->name . ' ';
     }
-    $comments = $post->comments;
+    $comments = $post->comments->load('replies', 'user');
+
     return view('posts.show', compact('post', 'similares', 'role', 'comments'));
   }
 

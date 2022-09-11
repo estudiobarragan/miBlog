@@ -30,6 +30,7 @@ class Kernel extends ConsoleKernel
   {
     // $schedule->command('inspire')->hourly();
     $this->postService = new PostService;
+
     $schedule->call(function () {
       $this->postService->publicar();
     })->dailyAt('13:00');

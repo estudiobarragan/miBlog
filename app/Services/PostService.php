@@ -43,7 +43,7 @@ class PostService
 
   public function publicar()
   {
-    $posts = Post::where('state_id', 4)->where('publicar', '<=', date('Y-m-d'))->get();
+    $posts = Post::where('state_id', 4)->where('publicar', '<=', date('Y-m-d') . ' 23:59:59')->get();
 
     foreach ($posts as $post) {
       $post->update([

@@ -15,24 +15,21 @@ class ShowComment extends Component
   public $sangria = 0;
   public $open = false;
   public $verModal = 'invisible';
-  public $evenReply = true;
+  public $openAll;
+  public $confirmingDeletion = "";
+
 
   protected $listeners = ['abrirReply', 'cerrarReply'];
   public function abrirReply()
   {
-    if ($this->evenReply) {
+    if ($this->comment->replies->count() > 0) {
       $this->showReplies(true);
-      $this->render();
-      if ($this->comment->replies->count() > 0) {
-        $this->emit('abrirReply');
-        $this->evenReply = false;
-      }
     }
   }
   public function cerrarReply()
   {
     $this->showReplies(false);
-    $this->evenReply = true;
+    $this->openAll = false;
   }
   public function toogleModal()
   {
@@ -59,19 +56,26 @@ class ShowComment extends Component
     $this->showReplies(!$this->open);
   }
 
-  /*   public function emitir($id)
+  public function mount(Comment $comment)
   {
-    $comment = Comment::find($id);
-
-    $this->emit('inputComment', $comment->id);
-  } */
-  public function mount()
-  {
+    $this->comment = $comment;
     $this->sangria = $this->sangria + $this->masSangria;
+  }
+
+  public function delete()
+  {
+    /*
+    $this->confirmingDeletion = false;
+    $this->comment->repl
+     $this->model->delete();
+    return redirect()->to($this->ruta); */
   }
 
   public function render()
   {
+    if ($this->openAll) {
+      $this->showReplies(true);
+    }
     return view('livewire.comments.show-comment');
   }
 }

@@ -21,10 +21,10 @@
       {{-- Contenido principal --}}
       <div class="lg:col-span-2">
         <figure class="relative">
-          @if($post->image)
-            <img class="w-full h-80 object-cover object-center" src="{{Storage::url($post->image->url)}}" alt="">
+          @if($post->image && file_exists(public_path('storage/'.$post->image->url)))
+            <img class="w-full h-80 object-cover object-center" src="{{Storage::url($post->image->url)}}" alt="imagen_post">
           @else
-            <img class="w-full h-80 object-cover object-center" src="{{asset('/img-default/post-default.webp')}}" alt="">
+            <img class="w-full h-80 object-cover object-center" src="{{asset('/img-default/post-default.webp')}}" alt="imagen_default">
           @endif
           <div class="absolute left-0 top-0 text-gray-100 bg-red-500 rounded-full px-3 py-1 text-sm">
             <a href="#"><strong>{{ $post->categoria->name }}</strong></a>
@@ -79,10 +79,11 @@
         <div class="card bg-gray-100 mb-2 shadow-lg border-2" x-data="{open:false}">
           <div class="card-body flow-root">
             <div class="float-left">
-              @if($post->user->profile_photo_path)
-                <img class="w-36 h-36 object-cover object-center rounded-full" src="{{Storage::url($post->user->profile_photo_path)}}" alt="">
+              {{-- file_exists(public_path('storage/'.$post->image->url))) --}}
+              @if($post->user->profile_photo_path && file_exists(public_path('storage/'.$post->user->profile_photo_path)))
+                <img class="w-32 h-32 pl-2 py-1 object-cover object-center rounded-full" src="{{Storage::url($post->user->profile_photo_path)}}" alt="img_autor">
               @else
-                <img class="w-36 h-36 object-cover object-center rounded-full" src="{{asset('/img-default/perfil-default.png')}}" alt="">
+                <img class="w-32 h-32 pl-2 py-1 object-cover object-center rounded-full" src="{{asset('/img-default/perfil-default.png')}}" alt="img_autor_default">
               @endif
             </div>
             <div class="float-center mt-2">
@@ -121,10 +122,11 @@
           @foreach ($similares as $similar)
             <li class="mb-4">
               <a class="flex" href="{{route('posts.show',$similar)}}">
-                @if($similar->image)
-                  <img class="w-36 h-20 object-cover object-center flex-none" src="{{Storage::url($similar->image->url)}}" alt="$similar->name">
+                {{-- file_exists(public_path('storage/'.$post->image->url))) --}}
+                @if($similar->image && file_exists(public_path('storage/'.$post->image->url)))
+                  <img class="w-36 h-20 object-cover object-center flex-none" src="{{Storage::url($similar->image->url)}}" alt="{{$similar->name}}">
                 @else
-                  <img class="w-full h-80 object-cover object-center" src="{{asset('/img-default/post-default.webp')}}" alt="">
+                  <img class="w-36 h-20 object-cover object-center flex-none" src="{{asset('/img-default/post-default.webp')}}" alt="{{$similar->name}}">
                 @endif
                 <span class="ml-2 text-gray-600">{{$similar->name}}</span>
               </a>

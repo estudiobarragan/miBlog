@@ -96,12 +96,26 @@ class HomeFeatureTest extends TestCase
     return $post;
   }
 
-  public function test_guess_accede_en_el_view_a_datos_del_post()
+  public function test_guess_ve_la_imagen_por_default_del_post()
   {
+    $this->post->image->delete();
     $response = $this->get('/');
+    $response->assertStatus(200);
 
     $responseStr = $response->__toString();
-    $this->assertTrue(strpos($responseStr, 'id="imagen_post"') > 0);
+    $this->assertFalse(strpos($responseStr, 'alt="imagen_post-'.$this->post->id.'"') > 0);
+    $this->assertTrue(strpos($responseStr, 'alt="imagen_default-'.$this->post->id.'"') > 0);
+    Storage::disk('public')->assertExists('/img-default/post-default.webp');
+  }
+  public function test_guess_ve_la_imagen_del_post()
+  {
+    $response = $this->get('/');
+    $response->assertStatus(200);
+
+    $responseStr = $response->__toString();
+    $this->assertTrue(strpos($responseStr, 'alt="imagen_post-'.$this->post->id.'"') > 0);
+    $this->assertFalse(strpos($responseStr, 'alt="imagen_default-'.$this->post->id.'"') > 0);
+    Storage::disk('public')->assertExists($this->post->image->url);
   }
   public function test_guess_pueden_ver_el_nombre_del_post()
   {
@@ -162,28 +176,7 @@ class HomeFeatureTest extends TestCase
 
     $response->assertDontSee('¡Nuevo!');
   }
-
-  public function test_guess_pueden_ver_la_imagen_del_post()
-  {
-    $response = $this->get('/');
-    $responseStr = $response->__toString();
-
-    $this->assertTrue(strpos($responseStr, 'id="imagen_post"') > 0);
-    $this->assertFalse(strpos($responseStr, 'id="imagen_default"') > 0);
-    Storage::disk('public')->assertExists($this->post->image->url);
-  }
-
-  public function test_guess_pueden_ver_la_imagen_default_para_post()
-  {
-    $this->post->image->delete();
-    $response = $this->get('/');
-    $responseStr = $response->__toString();
-
-    $this->assertTrue(strpos($responseStr, 'id="imagen_default"') > 0);
-    $this->assertFalse(strpos($responseStr, 'id="imagen_post"') > 0);
-    Storage::disk('public')->assertExists('/img-default/post-default.webp');
-  }
-
+  
   public function test_guess_puede_ver_componente_likes_en_el_post()
   {
     $this->get('/');

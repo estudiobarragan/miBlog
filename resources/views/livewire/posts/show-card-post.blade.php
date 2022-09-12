@@ -1,9 +1,9 @@
 <div class="mb-8 bg-white shadow-lg rounded-lg overflow-hidden md:{{$colspan}}">
   <div class="relative">
-    @if($post->image)
-      <img class="w-full h-72 object-cover object-center" src="{{Storage::url($post->image->url)}}" alt="" id="imagen_post">
+    @if($post->image && file_exists(public_path('storage/'.$post->image->url)))
+      <img class="w-full h-72 object-cover object-center" src="{{Storage::url($post->image->url)}}" alt="imagen_post-{{$post->id}}">
       @else
-      <img class="w-full h-72 object-cover object-center" src="{{asset('/img-default/post-default.webp')}}" alt="" id="imagen_default">    
+      <img class="w-full h-72 object-cover object-center" src="{{asset('/img-default/post-default.webp')}}" alt="imagen_default-{{$post->id}}">    
     @endif
 
     <div class="absolute left-0 top-0 text-gray-100 bg-red-500 rounded-full px-3 py-1 text-sm hover:bg-gray-500">

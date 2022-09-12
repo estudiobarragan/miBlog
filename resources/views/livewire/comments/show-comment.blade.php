@@ -4,7 +4,12 @@
       @if($sangria>0)
         <div class="border-l-2 border-gray-200 pr-1"></div>
       @endif
-      <img class="w-10 h-10 rounded-full" src="{{Storage::url($comment->user->image->url)}}">
+      @if($comment->user->profile_photo_path)
+        <img class="w-10 h-10 object-cover object-center rounded-full" src="{{Storage::url($comment->user->profile_photo_path)}}" alt="">
+      @else
+        <img class="w-10 h-10 object-cover object-center rounded-full" src="{{asset('/img-default/perfil-default.png')}}" alt="">
+      @endif
+      {{-- <img class="w-10 h-10 rounded-full" src="{{Storage::url($comment->user->image->url)}}"> --}}
       <span class="w-16 ml-1 text-sm text-blue-600 mt-2">{{$comment->user->name}}:</span>
 
       @if($comment->replies->count()!=0)

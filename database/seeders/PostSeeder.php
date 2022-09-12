@@ -2,22 +2,23 @@
 
 namespace Database\Seeders;
 
-use App\Models\Approve;
-use App\Models\Categoria;
-use App\Models\Comment;
-use App\Models\Image;
-use App\Models\Post;
-use App\Models\Publication;
-use App\Models\User;
 use Carbon\Carbon;
-use Faker\Core\Number;
 use Faker\Factory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Seeder;
+use App\Models\Post;
+use App\Models\User;
+use App\Models\Image;
+use Faker\Core\Number;
+use App\Models\Approve;
+use App\Models\Comment;
+use App\Models\Categoria;
+use App\Models\Publication;
 use Illuminate\Support\Str;
-use Maize\Markable\Models\Bookmark;
+use Illuminate\Database\Seeder;
 use Maize\Markable\Models\Like;
+use Maize\Markable\Models\Bookmark;
 use Maize\Markable\Models\Reaction;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PostSeeder extends Seeder
 {
@@ -36,6 +37,7 @@ class PostSeeder extends Seeder
     $post5 = 0;
     $usuarios = User::all()->pluck('id');
 
+    Config::set('tipo_imagen','ALL');
     foreach ($posts as $post) {
       Image::factory(1)->create([
         'imageable_id' => $post->id,

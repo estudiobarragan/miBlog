@@ -6,19 +6,19 @@
       @if($type=="Autor")
         : {{ $this->value->name}} 
         @auth()
-          @livewire('follow-model',['user' => $this->value,key('autor-'.$ms) ])
+          @livewire('follow-model',['user' => $this->value],key('autor-'.$ms) )
         @endauth()
       @endif
       @if($type=="Categoria")
         : {{ $this->value->name}}
         @auth()
-          @livewire('follow-model',['categoria' => $this->value,key('categoria-'.$ms)])
+          @livewire('follow-model',['categoria' => $this->value],key('categoria-'.$ms))
         @endauth()
       @endif
       @if($type=="Etiqueta")
         : {{ $this->value->name}}
         @auth()
-          @livewire('follow-model',['tag' => $this->value,key('tag-'.$ms)])
+          @livewire('follow-model',['tag' => $this->value],key('tag-'.$ms))
         @endauth()
       @endif
     </h1>
@@ -30,7 +30,7 @@
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     @foreach ($posts as $post)
-      @livewire('posts.show-card-post',['post'=>$post,'indice'=> $loop->index, key('post-'.$ms) ])
+      @livewire('posts.show-card-post',['post'=>$post,'indice'=> $loop->index], key('post-'.$ms) )
     @endforeach
   </div>
 

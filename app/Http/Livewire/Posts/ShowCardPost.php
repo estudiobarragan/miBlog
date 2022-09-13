@@ -60,16 +60,14 @@ class ShowCardPost extends Component
     $this->emit('askAutor', $user);
     return;
   }
-  public function categoria($categoria)
+  public function categoria($categoria_id)
   {
-    $categoria = Categoria::find($categoria['id']);
-    $this->emit('askCategoria', $categoria);
+    $this->emit('askCategoria', $categoria_id);
     return;
   }
-  public function etiqueta($etiqueta)
+  public function etiqueta($etiqueta_id)
   {
-    $etiqueta = Tag::find($etiqueta['id']);
-    $this->emit('askEtiqueta', $etiqueta);
+    $this->emit('askEtiqueta', $etiqueta_id);
     return;
   }
 }

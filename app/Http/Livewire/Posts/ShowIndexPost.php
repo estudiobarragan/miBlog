@@ -77,18 +77,18 @@ class ShowIndexPost extends Component
 
     return;
   }
-  public function askCategoria($categoria)
+  public function askCategoria($categoria_id)
   {
-    $categoria = Categoria::find($categoria['id']);
+    $categoria = Categoria::find($categoria_id);
     $this->type = "Categoria";
     $this->value = $categoria;
     $this->change();
 
     return;
   }
-  public function askEtiqueta($etiqueta)
+  public function askEtiqueta($etiqueta_id)
   {
-    $this->value = Tag::find($etiqueta['id']);
+    $this->value = Tag::find($etiqueta_id);
     $this->type = "Etiqueta";
     $this->change();
 

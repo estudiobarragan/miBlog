@@ -2,26 +2,27 @@
 
 namespace Tests\Feature;
 
-use App\Models\Categoria;
-use App\Models\Image;
-use App\Models\Post;
-use App\Models\State;
+use Faker\Factory;
 use App\Models\Tag;
-
+use Tests\TestCase;
+use App\Models\Post;
 use App\Models\User;
+
+use App\Models\Image;
+use App\Models\State;
+use Livewire\Livewire;
+use App\Models\Categoria;
+use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
+use Maize\Markable\Models\Like;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\StateSeeder;
-use Faker\Factory;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Livewire\Livewire;
 use Maize\Markable\Models\Bookmark;
-use Maize\Markable\Models\Like;
+use Maize\Markable\Models\Favorite;
 use Maize\Markable\Models\Reaction;
-use Tests\TestCase;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class HomeFeatureTest extends TestCase
 {
@@ -524,14 +525,106 @@ class HomeFeatureTest extends TestCase
 
   public function test_usuario_registrado_selecciona_autor_y_lo_sigue()
   {
+    $this->assertFalse(Favorite::has($this->autor,$this->user)); //el usuario registrado no sigue al autor del post
+    $this->actingAs($this->user)
+      ->get('/posts/misposts/4')
+      ->assertSee('No hay posts para ver'); //No hay post para ver en Mis autores del usuario registrado
+
+    $this->actingAs($this->user)->get('/')
+      ->assertSeeLivewire('posts.show-card-post', ['post'=>$this->post, 'indice'=> 0]);
+
+    Livewire::actingAs($this->user)
+      ->test('posts.show-card-post',['post'=>$this->post, 'indice'=> 0])
+      ->call('autor',$this->post->user)
+      ->assertEmitted('askAutor',$this->post->user);
+
+    Livewire::actingAs($this->user)
+      ->test('posts.show-index-post')
+      ->call('askAutor',$this->post->user)
+      ->assertSee('Autor')
+      ->assertSee($this->autor->name)
+      ->assertPayloadSet('type', 'Autor')
+      ->assertSeeLivewire('follow-model',['user' => $this->autor])
+      ->assertSeeHtml('alt="fav_autor_unselect"');
+
+    Livewire::actingAs($this->user) 
+      ->test('follow-model',['user' => $this->autor])
+      ->call('user_like')
+      ->assertSeeHtml('alt="fav_autor_select"');
+
+    $this->assertTrue(Favorite::has($this->autor,$this->user)); //el usuario registrado sigue al autor del post
+    $this->actingAs($this->user)
+      ->get('/posts/misposts/4')
+      ->assertSee($this->post->name); //El post del autor seguido, es visible para el usuario registrado
 
   }
   public function test_usuario_registrado_selecciona_categoria_y_lo_sigue()
   {
+    $this->assertFalse(Favorite::has($this->categoria,$this->user)); //el usuario registrado no sigue la categoria del post
+    $this->actingAs($this->user)
+      ->get('/posts/misposts/2')
+      ->assertSee('No hay posts para ver'); //No hay post para ver en Mis categorias del usuario registrado
 
+    $this->actingAs($this->user)->get('/')
+      ->assertSeeLivewire('posts.show-card-post', ['post'=>$this->post, 'indice'=> 0]);
+
+    Livewire::actingAs($this->user)
+      ->test('posts.show-card-post',['post'=>$this->post, 'indice'=> 0])
+      ->call('categoria',$this->post->categoria->id)
+      ->assertEmitted('askCategoria',$this->post->categoria->id);
+
+    Livewire::actingAs($this->user)
+      ->test('posts.show-index-post')
+      ->call('askCategoria',$this->post->categoria->id)
+      ->assertSee('Categoria')
+      ->assertSee($this->post->categoria->name)
+      ->assertPayloadSet('type', 'Categoria')
+      ->assertSeeLivewire('follow-model',['categoria' => $this->post->categoria])
+      ->assertSeeHtml('alt="fav_categoria_unselect"');
+
+    Livewire::actingAs($this->user) 
+      ->test('follow-model',['categoria' =>  $this->post->categoria])
+      ->call('categoria_like')
+      ->assertSeeHtml('alt="fav_categoria_select"');
+
+    $this->assertTrue(Favorite::has($this->post->categoria,$this->user)); //el usuario registrado sigue la categoria del post
+    $this->actingAs($this->user)
+      ->get('/posts/misposts/2')
+      ->assertSee($this->post->categoria->name); //La categoria del post es visible para el usuario registrado
   }
   public function test_usuario_registrado_selecciona_etiqueta_y_lo_sigue()
   {
+    $this->assertFalse(Favorite::has($this->tags[0],$this->user)); //el usuario registrado no sigue la etiqueta del post
+    $this->actingAs($this->user)
+      ->get('/posts/misposts/3')
+      ->assertSee('No hay posts para ver'); //No hay post para ver en Mis etiquetas del usuario registrado
+
+    $this->actingAs($this->user)->get('/')
+      ->assertSeeLivewire('posts.show-card-post', ['post'=>$this->post, 'indice'=> 0]);
+
+    Livewire::actingAs($this->user)
+      ->test('posts.show-card-post',['post'=>$this->post, 'indice'=> 0])
+      ->call('etiqueta',$this->tags[0]->id)
+      ->assertEmitted('askEtiqueta',$this->tags[0]->id);
+
+    Livewire::actingAs($this->user)
+      ->test('posts.show-index-post')
+      ->call('askEtiqueta',$this->tags[0]->id)
+      ->assertSee('Etiqueta')
+      ->assertSee($this->tags[0]->name)
+      ->assertPayloadSet('type', 'Etiqueta')
+      ->assertSeeLivewire('follow-model',['tag' => $this->tags[0]])
+      ->assertSeeHtml('alt="fav_tag_unselect"');
+
+    Livewire::actingAs($this->user) 
+      ->test('follow-model',['tag' =>  $this->tags[0]])
+      ->call('tag_like')
+      ->assertSeeHtml('alt="fav_tag_select"');
+
+    $this->assertTrue(Favorite::has($this->tags[0],$this->user)); //el usuario registrado sigue la etiqueta del post
+    $this->actingAs($this->user)
+      ->get('/posts/misposts/3')
+      ->assertSee($this->tags[0]->name); //La etiqueta del post es visible para el usuario registrado
 
   }
   public function test_usuario_registrado_barra_de_consulta()

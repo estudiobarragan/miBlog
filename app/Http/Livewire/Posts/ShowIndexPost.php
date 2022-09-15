@@ -50,6 +50,7 @@ class ShowIndexPost extends Component
         ->paginate(5);
     }
     if ($this->type == 'Categoria') {
+      $this->value = Categoria::where('id',$this->value)->first();
       $posts = Post::select('id', 'slug', 'name', 'user_id', 'state_id', 'publicar', 'categoria_id', 'extract')
         ->where('state_id', 5)
         ->with(['user', 'categoria', 'tags'])
@@ -58,6 +59,7 @@ class ShowIndexPost extends Component
         ->paginate(5);
     }
     if ($this->type == 'Etiqueta') {
+      $this->value = Tag::where('id', $this->value)->first();
       $posts = $this->value->posts()
         ->select('posts.id', 'slug', 'name', 'user_id', 'state_id', 'publicar', 'categoria_id', 'extract')
         ->where('state_id', 5)
@@ -79,16 +81,15 @@ class ShowIndexPost extends Component
   }
   public function askCategoria($categoria_id)
   {
-    $categoria = Categoria::find($categoria_id);
     $this->type = "Categoria";
-    $this->value = $categoria;
+    $this->value = $categoria_id;
     $this->change();
 
     return;
   }
   public function askEtiqueta($etiqueta_id)
   {
-    $this->value = Tag::find($etiqueta_id);
+    $this->value = $etiqueta_id;
     $this->type = "Etiqueta";
     $this->change();
 

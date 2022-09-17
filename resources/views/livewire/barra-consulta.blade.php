@@ -9,8 +9,7 @@
       <div x-show="open" class="bg-gray-100 shadow-lg rounded-lg text-sm w-32 ml-4 pl-2 h-30 overflow-y-auto overflow-hidden">
         @foreach ($categorias as $categoria)
           <li>
-            {{-- <a href="{{ route('posts.categoria', $categoria) }}">{{$categoria->name}}</a> --}}
-            <a wire:click="categoria({{$categoria}})" class="cursor-pointer">{{$categoria->name}}</a>
+            <a wire:click="categoria({{$categoria->id}})" class="cursor-pointer">{{$categoria->name}}</a>
           </li>
         @endforeach
       </div>
@@ -27,8 +26,7 @@
       <div x-show="open" class="bg-gray-100 shadow-lg rounded-lg text-sm w-32 ml-4 pl-2 h-36 overflow-y-auto overflow-hidden">
         @foreach ($etiquetas as $etiqueta)
           <li>
-            {{-- <a href="{{ route('posts.tag', $etiqueta) }}">{{$etiqueta->name}}</a> --}}
-            <a wire:click="etiqueta({{$etiqueta}})" class="cursor-pointer">{{$etiqueta->name}}</a>
+            <a wire:click="etiqueta({{$etiqueta->id}})" class="cursor-pointer">{{$etiqueta->name}}</a>
       </a>
           </li>
         @endforeach

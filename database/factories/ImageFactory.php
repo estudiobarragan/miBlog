@@ -36,11 +36,16 @@ class ImageFactory extends Factory
       $tipo = $faker->loremSpace(LoremSpaceProvider::CATEGORY_FACE, $dir = public_path('storage/img'), $width = 640, $height = 480, $fullPath = false);
     }else{
       $tipo = $faker->loremSpace(LoremSpaceProvider::CATEGORY_FURNITURE, $dir = public_path('storage/img'), $width = 640, $height = 480, $fullPath = false);
+      /* $tipo = $this->faker->imageUrl(640, 480); */
+    }
+
+    if($tipo != "" ){
+      $tipo = 'img/'.$tipo;
     }
 
     /* $faker->addProvider(new FakerPicsumImagesProvider($faker)); */
     return [
-      'url' => 'img/' .$tipo,
+      'url' => $tipo,
       /* 'url' => 'img/' . $faker->image($dir = 'public/storage/img', $width = 640, $height = 480,  $fullPath = false), */
     ];
   }

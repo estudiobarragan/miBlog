@@ -20,27 +20,26 @@ class BarraConsulta extends Component
 
     $categorias = Categoria::all();
     $etiquetas = Tag::all();
-    $usuarios = User::with('roles')->get();
-    $autores = $usuarios->where(function ($user, $key) {
-      return $user->hasRole('Autor');
-    });
+    $autores = User::role('Autor')->with('roles')->get();
+
     return view('livewire.barra-consulta', compact('categorias', 'etiquetas', 'autores'));
   }
   public function autor(User $user)
   {
+    $this->search='';
     $this->emit('askAutor', $user);
     return;
   }
-  public function categoria($categoria)
+  public function categoria($categoria_id)
   {
-    $categoria = Categoria::find($categoria['id']);
-    $this->emit('askCategoria', $categoria);
+    $this->search='';
+    $this->emit('askCategoria', $categoria_id);
     return;
   }
-  public function etiqueta($etiqueta)
+  public function etiqueta($etiqueta_id)
   {
-    $etiqueta = Tag::find($etiqueta['id']);
-    $this->emit('askEtiqueta', $etiqueta);
+    $this->search='';
+    $this->emit('askEtiqueta', $etiqueta_id);
     return;
   }
   public function buscar()

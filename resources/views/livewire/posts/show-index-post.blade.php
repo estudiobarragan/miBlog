@@ -29,9 +29,13 @@
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    @foreach ($posts as $post)
+    @forelse ($posts as $post)
       @livewire('posts.show-card-post',['post'=>$post,'indice'=> $loop->index], key('post-'.$ms) )
-    @endforeach
+    @empty
+      <div class="text-gray-700 text-center mt-4 ml-4">
+        <p>No hay posts para ver.</p>
+      </div>
+    @endforelse
   </div>
 
 </div>

@@ -43,7 +43,7 @@ class HomeFeatureTest extends TestCase
     $this->seed(RoleSeeder::class);
     $this->seed(StateSeeder::class);
     $this->categoria = Categoria::factory(1)->create()->first();
-    $this->tags = Tag::factory(5)->create();
+    $this->tags = Tag::factory(2)->create();
     $this->user = $this->createUser();
     $this->autor = $this->createUser();
     $this->autor->assignRole(['Autor']);
@@ -276,6 +276,98 @@ class HomeFeatureTest extends TestCase
       ->assertPayloadSet('type', 'Etiqueta');
   }
 
+  public function test_guess_ve_la_barra_de_consulta()
+  {
+    $this->get('/')
+      ->assertSee('Categorias')
+      ->assertSee('Etiquetas')
+      ->assertSee('Autores')
+      ->assertSee('Buscar');
+
+    /* Autor */
+    Livewire::test('barra-consulta',['search'=>false])
+      ->assertViewHas('categorias', Categoria::all())
+      ->assertViewHas('etiquetas', Tag::all())
+      ->assertViewHas('autores',User::role('Autor')->with('roles')->get())
+      ->call('autor',$this->autor)
+      ->assertEmitted('askAutor',$this->autor);
+
+    Livewire::test('posts.show-index-post')
+      ->call('askAutor',$this->autor)
+      ->assertSee('Autor')
+      ->assertSee($this->autor->name)
+      ->assertPayloadSet('type', 'Autor');
+
+    /* Categoria */
+    Livewire::test('barra-consulta',['search'=>false])
+      ->call('categoria',$this->categoria->id)
+      ->assertEmitted('askCategoria',$this->categoria->id);
+
+    Livewire::test('posts.show-index-post')
+      ->call('askCategoria',$this->categoria->id)
+      ->assertSee('Categoria')
+      ->assertSee($this->categoria->name)
+      ->assertPayloadSet('type', 'Categoria');
+
+    /* Etiquetas */
+    Livewire::test('barra-consulta',['search'=>false])
+      ->call('etiqueta',$this->tags[0]->id)
+      ->assertEmitted('askEtiqueta',$this->tags[0]->id);
+
+    Livewire::test('posts.show-index-post')
+      ->call('askEtiqueta',$this->tags[0]->id)
+      ->assertSee('Etiqueta')
+      ->assertSee($this->tags[0]->name)
+      ->assertPayloadSet('type', 'Etiqueta');
+
+    Livewire::test('barra-consulta',['search'=>false])
+      ->call('etiqueta',$this->tags[1]->id)
+      ->assertEmitted('askEtiqueta',$this->tags[1]->id);
+
+    Livewire::test('posts.show-index-post')
+      ->call('askEtiqueta',$this->tags[1]->id)
+      ->assertSee('Etiqueta')
+      ->assertSee($this->tags[1]->name)
+      ->assertPayloadSet('type', 'Etiqueta');
+
+    /* Etiqueta sin post */
+    $tagNueva=Tag::factory()->create();
+    Livewire::test('barra-consulta',['search'=>false])
+      ->call('etiqueta',$tagNueva)
+      ->assertEmitted('askEtiqueta',$tagNueva);
+
+    Livewire::test('posts.show-index-post')
+      ->call('askEtiqueta',$tagNueva->id)
+      ->assertSee('Etiqueta')
+      ->assertSee($tagNueva->name)
+      ->assertPayloadSet('type', 'Etiqueta')
+      ->assertSee('No hay posts para ver.');
+  }  
+
+  public function test_guess_busca_post_satisfactoriamente()
+  {
+  $this->get('/')
+    ->assertStatus(200)
+    ->assertSee('Buscar:')
+    ->assertSeeLivewire('barra-consulta');
+
+  Livewire::test('barra-consulta',['search'=>false])
+    ->set('filter',$this->post->name)
+    ->call('buscar')
+    ->assertEmitted('search',$this->post->name);
+
+  Livewire::test('posts.show-index-post')
+    ->call('search',$this->post->name)
+    ->assertSee($this->post->name)
+    ->assertSee($this->post->extract)
+    ->assertSee($this->post->user->name)
+    ->assertSee(Carbon::parse($this->post->publicar)->format('j F, Y'))
+    ->assertSee($this->categoria->name)
+    ->assertSee($this->tags[0]->name)
+    ->assertSee($this->tags[1]->name)
+    ->assertDontSeeLivewire('bookmark-card-post');
+  }
+
   /* 
   **
   ** Test de usuario registrado 
@@ -367,13 +459,7 @@ class HomeFeatureTest extends TestCase
     $this->actingAs($this->user)->get('/')->assertSeeLivewire('bookmark-card-post');
     
   }
-
-  public function test_autor_del_post_no_puede_ver_componente_bookmark_en_su_post()
-  {
-    $this->actingAs($this->autor)->get('/')->assertDontSeeLivewire('bookmark-card-post');
-    
-  }
-
+  
   public function test_usuario_registrado_que_selecciono_un_post_puede_ver_seleccionado_el_icono_bookmark_del_post()
   {
     $this->assertTrue(Bookmark::has($this->post,$this->user)); // el usuario eligio este post
@@ -627,13 +713,246 @@ class HomeFeatureTest extends TestCase
       ->assertSee($this->tags[0]->name); //La etiqueta del post es visible para el usuario registrado
 
   }
-  public function test_usuario_registrado_barra_de_consulta()
+  
+  public function test_usuario_registrado_ve_la_barra_de_consulta()
   {
+    $this->actingAs($this->user)->get('/')
+    ->assertSee('Categorias')
+    ->assertSee('Etiquetas')
+    ->assertSee('Autores')
+    ->assertSee('Buscar');
 
+  /* Autor */
+  Livewire::actingAs($this->user)
+    ->test('barra-consulta',['search'=>false])
+    ->assertViewHas('categorias', Categoria::all())
+    ->assertViewHas('etiquetas', Tag::all())
+    ->assertViewHas('autores',User::role('Autor')->with('roles')->get())
+    ->call('autor',$this->autor)
+    ->assertEmitted('askAutor',$this->autor);
+
+  Livewire::actingAs($this->user)
+    ->test('posts.show-index-post')
+    ->call('askAutor',$this->autor)
+    ->assertSee('Autor')
+    ->assertSee($this->autor->name)
+    ->assertPayloadSet('type', 'Autor');
+
+  /* Categoria */
+  Livewire::actingAs($this->user)
+    ->test('barra-consulta',['search'=>false])
+    ->call('categoria',$this->categoria->id)
+    ->assertEmitted('askCategoria',$this->categoria->id);
+
+  Livewire::actingAs($this->user)
+    ->test('posts.show-index-post')
+    ->call('askCategoria',$this->categoria->id)
+    ->assertSee('Categoria')
+    ->assertSee($this->categoria->name)
+    ->assertPayloadSet('type', 'Categoria');
+
+  /* Etiquetas */
+  Livewire::actingAs($this->user)
+    ->test('barra-consulta',['search'=>false])
+    ->call('etiqueta',$this->tags[0]->id)
+    ->assertEmitted('askEtiqueta',$this->tags[0]->id);
+
+  Livewire::actingAs($this->user)
+    ->test('posts.show-index-post')
+    ->call('askEtiqueta',$this->tags[0]->id)
+    ->assertSee('Etiqueta')
+    ->assertSee($this->tags[0]->name)
+    ->assertPayloadSet('type', 'Etiqueta');
+
+  Livewire::actingAs($this->user)
+    ->test('barra-consulta',['search'=>false])
+    ->call('etiqueta',$this->tags[1]->id)
+    ->assertEmitted('askEtiqueta',$this->tags[1]->id);
+
+  Livewire::actingAs($this->user)
+    ->test('posts.show-index-post')
+    ->call('askEtiqueta',$this->tags[1]->id)
+    ->assertSee('Etiqueta')
+    ->assertSee($this->tags[1]->name)
+    ->assertPayloadSet('type', 'Etiqueta');
+
+  /* Etiqueta sin post */
+  $tagNueva=Tag::factory()->create();
+  Livewire::actingAs($this->user)
+    ->test('barra-consulta',['search'=>false])
+    ->call('etiqueta',$tagNueva)
+    ->assertEmitted('askEtiqueta',$tagNueva);
+
+  Livewire::actingAs($this->user)
+    ->test('posts.show-index-post')
+    ->call('askEtiqueta',$tagNueva->id)
+    ->assertSee('Etiqueta')
+    ->assertSee($tagNueva->name)
+    ->assertPayloadSet('type', 'Etiqueta')
+    ->assertSee('No hay posts para ver.');
+  }
+  
+  public function test_usuario_registrado_ve_proximos_post_a_ser_publicados()
+  {
+    $this->actingAs($this->user)->get('/posts/misposts/5')
+      ->assertStatus(200)
+      ->assertSee('No hay posts para ver.');
+    
+    $post = $this->createPost();
+    $post->update([
+      'state_id' => 4,
+      'publicar' => now(),
+    ]);
+    Image::factory(1)->create([
+      'imageable_id' => $post->id,
+      'imageable_type' => Post::class,
+    ]);
+
+    $this->actingAs($this->user)->get('/posts/misposts/5')
+      ->assertStatus(200)
+      ->assertSee($post->name)
+      ->assertSee($post->extract)
+      ->assertSee($post->user->name)
+      ->assertSee(Carbon::parse($post->publicar)->format('j F, Y'))
+      ->assertSee('Nuevo')
+      ->assertSee('Proximamente')
+      ->assertSee($this->categoria->name)
+      ->assertSee($this->tags[0]->name)
+      ->assertSee($this->tags[1]->name)
+      ->assertSeeLivewire('bookmark-card-post');
+
+    Livewire::actingAs($this->user)
+      ->test('bookmark-card-post', ['post'=> $post])
+      ->call('bookmark')
+      ->assertSeeHtml('alt="bookmark_select"')
+      ->call('unbookmark')
+      ->assertSeeHtml('alt="bookmark_unselect"');
+
+    $post->update([
+      'state_id' => 4,
+      'publicar' => now()->modify('+7 day'),
+    ]);
+
+    $this->actingAs($this->user)->get('/posts/misposts/5')
+      ->assertStatus(200)
+      ->assertSee($post->name)
+      ->assertSee($post->extract)
+      ->assertSee($post->user->name)
+      ->assertSee(Carbon::parse($post->publicar)->format('j F, Y'))
+      ->assertDontSee('Nuevo')
+      ->assertSee('Proximamente')
+      ->assertSee($this->categoria->name)
+      ->assertSee($this->tags[0]->name)
+      ->assertSee($this->tags[1]->name)
+      ->assertSeeLivewire('bookmark-card-post');
+
+    Livewire::actingAs($this->user)
+      ->test('bookmark-card-post', ['post'=> $post])
+      ->call('bookmark')
+      ->assertSeeHtml('alt="bookmark_select"')
+      ->call('unbookmark')
+      ->assertSeeHtml('alt="bookmark_unselect"');
+    
+    $post->update([
+      'state_id' => 4,
+      'publicar' => now()->modify('+8 day'),
+    ]);
+
+    $this->actingAs($this->user)->get('/posts/misposts/5')
+      ->assertStatus(200)
+      ->assertSee('No hay posts para ver.');
   }
   public function test_usuario_registrado_accede_a_ver_el_post_completo()
   {
     $this->actingAs($this->user)->get('/posts/' . $this->post->slug)
             ->assertStatus(200);
+  }
+  
+  public function test_usuario_registrado_busca_post_satisfactoriamente()
+  {
+  $this->actingAs($this->user)->get('/')
+    ->assertStatus(200)
+    ->assertSee('Buscar:')
+    ->assertSeeLivewire('barra-consulta');
+
+  Livewire::actingAs($this->user)
+    ->test('barra-consulta',['search'=>false])
+    ->set('filter',$this->post->name)
+    ->call('buscar')
+    ->assertEmitted('search',$this->post->name);
+
+  Livewire::actingAs($this->user)
+    ->test('posts.show-index-post')
+    ->call('search',$this->post->name)
+    ->assertSee($this->post->name)
+    ->assertSee($this->post->extract)
+    ->assertSee($this->post->user->name)
+    ->assertSee(Carbon::parse($this->post->publicar)->format('j F, Y'))
+    ->assertSee($this->categoria->name)
+    ->assertSee($this->tags[0]->name)
+    ->assertSee($this->tags[1]->name)
+    ->assertSeeLivewire('bookmark-card-post');
+  }
+  public function test_el_autor_no_puede_ver_y_o_acceder_a_reacciones_a_su_post()
+  {
+    $this->actingAs($this->user)->get('/posts/' . $this->post->slug)
+      ->assertStatus(200);
+    $this->actingAs($this->autor)->get('/');
+
+    $this->actingAs($this->autor)->get('/posts/' . $this->post->slug)
+      ->assertStatus(200);
+
+    $this->assertNotEquals($this->user->id,$this->autor->id);
+
+    $this->actingAs($this->autor)->get('/posts/' . $this->post->slug)
+      ->assertDontSeeLivewire('reaction-post',['type'=>'thumbup', 'post'=>$this->post, 'group'=>'+'])
+      ->assertDontSeeLivewire('reaction-post',['type'=>'heart', 'post'=>$this->post, 'group'=>'+'])
+      ->assertDontSeeLivewire('reaction-post',['type'=>'star', 'post'=>$this->post, 'group'=>'+'])
+      ->assertDontSeeLivewire('reaction-post',['type'=>'thumbdown', 'post'=>$this->post, 'group'=>'+'])
+      ->assertDontSeeLivewire('reaction-post',['type'=>'brokenheart', 'post'=>$this->post, 'group'=>'+'])
+      ->assertDontSeeLivewire('reaction-post',['type'=>'unhappy', 'post'=>$this->post, 'group'=>'+']);
+
+    $this->actingAs($this->user)->get('/');
+    $this->actingAs($this->user)->get('/posts/' . $this->post->slug)
+      ->assertSeeLivewire('reaction-post',['type'=>'thumbup', 'post'=>$this->post, 'group'=>'+'])
+      ->assertSeeLivewire('reaction-post',['type'=>'heart', 'post'=>$this->post, 'group'=>'+'])
+      ->assertSeeLivewire('reaction-post',['type'=>'star', 'post'=>$this->post, 'group'=>'+'])
+      ->assertSeeLivewire('reaction-post',['type'=>'thumbdown', 'post'=>$this->post, 'group'=>'+'])
+      ->assertSeeLivewire('reaction-post',['type'=>'brokenheart', 'post'=>$this->post, 'group'=>'+'])
+      ->assertSeeLivewire('reaction-post',['type'=>'unhappy', 'post'=>$this->post, 'group'=>'+']);
+    
+  }
+  public function test_el_autor_no_puede_seguirse_a_si_mismo()
+  {
+    $this->assertEquals($this->post->user->id,$this->autor->id);
+
+    $this->actingAs($this->autor)->get('/')
+      ->assertStatus(200);
+
+    Livewire::actingAs($this->autor)
+      ->test('posts.show-card-post',['post'=>$this->post, 'indice'=> 0])
+      ->call('autor',$this->post->user)
+      ->assertEmitted('askAutor',$this->post->user);
+
+    $this->actingAs($this->autor)->get('/')
+      ->assertStatus(200);
+
+    Livewire::actingAs($this->autor)
+      ->test('posts.show-index-post')
+      ->call('askAutor',$this->autor)
+      ->assertSee('Autor')
+      ->assertSee($this->autor->name)
+      ->assertPayloadSet('type', 'Autor')
+      ->assertDontSeeHtml('alt="fav_autor_select"')
+      ->assertDontSeeHtml('alt="fav_autor_unselect"');
+    
+    $this->actingAs($this->autor)->get('/posts/' . $this->post->slug)
+      ->assertStatus(200)
+      ->assertDontSeeLivewire('follow-model',['user' => $this->autor]);
+
+  }
+  public function test_el_autor_del_post_no_puede_ver_componente_bookmark_en_su_post()
+  {
+    $this->actingAs($this->autor)->get('/')->assertDontSeeLivewire('bookmark-card-post');
   }
 }

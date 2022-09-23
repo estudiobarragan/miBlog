@@ -17,19 +17,15 @@ class ShowComment extends Component
   public $verModal = 'invisible';
   public $openAll;
   public $confirmingDeletion = "";
+  public $verComponente=true;
 
 
-  protected $listeners = ['abrirReply', 'cerrarReply'];
+  protected $listeners = ['abrirReply'];
   public function abrirReply()
   {
     if ($this->comment->replies->count() > 0) {
       $this->showReplies(true);
     }
-  }
-  public function cerrarReply()
-  {
-    $this->showReplies(false);
-    $this->openAll = false;
   }
   public function toogleModal()
   {
@@ -64,11 +60,12 @@ class ShowComment extends Component
 
   public function delete()
   {
-    /*
+    if($this->comment->replies->count()==0){
+      $this->comment->delete();
+    }
     $this->confirmingDeletion = false;
-    $this->comment->repl
-     $this->model->delete();
-    return redirect()->to($this->ruta); */
+    $this->verComponente=false;
+    $this->emitUp('recargar');
   }
 
   public function render()

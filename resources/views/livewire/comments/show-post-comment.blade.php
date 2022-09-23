@@ -4,18 +4,18 @@
   <div class="flex justify-between mr-3">
     @auth
       <button wire:click="toogle">
-        Comentar el post:<i class="fas fa-comment pl-1 text-green-400 pt-2 cursor-pointer"></i>
+        Comentarios al post:<i class="fas fa-comment pl-1 text-green-400 pt-2 cursor-pointer" alt="boton_comentar"></i>
       </button>
+    @else
+      <p>Comentarios al post:</p>
     @endauth
+
     <div class="justify-right" >
-      <a wire:click.prevent="$emit('abrirReply')" class="align-right cursor-pointer" href="#">
-        <i class="fas fa-plus text-blue-400"></i>
-      </a>
-      <a wire:click.prevent="$emit('cerrarReply')" class="align-right cursor-pointer ml-2" href="#">
-        <i class="fas fa-minus text-blue-400"></i>
-      </a>
-      
+      <p wire:click.prevent="recargar" class="align-right cursor-pointer">
+        <i class="fas fa-sync-alt text-blue-400" alt="boton_actualizar"></i>
+      </p>
     </div>
+
   </div>
 
   @auth

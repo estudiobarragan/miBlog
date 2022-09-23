@@ -108,14 +108,16 @@ class PagesAccessTest extends TestCase
     $response = $this->actingAs($this->user)->get('/');
     $response->assertSee('Mis autores');
   }
-  public function test_usuario_registrado_tiene_opcion_proximos()
+   public function test_usuario_registrado_tiene_opcion_proximos()
   {
     $response = $this->post('/login', [
       'email' => $this->user->email,
       'password' => $this->user->password,
     ]);
-    $response = $this->actingAs($this->user)->get('/');
-    $response->assertSee('Próximos');
+
+    $this->actingAs($this->user)->get('/')
+      ->assertStatus(200)
+      ->assertSee('Próximos');
   }
 
   public function test_acceso_usuario_registrado_a_la_pagina_mis_post()

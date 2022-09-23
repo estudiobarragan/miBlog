@@ -475,7 +475,7 @@ class HomeFeatureTest extends TestCase
   {
     $this->assertFalse(Bookmark::has($this->post,$this->editor)); // el editor no eligio este post
 
-    $this->actingAs($this->user)->get('/')->assertSeeLivewire('bookmark-card-post'); // usuario registrado ve el componente
+    $this->actingAs($this->editor)->get('/')->assertSeeLivewire('bookmark-card-post'); // usuario registrado ve el componente
 
     Livewire::actingAs($this->editor)
       ->test('bookmark-card-post', ['post'=> $this->post])
@@ -954,5 +954,10 @@ class HomeFeatureTest extends TestCase
   public function test_el_autor_del_post_no_puede_ver_componente_bookmark_en_su_post()
   {
     $this->actingAs($this->autor)->get('/')->assertDontSeeLivewire('bookmark-card-post');
+  }
+  public function test_el_usuario_registrado_puede_ver_su_foto_al_lado_de_la_campana_de_notificacion()
+  {
+    // TODO Hacerlo
+    $this->assertTrue(true);
   }
 }

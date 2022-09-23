@@ -17,6 +17,13 @@ class ReactionPost extends Component
 
   public function render()
   {
+    if(Reaction::has($this->post,auth()->user(),'thumbup') || 
+       Reaction::has($this->post,auth()->user(),'heart') ||
+       Reaction::has($this->post,auth()->user(),'star')){
+        Like::add($this->post, auth()->user());
+    }else{
+      Like::remove($this->post, auth()->user());
+    }
     return view('livewire.reaction-post');
   }
   public function react()
@@ -25,15 +32,12 @@ class ReactionPost extends Component
     Reaction::add($this->post, auth()->user(), $this->type);
     if ($this->group == '+') {
       $this->emit('pos');
-      Like::add($this->post, auth()->user());
     } else {
       $this->emit('neg');
-      Like::remove($this->post, auth()->user());
     }
   }
   public function unreact()
   {
-
     Reaction::remove($this->post, auth()->user(), $this->type);
   }
   public function positive()

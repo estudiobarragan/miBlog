@@ -2,10 +2,12 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Categoria;
 use App\Models\Tag;
 use App\Models\User;
 use Livewire\Component;
+/* use Laravel\Jetstream\Rules\Role; */
+use App\Models\Categoria;
+use Spatie\Permission\Models\Role;
 
 class BarraConsulta extends Component
 {
@@ -14,13 +16,17 @@ class BarraConsulta extends Component
   public $soloFilter = '';
   public function render()
   {
+    
     if ($this->search) {
       $this->soloFilter = 'hidden';
     }
 
     $categorias = Categoria::all();
     $etiquetas = Tag::all();
-    $autores = User::role('Autor')->with('roles')->get();
+    $autores = [];
+    if(Role::where('name','=','Autor')->count()>0){
+      $autores = User::role('Autor')->with('roles')->get();
+    }
 
     return view('livewire.barra-consulta', compact('categorias', 'etiquetas', 'autores'));
   }

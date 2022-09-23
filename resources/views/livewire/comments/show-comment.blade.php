@@ -1,4 +1,4 @@
-<div>
+<div class=@if(!$verComponente || $comment==null) "invisible" @else "" @endif>
   <div class="ml-{{$sangria}} mt-2">
     <div class="flex align-middle mb-2">
       @if($sangria>0)
@@ -27,7 +27,7 @@
           </div>
           {{-- boton de comentar --}}
           <i  wire:click="toogleModal" class="fas fa-comment pl-1 text-green-400 pt-3 cursor-pointer"></i>
-          @if(auth()->user()->id == $comment->user->id)
+          @if(auth()->user()->id == $comment->user->id && $comment->replies->count()==0)
             <div wire:click="$set('confirmingDeletion',true)" class="text-red-400 pt-2 cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />

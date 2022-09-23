@@ -23,13 +23,13 @@ class Comment extends Model
   // Relacion 1 a N polomorfica
   public function commentable()
   {
-    return $this->morphTo();
+    return $this->morphTo()->orderBy('id','DESC');
   }
 
   // Relacion 1 a N polomorfica
   public function replies()
   {
-    return $this->morphMany(Comment::class, 'commentable');
+    return $this->morphMany(Comment::class, 'commentable')->orderBy('id','DESC');
   }
 
   // Relacion 1 a N inversa
@@ -38,7 +38,7 @@ class Comment extends Model
     return $this->belongsTo(User::class);
   }
 
-  // Relacion 1 a N inversa plimorfica
+  // Relacion 1 a N inversa polimorfica
   public function posts()
   {
     return $this->morphedByMany(Post::class, 'taggeable');

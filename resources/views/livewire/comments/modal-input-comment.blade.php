@@ -2,6 +2,7 @@
   {{-- modal para input del comentario --}}
   @if($verModal=='visible')
     <div class="{{$verModal}}">
+
       <form>
         <div class="bg-white px-1 sm:p-6 sm:pb-1">
           <div class="">
@@ -14,6 +15,7 @@
           </div>
         </div>
       </form>
+      
     </div>
   @endif
   

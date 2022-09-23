@@ -93,14 +93,19 @@ class PostController extends Controller
     $similares = Post::where('categoria_id', $post->categoria_id)
       ->where('state_id', 5)
       ->where('id', '!=', $post->id)
-      ->orderBy('publicar', 'desc')
+      ->orderBy('publicar', 'DESC')
       ->take(5)
       ->get();
     $role = '';
     foreach ($post->user->roles as $rol) {
       $role = $role . $rol->name . ' ';
     }
-    $comments = $post->comments->load('replies', 'user');
+    /* $comments = $post->comments->load('replies', 'user'); */
+    $comments = Comment::where('commentable_type','App\Models\Post')
+      ->where('commentable_id',$post->id)
+      ->orderBy('id','DESC')
+      ->with('replies','user')
+      ->get();
 
     return view('posts.show', compact('post', 'similares', 'role', 'comments'));
   }

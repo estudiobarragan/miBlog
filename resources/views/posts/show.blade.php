@@ -22,19 +22,25 @@
       <div class="lg:col-span-2">
         <figure class="relative">
           @if($post->image && file_exists(public_path('storage/'.$post->image->url)))
-            <img class="w-full h-80 object-cover object-center" src="{{Storage::url($post->image->url)}}" alt="imagen_post">
+            <img class="w-full h-80 object-cover object-center" src="{{Storage::url($post->image->url)}}" alt="imagen_post-{{$post->id}}">
           @else
-            <img class="w-full h-80 object-cover object-center" src="{{asset('/img-default/post-default.webp')}}" alt="imagen_default">
+            <img class="w-full h-80 object-cover object-center" src="{{asset('/img-default/post-default.webp')}}" alt="imagen_default-{{$post->id}}">
           @endif
           <div class="absolute left-0 top-0 text-gray-100 bg-red-500 rounded-full px-3 py-1 text-sm">
-            <a href="#"><strong>{{ $post->categoria->name }}</strong></a>
+            <p><strong>{{ $post->categoria->name }}</strong></p>
           </div>
+          @if(strtotime($post->publicar) == strtotime(today()))
+            <div class="absolute right-0 top-0 text-gray-100 bg-green-500 rounded-full px-3 py-1 text-sm">
+              <a>
+                <strong>¡Nuevo!</strong>
+              </a>
+            </div>
+          @endif
           <div class="absolute left-0 bottom-0 ">
             @foreach($post->tags as $tag)
-              <a class="inline-block bg-{{$tag->color}}-700 rounded-full px-3 py-1 text-sm text-{{$tag->color}}-100 mr-2" 
-                  href="#">
+              <p class="inline-block bg-{{$tag->color}}-700 rounded-full px-3 py-1 text-sm text-{{$tag->color}}-100 mr-2">
                 {{'#'.$tag->name}}
-              </a>
+              </p>
             @endforeach
           </div>
         </figure>
@@ -62,7 +68,7 @@
           </div>
 
           <div class="text-gray-700 items-center text-sm">
-            <a href="#"><strong>Autor: {{$post->user->name}}</strong></a>
+            <p><strong>Autor: {{$post->user->name}}</strong></p>
           </div>
         </div>
 
@@ -124,11 +130,10 @@
           @foreach ($similares as $similar)
             <li class="mb-4">
               <a class="flex" href="{{route('posts.show',$similar)}}">
-                {{-- file_exists(public_path('storage/'.$post->image->url))) --}}
-                @if($similar->image && file_exists(public_path('storage/'.$post->image->url)))
-                  <img class="w-36 h-20 object-cover object-center flex-none" src="{{Storage::url($similar->image->url)}}" alt="{{$similar->name}}">
+                @if($similar->image && file_exists(public_path('storage/'.$similar->image->url)))
+                  <img class="w-36 h-20 object-cover object-center flex-none" src="{{Storage::url($similar->image->url)}}" alt="img_similar_post-{{$similar->id}}">
                 @else
-                  <img class="w-36 h-20 object-cover object-center flex-none" src="{{asset('/img-default/post-default.webp')}}" alt="{{$similar->name}}">
+                  <img class="w-36 h-20 object-cover object-center flex-none" src="{{asset('/img-default/post-default.webp')}}" alt="img_similar_default-{{$similar->id}}">
                 @endif
                 <span class="ml-2 text-gray-600">{{$similar->name}}</span>
               </a>

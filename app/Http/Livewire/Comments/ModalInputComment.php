@@ -47,7 +47,7 @@ class ModalInputComment extends Component
       Log::debug($this->comentario_id);
     }
     $this->comentario = "";
-    $this->emit('refresh');
+    $this->emitUp('abrirReply');
   }
   public function mount($comentario_id = 0, $post_id = 0)
   {

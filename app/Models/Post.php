@@ -75,7 +75,7 @@ class Post extends Model
   // Relacion 1 a N polomorfica
   public function comments()
   {
-    return $this->morphMany(Comment::class, 'commentable');
+    return $this->morphMany(Comment::class, 'commentable')->orderBy('id','desc');
   }
 
   // Relacion N a N polimorfica

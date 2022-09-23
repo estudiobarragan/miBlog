@@ -38,7 +38,7 @@ class User extends Authenticatable
    * @var array
    */
   protected $fillable = [
-    'name', 'email', 'password',
+    'name', 'email', 'password','profile_photo_path',
   ];
   protected static $marks = [
     Favorite::class,
@@ -70,9 +70,9 @@ class User extends Authenticatable
    *
    * @var array
    */
-  protected $appends = [
+  /* protected $appends = [
     'profile_photo_url',
-  ];
+  ]; */
 
   // Relacion 1 a 1
   public function profile()

@@ -1306,7 +1306,8 @@ class HomePostPageTest extends TestCase
       ->assertPayloadSet('comentario','')
       ->assertPayloadSet('verModal','invisible');
 
-    $comment2 = Comment::findOrFail(2);
+    $comment->load('replies');
+    $comment2 = $comment->replies[0];
 
     $this->assertTrue($comment2->mensaje == 'Este es un comentario al comentario del post.');
     $this->assertTrue($comment2->user_id == $this->user->id);

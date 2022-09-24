@@ -9,13 +9,14 @@
     @else
       <p>Comentarios al post:</p>
     @endauth
-
-    <div class="justify-right" >
-      <p wire:click.prevent="recargar" class="align-right cursor-pointer">
-        <i class="fas fa-sync-alt text-blue-400" alt="boton_actualizar"></i>
-      </p>
-    </div>
-
+    
+    @if($post->comments->count()>0)
+      <div class="justify-right" >
+        <p wire:click.prevent="recargar" class="align-right cursor-pointer">
+          <i class="fas fa-sync-alt text-blue-400" alt="boton_actualizar"></i>
+        </p>
+      </div>
+    @endif
   </div>
 
   @auth
@@ -26,7 +27,7 @@
 
   <div class="bg-white shadow-lg rounded-lg overflow-hidden">
     @foreach($post->comments as $comment)
-      @livewire('comments.show-comment',['comment'=> $comment,'masSangria'=> 0,'openAll'=>true], key('post'.random_int(100,999).$comment->id))
+      @livewire('comments.show-comment',['comment'=> $comment,'masSangria'=> 0], key('post'.random_int(100,999).$comment->id))
       <hr>
     @endforeach
   </div>

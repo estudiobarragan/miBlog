@@ -10,23 +10,11 @@ use Livewire\Component;
 class ShowComment extends Component
 {
   public $comment, $masSangria;
-  public $ver = 'visible';
-  public $verRep = 'invisible';
   public $sangria = 0;
-  public $open = false;
   public $verModal = 'invisible';
-  public $openAll;
   public $confirmingDeletion = "";
   public $verComponente=true;
 
-
-  protected $listeners = ['abrirReply'];
-  public function abrirReply()
-  {
-    if ($this->comment->replies->count() > 0) {
-      $this->showReplies(true);
-    }
-  }
   public function toogleModal()
   {
     if ($this->verModal == 'visible') {
@@ -34,22 +22,6 @@ class ShowComment extends Component
     } else {
       $this->verModal = 'visible';
     }
-  }
-
-  public function showReplies($open)
-  {
-    $this->open = $open;
-    if ($open) {
-      $this->ver = 'invisible';
-      $this->verRep = 'visible';
-    } else {
-      $this->ver = 'visible';
-      $this->verRep = 'invisible';
-    }
-  }
-  public function toogle()
-  {
-    $this->showReplies(!$this->open);
   }
 
   public function mount(Comment $comment)
@@ -70,9 +42,6 @@ class ShowComment extends Component
 
   public function render()
   {
-    if ($this->openAll) {
-      $this->showReplies(true);
-    }
     return view('livewire.comments.show-comment');
   }
 }

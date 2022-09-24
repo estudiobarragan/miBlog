@@ -23,7 +23,7 @@ class ModalInputComment extends Component
 
   public function store()
   {
-    $this->verModal = 'invisible';
+    $this->cerrarModal();
     try {
       if ($this->post_id == 0) {
         Comment::create([
@@ -47,14 +47,15 @@ class ModalInputComment extends Component
       Log::debug($this->comentario_id);
     }
     $this->comentario = "";
-    $this->emitUp('abrirReply');
+    $this->emitUp('recargar');
+    $this->cerrarModal();
   }
   public function mount($comentario_id = 0, $post_id = 0)
   {
     $this->comentario_id = $comentario_id;
     $this->post_id = $post_id;
   }
-  public function render()
+  public function render($a=null)
   {
     return view('livewire.comments.modal-input-comment');
   }

@@ -10,19 +10,14 @@ class ShowPostComment extends Component
   public $post;
   public $verModal = 'invisible';
 
-  protected $listeners  = ['refresh','recargar'];
+  protected $listeners  = ['recargar'];
 
   public function recargar()
   {
-    $this->emit('abrirReply');
+    $this->verModal = 'invisible';
     $this->render();
   }
-  public function refresh()
-  {
-    if ($this->verModal == 'invisible') {
-      $this->verModal = 'visible';
-    }
-  }
+
   public function toogle()
   {
 

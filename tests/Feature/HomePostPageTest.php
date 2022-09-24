@@ -97,17 +97,18 @@ class HomePostPageTest extends TestCase
       $user = $this->user;
     }
     if($type=='POST'){
-      Comment::factory()->create([
+      $comment=Comment::factory()->create([
         'user_id' => $user->id,
         'commentable_id' => $this->post->id,
       ]);
     } else {
-      Comment::factory()->create([
+      $comment=Comment::factory()->create([
         'user_id' => $user->id,
         'commentable_id' => $comment_id,
         'commentable_type' => 'App\Models\Comment',
       ]);
     }
+    return $comment;
   }
 
   /* 
@@ -394,18 +395,148 @@ class HomePostPageTest extends TestCase
       ->assertDontSeeHtml('alt="boton_comentar"');
   }
 
-  public function test_guess_puede_ver_zona_de_comentarios_al_post_cuando_si_existen_comentarios()
+  public function test_guess_puede_ver_comentarios_hechos_al_post()
   {
-    $this->createComment();
+    $comment = $this->createComment();
     $this->get('/posts/' . $this->post->slug)
       ->assertSee('Comentarios al post')
       ->assertSeeLivewire('comments.show-post-comment',['post'=>$this->post]);
 
     Livewire::test('comments.show-post-comment',['post'=>$this->post])
-      ->assertDontSeeHtml('alt="boton_actualizar"')
-      ->assertDontSeeHtml('alt="boton_comentar"');
+      ->assertSeeHtml('alt="boton_actualizar"')
+      ->assertDontSeeHtml('alt="boton_comentar"')
+      ->assertSeeLivewire('comments.show-comment',['comment'=> $comment,'masSangria'=> 0]);
+
+    Livewire::test('comments.show-comment',['comment'=> $comment,'masSangria'=> 0])
+      ->assertSee($comment->user->name)
+      ->assertSee($comment->mensaje)
+      ->assertSeeLivewire('reaction-comment',['comment'=>$comment])
+      ->assertDontSeeHtml('alt="boton_comentar_'.$comment->id.'"')
+      ->assertDontSeeHtml('alt="boton_borrar_'.$comment->id.'"');
+
+    Livewire::test('reaction-comment',['comment'=>$comment])
+      ->assertSee(0)
+      ->assertPayloadSet('heart',0)
+      ->assertSeeHtml('btn_heart_react_guess');
   }
 
+  public function test_guess_puede_ver_comentario_con_comentario_hechos_al_post()
+  {
+    $comment = $this->createComment();
+    $comment2 = $this->createComment('COMMENT',null,$comment->id);
+
+    $this->get('/posts/' . $this->post->slug)
+      ->assertSee('Comentarios al post')
+      ->assertSeeLivewire('comments.show-post-comment',['post'=>$this->post]);
+
+    Livewire::test('comments.show-post-comment',['post'=>$this->post])
+      ->assertSeeHtml('alt="boton_actualizar"')
+      ->assertDontSeeHtml('alt="boton_comentar"')
+      ->assertSeeLivewire('comments.show-comment',['comment'=> $comment,'masSangria'=> 0]);
+
+    Livewire::test('comments.show-comment',['comment'=> $comment,'masSangria'=> 0])
+      ->assertSee($comment->user->name)
+      ->assertSee($comment->mensaje)
+      ->assertSeeLivewire('reaction-comment',['comment'=>$comment])
+      ->assertSeeLivewire('comments.show-comment',['comment'=>$comment2])
+      ->assertDontSeeHtml('alt="boton_comentar_'.$comment->id.'"')
+      ->assertDontSeeHtml('alt="boton_borrar_'.$comment->id.'"');
+      
+    Livewire::test('reaction-comment',['comment'=>$comment])
+    ->assertSee(0)
+    ->assertPayloadSet('heart',0)
+    ->assertSeeHtml('btn_heart_react_guess');
+
+    Livewire::test('comments.show-comment',['comment'=> $comment2,'masSangria'=> 4])
+      ->assertSee($comment2->user->name)
+      ->assertSee($comment2->mensaje)
+      ->assertSeeLivewire('reaction-comment',['comment'=>$comment2])
+      ->assertDontSeeHtml('alt="boton_comentar_'.$comment2->id.'"')
+      ->assertDontSeeHtml('alt="boton_borrar_'.$comment2->id.'"');
+
+    Livewire::test('reaction-comment',['comment'=>$comment2])
+      ->assertSee(0)
+      ->assertPayloadSet('heart',0)
+      ->assertSeeHtml('btn_heart_react_guess');
+
+  }
+
+  public function test_guess_puede_ver_foto_del_autor_del_comentario_hecho_al_post_o_default_de_la_foto()
+  {
+    /* Ver default porque el comentador no tiene imagen */
+    $comment = $this->createComment();
+
+    $this->get('/posts/' . $this->post->slug)
+      ->assertSee('Comentarios al post')
+      ->assertSeeLivewire('comments.show-post-comment',['post'=>$this->post]);
+
+    Livewire::test('comments.show-post-comment',['post'=>$this->post])
+      ->assertSeeHtml('alt="boton_actualizar"')
+      ->assertDontSeeHtml('alt="boton_comentar"')
+      ->assertSeeLivewire('comments.show-comment',['comment'=> $comment,'masSangria'=> 0]);
+
+    Livewire::test('comments.show-comment',['comment'=> $comment,'masSangria'=> 0])
+      ->assertSeeHtml('alt="foto_default"');
+
+    /* El comentador tiene imagen */
+    Config::set('tipo_imagen','FACE');
+    Image::factory(1)->create([
+      'imageable_id' => $comment->user->id,
+      'imageable_type' => User::class
+    ]);    
+    $comment->user->update(['profile_photo_path' => $comment->user->image->url]);    
+
+    $this->assertFileExists(public_path('storage/'.$comment->user->image->url));
+
+    $this->get('/posts/' . $this->post->slug)
+      ->assertSee('Comentarios al post')
+      ->assertSeeLivewire('comments.show-post-comment',['post'=>$this->post]);
+
+    Livewire::test('comments.show-post-comment',['post'=>$this->post])
+      ->assertSeeHtml('alt="boton_actualizar"')
+      ->assertDontSeeHtml('alt="boton_comentar"')
+      ->assertSeeLivewire('comments.show-comment',['comment'=> $comment,'masSangria'=> 0]);
+
+    Livewire::test('comments.show-comment',['comment'=> $comment,'masSangria'=> 0])
+      ->assertSeeHtml('alt="foto_comentador"');
+
+    /* Se borrar fisicamente la imagen */
+    unlink(public_path('storage/'. $this->user->image->url));
+    $this->assertFileDoesNotExist(public_path('storage/'. $this->user->image->url));
+    $this->get('/posts/' . $this->post->slug);
+    Livewire::test('comments.show-comment',['comment'=> $comment,'masSangria'=> 0])
+      ->assertSeeHtml('alt="foto_default"');
+    
+    /* Se borra la relacion con la imagen */
+    $comment->user->update(['profile_photo_path' => null]);
+    $this->user->image->delete();
+    $this->get('/posts/' . $this->post->slug);
+    Livewire::test('comments.show-comment',['comment'=> $comment,'masSangria'=> 0])
+      ->assertSeeHtml('alt="foto_default"');
+
+  }
+  public function test_guess_puede_ver_reacciones_hechas_a_comentarios_del_post()
+  {
+    $comment = $this->createComment();
+    Reaction::add($comment,$this->autor,'heart');
+
+    $this->get('/posts/' . $this->post->slug)
+      ->assertSee('Comentarios al post')
+      ->assertSeeLivewire('comments.show-post-comment',['post'=>$this->post]);
+
+    Livewire::test('comments.show-post-comment',['post'=>$this->post])
+      ->assertSeeHtml('alt="boton_actualizar"')
+      ->assertDontSeeHtml('alt="boton_comentar"')
+      ->assertSeeLivewire('comments.show-comment',['comment'=> $comment,'masSangria'=> 0]);
+
+    Livewire::test('comments.show-comment',['comment'=> $comment,'masSangria'=> 0])
+      ->assertSeeLivewire('reaction-comment',['comment'=>$comment]);
+
+    Livewire::test('reaction-comment',['comment'=>$comment])
+      ->assertSee(1)
+      ->assertPayloadSet('heart',1)
+      ->assertSeeHtml('btn_heart_react_guess');
+  }
   /* 
   **
   ** Test de usuario registrado 
@@ -828,5 +959,418 @@ class HomePostPageTest extends TestCase
       ->assertDontSeeHtml('alt="boton_actualizar"')
       ->assertSeeHtml('alt="boton_comentar"');
 
+  }
+  
+  public function test_usuario_registrado_puede_ver_comentarios_hechos_al_post()
+  {
+    $comment = $this->createComment('POST',$this->editor);
+    $this->actingAs($this->user)
+      ->get('/posts/' . $this->post->slug)
+      ->assertSee('Comentarios al post')
+      ->assertSeeLivewire('comments.show-post-comment',['post'=>$this->post]);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-post-comment',['post'=>$this->post])
+      ->assertSeeHtml('alt="boton_actualizar"')
+      ->assertSeeHtml('alt="boton_comentar"')
+      ->assertSeeLivewire('comments.show-comment',['comment'=> $comment,'masSangria'=> 0]);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-comment',['comment'=> $comment,'masSangria'=> 0])
+      ->assertSee($comment->user->name)
+      ->assertSee($comment->mensaje)
+      ->assertSeeLivewire('reaction-comment',['comment'=>$comment])
+      ->assertSeeHtml('alt="boton_comentar_'.$comment->id.'"')
+      ->assertDontSeeHtml('alt="boton_borrar_'.$comment->id.'"');
+
+    Livewire::actingAs($this->user)
+      ->test('reaction-comment',['comment'=>$comment])
+      ->assertSee(0)
+      ->assertPayloadSet('heart',0)
+      ->assertSeeHtml('btn_heart_react');
+  }
+
+  public function test_usuario_registrado_puede_hacer_y_ver_comentarios_hechos_al_post()
+  {
+    $comment1 = $this->createComment('POST',$this->editor);
+    $comment2 = $this->createComment();
+
+    $this->actingAs($this->user)
+      ->get('/posts/' . $this->post->slug)
+      ->assertSee('Comentarios al post')
+      ->assertSeeLivewire('comments.show-post-comment',['post'=>$this->post]);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-post-comment',['post'=>$this->post])
+      ->assertSeeHtml('alt="boton_actualizar"')
+      ->assertSeeHtml('alt="boton_comentar"')
+      ->assertSeeLivewire('comments.show-comment',['comment'=> $comment1,'masSangria'=> 0])
+      ->assertSeeLivewire('comments.show-comment',['comment'=> $comment2,'masSangria'=> 0]);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-comment',['comment'=> $comment1,'masSangria'=> 0])
+      ->assertSee($comment1->user->name)
+      ->assertSee($comment1->mensaje)
+      ->assertSeeLivewire('reaction-comment',['comment'=>$comment1])
+      ->assertSeeHtml('alt="boton_comentar_'.$comment1->id.'"')
+      ->assertDontSeeHtml('alt="boton_borrar_'.$comment1->id.'"');
+
+    Livewire::actingAs($this->user)
+      ->test('reaction-comment',['comment'=>$comment1])
+      ->assertSee(0)
+      ->assertPayloadSet('heart',0)
+      ->assertSeeHtml('btn_heart_react');
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-comment',['comment'=> $comment2,'masSangria'=> 0])
+      ->assertSee($comment2->user->name)
+      ->assertSee($comment2->mensaje)
+      ->assertSeeLivewire('reaction-comment',['comment'=>$comment2])
+      ->assertSeeHtml('alt="boton_comentar_'.$comment2->id.'"')
+      ->assertSeeHtml('alt="boton_borrar_'.$comment2->id.'"');
+
+    Livewire::actingAs($this->user)
+      ->test('reaction-comment',['comment'=>$comment2])
+      ->assertSee(0)
+      ->assertPayloadSet('heart',0)
+      ->assertSeeHtml('btn_heart_react_autor');
+  }
+  public function test_usuario_registrado_puede_ver_comentario_con_comentario_hechos_al_post()
+  {
+    $comment = $this->createComment();
+    $comment2 = $this->createComment('COMMENT',null,$comment->id);
+
+    $this->actingAs($this->user)
+      ->get('/posts/' . $this->post->slug)
+      ->assertSee('Comentarios al post')
+      ->assertSeeLivewire('comments.show-post-comment',['post'=>$this->post]);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-post-comment',['post'=>$this->post])
+      ->assertSeeHtml('alt="boton_actualizar"')
+      ->assertSeeHtml('alt="boton_comentar"')
+      ->assertSeeLivewire('comments.show-comment',['comment'=> $comment,'masSangria'=> 0])
+      ->assertSeeLivewire('comments.show-comment',['comment'=> $comment2,'masSangria'=> 0]);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-comment',['comment'=> $comment,'masSangria'=> 0])
+      ->assertSee($comment->user->name)
+      ->assertSee($comment->mensaje)
+      ->assertSeeLivewire('reaction-comment',['comment'=>$comment])
+      ->assertSeeLivewire('comments.show-comment',['comment'=>$comment2])
+      ->assertSeeHtml('alt="boton_comentar_'.$comment->id.'"')
+      ->assertDontSeeHtml('alt="boton_borrar_'.$comment->id.'"');
+      
+    Livewire::actingAs($this->user)
+    ->test('reaction-comment',['comment'=>$comment])
+    ->assertSee(0)
+    ->assertPayloadSet('heart',0)
+    ->assertSeeHtml('btn_heart_react_autor');
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-comment',['comment'=> $comment2,'masSangria'=> 4])
+      ->assertSee($comment2->user->name)
+      ->assertSee($comment2->mensaje)
+      ->assertSeeLivewire('reaction-comment',['comment'=>$comment2])
+      ->assertSeeHtml('alt="boton_comentar_'.$comment2->id.'"')
+      ->assertSeeHtml('alt="boton_borrar_'.$comment2->id.'"');
+
+    Livewire::actingAs($this->user)
+      ->test('reaction-comment',['comment'=>$comment2])
+      ->assertSee(0)
+      ->assertPayloadSet('heart',0)
+      ->assertSeeHtml('btn_heart_react_autor');
+
+  }
+
+  public function test_usuario_registrado_puede_ver_foto_del_autor_del_comentario_hecho_al_post_o_default_de_la_foto()
+  {
+    /* Ver default porque el comentador no tiene imagen */
+    $comment = $this->createComment();
+
+    $this->actingAs($this->user)
+      ->get('/posts/' . $this->post->slug)
+      ->assertSee('Comentarios al post')
+      ->assertSeeLivewire('comments.show-post-comment',['post'=>$this->post]);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-post-comment',['post'=>$this->post])
+      ->assertSeeHtml('alt="boton_actualizar"')
+      ->assertSeeHtml('alt="boton_comentar"')
+      ->assertSeeLivewire('comments.show-comment',['comment'=> $comment,'masSangria'=> 0]);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-comment',['comment'=> $comment,'masSangria'=> 0])
+      ->assertSeeHtml('alt="foto_default"');
+
+    /* El comentador tiene imagen */
+    Config::set('tipo_imagen','FACE');
+    Image::factory(1)->create([
+      'imageable_id' => $comment->user->id,
+      'imageable_type' => User::class
+    ]);    
+    $comment->user->update(['profile_photo_path' => $comment->user->image->url]);    
+
+    $this->assertFileExists(public_path('storage/'.$comment->user->image->url));
+
+    $this->actingAs($this->user)
+      ->get('/posts/' . $this->post->slug)
+      ->assertSee('Comentarios al post')
+      ->assertSeeLivewire('comments.show-post-comment',['post'=>$this->post]);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-post-comment',['post'=>$this->post])
+      ->assertSeeHtml('alt="boton_actualizar"')
+      ->assertSeeHtml('alt="boton_comentar"')
+      ->assertSeeLivewire('comments.show-comment',['comment'=> $comment,'masSangria'=> 0]);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-comment',['comment'=> $comment,'masSangria'=> 0])
+      ->assertSeeHtml('alt="foto_comentador"');
+
+    /* Se borrar fisicamente la imagen */
+    unlink(public_path('storage/'. $this->user->image->url));
+    $this->assertFileDoesNotExist(public_path('storage/'. $this->user->image->url));
+    $this->actingAs($this->user)
+      ->get('/posts/' . $this->post->slug);
+    Livewire::actingAs($this->user)
+      ->test('comments.show-comment',['comment'=> $comment,'masSangria'=> 0])
+      ->assertSeeHtml('alt="foto_default"');
+    
+    /* Se borra la relacion con la imagen */
+    $comment->user->update(['profile_photo_path' => null]);
+    $this->user->image->delete();
+    $this->actingAs($this->user)
+      ->get('/posts/' . $this->post->slug);
+    Livewire::actingAs($this->user)
+      ->test('comments.show-comment',['comment'=> $comment,'masSangria'=> 0])
+      ->assertSeeHtml('alt="foto_default"');
+
+  }
+  public function test_usuario_registrado_puede_ver_reacciones_hechas_a_sus_comentarios_del_post()
+  {
+    $comment = $this->createComment();
+    Reaction::add($comment,$this->autor,'heart');
+
+    $this->actingAs($this->user)
+      ->get('/posts/' . $this->post->slug)
+      ->assertSee('Comentarios al post')
+      ->assertSeeLivewire('comments.show-post-comment',['post'=>$this->post]);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-post-comment',['post'=>$this->post])
+      ->assertSeeHtml('alt="boton_actualizar"')
+      ->assertSeeHtml('alt="boton_comentar"')
+      ->assertSeeLivewire('comments.show-comment',['comment'=> $comment,'masSangria'=> 0]);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-comment',['comment'=> $comment,'masSangria'=> 0])
+      ->assertSeeLivewire('reaction-comment',['comment'=>$comment]);
+
+    Livewire::actingAs($this->user)
+      ->test('reaction-comment',['comment'=>$comment])
+      ->assertSee(1)
+      ->assertPayloadSet('heart',1)
+      ->assertSeeHtml('btn_heart_react_autor');
+  }
+  public function test_usuario_registrado_puede_reaccionar_a_comentarios_no_propios_del_post()
+  {
+    $comment = $this->createComment('POST',$this->autor);
+    Reaction::add($comment,$this->user,'heart');
+
+    $this->actingAs($this->user)
+      ->get('/posts/' . $this->post->slug)
+      ->assertSee('Comentarios al post')
+      ->assertSeeLivewire('comments.show-post-comment',['post'=>$this->post]);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-post-comment',['post'=>$this->post])
+      ->assertSeeHtml('alt="boton_actualizar"')
+      ->assertSeeHtml('alt="boton_comentar"')
+      ->assertSeeLivewire('comments.show-comment',['comment'=> $comment,'masSangria'=> 0]);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-comment',['comment'=> $comment,'masSangria'=> 0])
+      ->assertSeeLivewire('reaction-comment',['comment'=>$comment]);
+
+    Livewire::actingAs($this->user)
+      ->test('reaction-comment',['comment'=>$comment])
+      ->assertSee(1)
+      ->assertPayloadSet('heart',1)
+      ->assertSeeHtml('btn_heart_unreact')
+      ->call('unreact')
+      ->assertSee(0)
+      ->assertPayloadSet('heart',0)
+      ->assertSeeHtml('btn_heart_react');
+  }
+  public function test_usuario_registrado_puede_borrar_comentarios_hechos_solo_si_no_tiene_replica_ni_reaccion()
+  {
+    $comment1 = $this->createComment();
+    $comment2 = $this->createComment();
+    $comment3 = $this->createComment();
+    $comment4 = $this->createComment('COMMENT',$this->autor,$comment1->id);
+    Reaction::add($comment2,$this->autor,'heart');
+    
+    $this->actingAs($this->user)
+      ->get('/posts/' . $this->post->slug);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-comment',['comment'=> $comment1,'masSangria'=> 0])
+      ->assertDontSeeHtml('alt="boton_borrar_'.$comment1->id.'"');
+    Livewire::actingAs($this->user)
+      ->test('comments.show-comment',['comment'=> $comment2,'masSangria'=> 0])
+      ->assertDontSeeHtml('alt="boton_borrar_'.$comment2->id.'"');
+    Livewire::actingAs($this->user)
+      ->test('comments.show-comment',['comment'=> $comment3,'masSangria'=> 0])
+      ->assertSeeHtml('alt="boton_borrar_'.$comment3->id.'"');
+
+  }
+  public function test_funcionamiento_input_para_comentar_un_post()
+  {
+    $this->actingAs($this->user)
+      ->get('/posts/' . $this->post->slug);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-post-comment',['post'=>$this->post])
+      ->assertDontSeeHtml('alt="boton_actualizar"')
+      ->assertSeeHtml('alt="boton_comentar"')
+      ->call('toogle')
+      ->assertSeeLivewire('comments.modal-input-comment', ['comentario_id' => 0, 'post_id' => $this->post->id])
+      ->assertSee('Su comentario')
+      ->assertSee('Comentar');
+
+    Livewire::actingAs($this->user)
+      ->test('comments.modal-input-comment', ['comentario_id' => 0, 'post_id' => $this->post->id])
+      ->set('comentario','Este es un comentario al post.')
+      ->call('store')
+      ->assertEmitted('recargar')
+      ->assertPayloadSet('comentario','')
+      ->assertPayloadSet('verModal','invisible');
+
+    $comment = Comment::first();
+    
+    $this->assertTrue($comment->mensaje == 'Este es un comentario al post.');
+    $this->assertTrue($comment->user_id == $this->user->id);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-post-comment',['post'=>$this->post])
+      ->call('recargar')
+      ->assertPayloadSet('verModal','invisible')
+      ->assertSeeLivewire('comments.show-comment',['comment'=> $comment,'masSangria'=> 0]);
+    
+    Livewire::actingAs($this->user)
+      ->test('comments.show-comment',['comment'=> $comment,'masSangria'=> 0])
+      ->assertSee($this->user->name)
+      ->assertSee('Este es un comentario al post.')
+      ->assertSeeHtml('alt="foto_default"')
+      ->assertSeeHtml('alt="boton_comentar_'.$comment->id.'"')
+      ->assertSeeHtml('alt="boton_borrar_'.$comment->id.'"')
+      ->assertSeeLivewire('reaction-comment',['comment'=>$comment]);
+      
+    Livewire::actingAs($this->user)
+      ->test('reaction-comment',['comment'=>$comment])
+      ->assertSee(0)
+      ->assertPayloadSet('heart',0)
+      ->assertSeeHtml('btn_heart_react_autor');
+  }
+  public function test_funcionamiento_input_para_comentar_un_comentario()
+  {
+    $comment = $this->createComment();
+
+    $this->actingAs($this->user)
+    ->get('/posts/' . $this->post->slug);
+    
+    Livewire::actingAs($this->user)
+      ->test('comments.show-post-comment',['post'=>$this->post])
+      ->assertSeeHtml('alt="boton_actualizar"')
+      ->assertSeeHtml('alt="boton_comentar"')
+      ->assertSeeLivewire('comments.show-comment',['comment'=> $comment,'masSangria'=> 0]);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-comment',['comment'=> $comment,'masSangria'=> 0])
+      ->assertSee($comment->user->name)
+      ->assertSee($comment->mensaje)
+      ->assertSeeLivewire('reaction-comment',['comment'=>$comment])
+      ->assertSeeHtml('alt="boton_comentar_'.$comment->id.'"')
+      ->assertSeeHtml('alt="boton_borrar_'.$comment->id.'"')
+      ->call('toogleModal')
+      ->assertSeeLivewire('comments.modal-input-comment', ['comentario_id' => $comment->id , 'post_id' => 0])
+      ->assertSee('Su comentario')
+      ->assertSee('Comentar');
+
+    Livewire::actingAs($this->user)
+      ->test('comments.modal-input-comment', ['comentario_id' => $comment->id , 'post_id' => 0])
+      ->set('comentario','Este es un comentario al comentario del post.')
+      ->call('store')
+      ->assertEmitted('recargar')
+      ->assertPayloadSet('comentario','')
+      ->assertPayloadSet('verModal','invisible');
+
+    $comment2 = Comment::where('id', 2)->first();
+    
+    $this->assertTrue($comment2->mensaje == 'Este es un comentario al comentario del post.');
+    $this->assertTrue($comment2->user_id == $this->user->id);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-post-comment',['post'=>$this->post])
+      ->call('recargar')
+      ->assertPayloadSet('verModal','invisible')
+      ->assertSeeLivewire('comments.show-comment',['comment'=> $comment2,'masSangria'=> 0]);
+    
+    Livewire::actingAs($this->user)
+      ->test('comments.show-comment',['comment'=> $comment2,'masSangria'=> 0])
+      ->assertSee($this->user->name)
+      ->assertSee('Este es un comentario al comentario del post.')
+      ->assertSeeHtml('alt="foto_default"')
+      ->assertSeeHtml('alt="boton_comentar_'.$comment2->id.'"')
+      ->assertSeeHtml('alt="boton_borrar_'.$comment2->id.'"')
+      ->assertSeeLivewire('reaction-comment',['comment'=>$comment2]);
+      
+    Livewire::actingAs($this->user)
+      ->test('reaction-comment',['comment'=>$comment2])
+      ->assertSee(0)
+      ->assertPayloadSet('heart',0)
+      ->assertSeeHtml('btn_heart_react_autor');
+  }
+  public function test_prueba_de_borrado_de_un_comentario_a_un_post()
+  {
+    $comment = $this->createComment();
+
+    $this->actingAs($this->user)
+    ->get('/posts/' . $this->post->slug);
+    
+    Livewire::actingAs($this->user)
+      ->test('comments.show-post-comment',['post'=>$this->post])
+      ->assertSeeHtml('alt="boton_actualizar"')
+      ->assertSeeHtml('alt="boton_comentar"')
+      ->assertSeeLivewire('comments.show-comment',['comment'=> $comment,'masSangria'=> 0]);
+
+    $this->assertTrue($comment->replies->count()==0);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-comment',['comment'=> $comment,'masSangria'=> 0])
+      ->assertSee($comment->user->name)
+      ->assertSee($comment->mensaje)
+      ->assertSeeLivewire('reaction-comment',['comment'=>$comment])
+      ->assertSeeHtml('alt="boton_comentar_'.$comment->id.'"')
+      ->assertSeeHtml('alt="boton_borrar_'.$comment->id.'"')
+      ->set('confirmingDeletion',true)
+      ->assertSee('¿seguro borra su comentario?')
+      ->assertSee('Si')
+      ->assertSee('No')
+      ->call('delete')
+      ->assertPayloadSet('confirmingDeletion',false)
+      ->assertPayloadSet('verComponente',false)
+      ->assertEmitted('recargar');
+
+    $this->assertTrue(Comment::all()->count() == 0);
+    dd($this->post->comments->count());
+    $this->assertTrue($this->post->comments->count() == 0);
+
+    Livewire::actingAs($this->user)
+      ->test('comments.show-post-comment',['post'=>$this->post])
+      ->assertDontSeeHtml('alt="boton_actualizar"')
+      ->assertSeeHtml('alt="boton_comentar"')
+      ->assertDontSee($comment->mensaje);
   }
 }

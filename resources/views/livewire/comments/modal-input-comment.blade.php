@@ -17,5 +17,14 @@
       </form>
 
   @endif
+{{--   @push('scripts')
+    <script>
+        window.addEventListener('livewire:load', () => {
+            @this.on('incremented', () => {
+                document.querySelector('input').focus()
+            })
+        })
+    </script>
+  @endpush --}}
   
 </div>

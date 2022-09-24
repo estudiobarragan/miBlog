@@ -6,6 +6,7 @@ use App\Models\Comment;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
+use Maize\Markable\Models\Reaction;
 
 class ShowComment extends Component
 {
@@ -32,7 +33,8 @@ class ShowComment extends Component
 
   public function delete()
   {
-    if($this->comment->replies->count()==0){
+    /* Solo puede borrar el propio autor del comentario sino tiene replicas ni reacciones en el mismo */
+    if($this->comment->user->id == auth()->user()->id && $this->comment->replies->count()==0 && Reaction::count( $this->comment, 'heart')==0){
       $this->comment->delete();
     }
     $this->confirmingDeletion = false;

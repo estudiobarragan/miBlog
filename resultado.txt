@@ -1,0 +1,149 @@
+Warning: TTY mode is not supported on Windows platform.
+[0;38;5;208m]8;;file://D:\laragon\www\miBlog\tests\Feature\HomePostPageTest.php#L1367\[0;38;5;208m^[0;38;5;208m]8;;\[0;38;5;208m [0;38;5;208m[38;5;38mIlluminate\Database\Eloquent\Collection[0;38;5;208m]8;;file://D:\laragon\www\miBlog\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Collection.php#L18\^]8;;\ {[38;5;247m#2973[0;38;5;208m[m
+  [0;38;5;208m#[mitems[0;38;5;208m: [38;5;38marray:1[0;38;5;208m [[m
+    [0;38;5;208m[38;5;38m0[0;38;5;208m => [38;5;38mApp\Models\Comment[0;38;5;208m]8;;file://D:\laragon\www\miBlog\app\Models\Comment.php#L13\^]8;;\ {[38;5;247m#2940[0;38;5;208m[m
+      [0;38;5;208m#[mconnection[0;38;5;208m: "[1;38;5;113mmysql[0;38;5;208m"[m
+      [0;38;5;208m#[mtable[0;38;5;208m: "[1;38;5;113mcomments[0;38;5;208m"[m
+      [0;38;5;208m#[mprimaryKey[0;38;5;208m: "[1;38;5;113mid[0;38;5;208m"[m
+      [0;38;5;208m#[mkeyType[0;38;5;208m: "[1;38;5;113mint[0;38;5;208m"[m
+      [0;38;5;208m+[mincrementing[0;38;5;208m: [1;38;5;208mtrue[0;38;5;208m[m
+      [0;38;5;208m#[mwith[0;38;5;208m: [][m
+      [0;38;5;208m#[mwithCount[0;38;5;208m: [][m
+      [0;38;5;208m+[mpreventsLazyLoading[0;38;5;208m: [1;38;5;208mfalse[0;38;5;208m[m
+      [0;38;5;208m#[mperPage[0;38;5;208m: [1;38;5;38m15[0;38;5;208m[m
+      [0;38;5;208m+[mexists[0;38;5;208m: [1;38;5;208mtrue[0;38;5;208m[m
+      [0;38;5;208m+[mwasRecentlyCreated[0;38;5;208m: [1;38;5;208mfalse[0;38;5;208m[m
+      [0;38;5;208m#[mescapeWhenCastingToString[0;38;5;208m: [1;38;5;208mfalse[0;38;5;208m[m
+      [0;38;5;208m#[mattributes[0;38;5;208m: [38;5;38marray:8[0;38;5;208m [[m
+        [0;38;5;208m"[38;5;113mid[0;38;5;208m" => [1;38;5;38m1[0;38;5;208m[m
+        [0;38;5;208m"[38;5;113mmensaje[0;38;5;208m" => "[1;38;5;113mAut consequatur et rem sapiente perspiciatis facere. Dignissimos aut vitae sint illo. Provident amet ut qui rerum ut id dolore. Ut dignissimos sequi deleniti voluptate alias laborum magnam est. Aut modi adipisci eos aliquam hic illum ut.[0;38;5;208m"[m
+        [0;38;5;208m"[38;5;113muser_id[0;38;5;208m" => [1;38;5;38m1[0;38;5;208m[m
+        [0;38;5;208m"[38;5;113mcommentable_id[0;38;5;208m" => [1;38;5;38m1[0;38;5;208m[m
+        [0;38;5;208m"[38;5;113mcommentable_type[0;38;5;208m" => "[1;38;5;113mApp\Models\Post[0;38;5;208m"[m
+        [0;38;5;208m"[38;5;113mdelete_at[0;38;5;208m" => [1;38;5;208mnull[0;38;5;208m[m
+        [0;38;5;208m"[38;5;113mcreated_at[0;38;5;208m" => "[1;38;5;113m2022-09-24 11:01:16[0;38;5;208m"[m
+        [0;38;5;208m"[38;5;113mupdated_at[0;38;5;208m" => "[1;38;5;113m2022-09-24 11:01:16[0;38;5;208m"[m
+      [0;38;5;208m][m
+      [0;38;5;208m#[moriginal[0;38;5;208m: [38;5;38marray:8[0;38;5;208m [[m
+        [0;38;5;208m"[38;5;113mid[0;38;5;208m" => [1;38;5;38m1[0;38;5;208m[m
+        [0;38;5;208m"[38;5;113mmensaje[0;38;5;208m" => "[1;38;5;113mAut consequatur et rem sapiente perspiciatis facere. Dignissimos aut vitae sint illo. Provident amet ut qui rerum ut id dolore. Ut dignissimos sequi deleniti voluptate alias laborum magnam est. Aut modi adipisci eos aliquam hic illum ut.[0;38;5;208m"[m
+        [0;38;5;208m"[38;5;113muser_id[0;38;5;208m" => [1;38;5;38m1[0;38;5;208m[m
+        [0;38;5;208m"[38;5;113mcommentable_id[0;38;5;208m" => [1;38;5;38m1[0;38;5;208m[m
+        [0;38;5;208m"[38;5;113mcommentable_type[0;38;5;208m" => "[1;38;5;113mApp\Models\Post[0;38;5;208m"[m
+        [0;38;5;208m"[38;5;113mdelete_at[0;38;5;208m" => [1;38;5;208mnull[0;38;5;208m[m
+        [0;38;5;208m"[38;5;113mcreated_at[0;38;5;208m" => "[1;38;5;113m2022-09-24 11:01:16[0;38;5;208m"[m
+        [0;38;5;208m"[38;5;113mupdated_at[0;38;5;208m" => "[1;38;5;113m2022-09-24 11:01:16[0;38;5;208m"[m
+      [0;38;5;208m][m
+      [0;38;5;208m#[mchanges[0;38;5;208m: [][m
+      [0;38;5;208m#[mcasts[0;38;5;208m: [][m
+      [0;38;5;208m#[mclassCastCache[0;38;5;208m: [][m
+      [0;38;5;208m#[mattributeCastCache[0;38;5;208m: [][m
+      [0;38;5;208m#[mdates[0;38;5;208m: [][m
+      [0;38;5;208m#[mdateFormat[0;38;5;208m: [1;38;5;208mnull[0;38;5;208m[m
+      [0;38;5;208m#[mappends[0;38;5;208m: [][m
+      [0;38;5;208m#[mdispatchesEvents[0;38;5;208m: [][m
+      [0;38;5;208m#[mobservables[0;38;5;208m: [][m
+      [0;38;5;208m#[mrelations[0;38;5;208m: [38;5;38marray:2[0;38;5;208m [[m
+        [0;38;5;208m"[38;5;113muser[0;38;5;208m" => [38;5;38mApp\Models\User[0;38;5;208m]8;;file://D:\laragon\www\miBlog\app\Models\User.php#L24\^]8;;\ {[38;5;247m#4117[0;38;5;208m[m
+          [0;38;5;208m#[mconnection[0;38;5;208m: "[1;38;5;113mmysql[0;38;5;208m"[m
+          [0;38;5;208m#[mtable[0;38;5;208m: "[1;38;5;113musers[0;38;5;208m"[m
+          [0;38;5;208m#[mprimaryKey[0;38;5;208m: "[1;38;5;113mid[0;38;5;208m"[m
+          [0;38;5;208m#[mkeyType[0;38;5;208m: "[1;38;5;113mint[0;38;5;208m"[m
+          [0;38;5;208m+[mincrementing[0;38;5;208m: [1;38;5;208mtrue[0;38;5;208m[m
+          [0;38;5;208m#[mwith[0;38;5;208m: [][m
+          [0;38;5;208m#[mwithCount[0;38;5;208m: [][m
+          [0;38;5;208m+[mpreventsLazyLoading[0;38;5;208m: [1;38;5;208mfalse[0;38;5;208m[m
+          [0;38;5;208m#[mperPage[0;38;5;208m: [1;38;5;38m15[0;38;5;208m[m
+          [0;38;5;208m+[mexists[0;38;5;208m: [1;38;5;208mtrue[0;38;5;208m[m
+          [0;38;5;208m+[mwasRecentlyCreated[0;38;5;208m: [1;38;5;208mfalse[0;38;5;208m[m
+          [0;38;5;208m#[mescapeWhenCastingToString[0;38;5;208m: [1;38;5;208mfalse[0;38;5;208m[m
+          [0;38;5;208m#[mattributes[0;38;5;208m: [38;5;38marray:12[0;38;5;208m [[m
+            [0;38;5;208m"[38;5;113mid[0;38;5;208m" => [1;38;5;38m1[0;38;5;208m[m
+            [0;38;5;208m"[38;5;113mname[0;38;5;208m" => "[1;38;5;113mClarabelle Gutkowski[0;38;5;208m"[m
+            [0;38;5;208m"[38;5;113memail[0;38;5;208m" => "[1;38;5;113mkemard@example.net[0;38;5;208m"[m
+            [0;38;5;208m"[38;5;113memail_verified_at[0;38;5;208m" => "[1;38;5;113m2022-09-24 11:01:15[0;38;5;208m"[m
+            [0;38;5;208m"[38;5;113mpassword[0;38;5;208m" => "[1;38;5;113m$2y$04$myKjqtAlls90qjpCYyJOZ.WDG5R9S1QVcTlGhS2hMQSrVsd4w6oIm[0;38;5;208m"[m
+            [0;38;5;208m"[38;5;113mtwo_factor_secret[0;38;5;208m" => [1;38;5;208mnull[0;38;5;208m[m
+            [0;38;5;208m"[38;5;113mtwo_factor_recovery_codes[0;38;5;208m" => [1;38;5;208mnull[0;38;5;208m[m
+            [0;38;5;208m"[38;5;113mremember_token[0;38;5;208m" => "[1;38;5;113mfZEp0MMuOJ[0;38;5;208m"[m
+            [0;38;5;208m"[38;5;113mcurrent_team_id[0;38;5;208m" => [1;38;5;208mnull[0;38;5;208m[m
+            [0;38;5;208m"[38;5;113mprofile_photo_path[0;38;5;208m" => [1;38;5;208mnull[0;38;5;208m[m
+            [0;38;5;208m"[38;5;113mcreated_at[0;38;5;208m" => "[1;38;5;113m2022-09-24 11:01:15[0;38;5;208m"[m
+            [0;38;5;208m"[38;5;113mupdated_at[0;38;5;208m" => "[1;38;5;113m2022-09-24 11:01:15[0;38;5;208m"[m
+          [0;38;5;208m][m
+          [0;38;5;208m#[moriginal[0;38;5;208m: [38;5;38marray:12[0;38;5;208m [[m
+            [0;38;5;208m"[38;5;113mid[0;38;5;208m" => [1;38;5;38m1[0;38;5;208m[m
+            [0;38;5;208m"[38;5;113mname[0;38;5;208m" => "[1;38;5;113mClarabelle Gutkowski[0;38;5;208m"[m
+            [0;38;5;208m"[38;5;113memail[0;38;5;208m" => "[1;38;5;113mkemard@example.net[0;38;5;208m"[m
+            [0;38;5;208m"[38;5;113memail_verified_at[0;38;5;208m" => "[1;38;5;113m2022-09-24 11:01:15[0;38;5;208m"[m
+            [0;38;5;208m"[38;5;113mpassword[0;38;5;208m" => "[1;38;5;113m$2y$04$myKjqtAlls90qjpCYyJOZ.WDG5R9S1QVcTlGhS2hMQSrVsd4w6oIm[0;38;5;208m"[m
+            [0;38;5;208m"[38;5;113mtwo_factor_secret[0;38;5;208m" => [1;38;5;208mnull[0;38;5;208m[m
+            [0;38;5;208m"[38;5;113mtwo_factor_recovery_codes[0;38;5;208m" => [1;38;5;208mnull[0;38;5;208m[m
+            [0;38;5;208m"[38;5;113mremember_token[0;38;5;208m" => "[1;38;5;113mfZEp0MMuOJ[0;38;5;208m"[m
+            [0;38;5;208m"[38;5;113mcurrent_team_id[0;38;5;208m" => [1;38;5;208mnull[0;38;5;208m[m
+            [0;38;5;208m"[38;5;113mprofile_photo_path[0;38;5;208m" => [1;38;5;208mnull[0;38;5;208m[m
+            [0;38;5;208m"[38;5;113mcreated_at[0;38;5;208m" => "[1;38;5;113m2022-09-24 11:01:15[0;38;5;208m"[m
+            [0;38;5;208m"[38;5;113mupdated_at[0;38;5;208m" => "[1;38;5;113m2022-09-24 11:01:15[0;38;5;208m"[m
+          [0;38;5;208m][m
+          [0;38;5;208m#[mchanges[0;38;5;208m: [][m
+          [0;38;5;208m#[mcasts[0;38;5;208m: [38;5;38marray:1[0;38;5;208m [[m
+            [0;38;5;208m"[38;5;113memail_verified_at[0;38;5;208m" => "[1;38;5;113mdatetime[0;38;5;208m"[m
+          [0;38;5;208m][m
+          [0;38;5;208m#[mclassCastCache[0;38;5;208m: [][m
+          [0;38;5;208m#[mattributeCastCache[0;38;5;208m: [][m
+          [0;38;5;208m#[mdates[0;38;5;208m: [][m
+          [0;38;5;208m#[mdateFormat[0;38;5;208m: [1;38;5;208mnull[0;38;5;208m[m
+          [0;38;5;208m#[mappends[0;38;5;208m: [][m
+          [0;38;5;208m#[mdispatchesEvents[0;38;5;208m: [][m
+          [0;38;5;208m#[mobservables[0;38;5;208m: [][m
+          [0;38;5;208m#[mrelations[0;38;5;208m: [][m
+          [0;38;5;208m#[mtouches[0;38;5;208m: [][m
+          [0;38;5;208m+[mtimestamps[0;38;5;208m: [1;38;5;208mtrue[0;38;5;208m[m
+          [0;38;5;208m#[mhidden[0;38;5;208m: [38;5;38marray:4[0;38;5;208m [[m
+            [0;38;5;208m[38;5;38m0[0;38;5;208m => "[1;38;5;113mpassword[0;38;5;208m"[m
+            [0;38;5;208m[38;5;38m1[0;38;5;208m => "[1;38;5;113mremember_token[0;38;5;208m"[m
+            [0;38;5;208m[38;5;38m2[0;38;5;208m => "[1;38;5;113mtwo_factor_recovery_codes[0;38;5;208m"[m
+            [0;38;5;208m[38;5;38m3[0;38;5;208m => "[1;38;5;113mtwo_factor_secret[0;38;5;208m"[m
+          [0;38;5;208m][m
+          [0;38;5;208m#[mvisible[0;38;5;208m: [][m
+          [0;38;5;208m#[mfillable[0;38;5;208m: [38;5;38marray:4[0;38;5;208m [[m
+            [0;38;5;208m[38;5;38m0[0;38;5;208m => "[1;38;5;113mname[0;38;5;208m"[m
+            [0;38;5;208m[38;5;38m1[0;38;5;208m => "[1;38;5;113memail[0;38;5;208m"[m
+            [0;38;5;208m[38;5;38m2[0;38;5;208m => "[1;38;5;113mpassword[0;38;5;208m"[m
+            [0;38;5;208m[38;5;38m3[0;38;5;208m => "[1;38;5;113mprofile_photo_path[0;38;5;208m"[m
+          [0;38;5;208m][m
+          [0;38;5;208m#[mguarded[0;38;5;208m: [38;5;38marray:1[0;38;5;208m [[m
+            [0;38;5;208m[38;5;38m0[0;38;5;208m => "[1;38;5;113m*[0;38;5;208m"[m
+          [0;38;5;208m][m
+          [0;38;5;208m#[mrememberTokenName[0;38;5;208m: "[1;38;5;113mremember_token[0;38;5;208m"[m
+          [0;38;5;208m#[maccessToken[0;38;5;208m: [1;38;5;208mnull[0;38;5;208m[m
+          [0;38;5;208m-[mroleClass[0;38;5;208m: [1;38;5;208mnull[0;38;5;208m[m
+          [0;38;5;208m-[mpermissionClass[0;38;5;208m: [1;38;5;208mnull[0;38;5;208m[m
+        [0;38;5;208m}[m
+        [0;38;5;208m"[38;5;113mreplies[0;38;5;208m" => [38;5;38mIlluminate\Database\Eloquent\Collection[0;38;5;208m]8;;file://D:\laragon\www\miBlog\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Collection.php#L18\^]8;;\ {[38;5;247m#4108[0;38;5;208m[m
+          [0;38;5;208m#[mitems[0;38;5;208m: [][m
+          [0;38;5;208m#[mescapeWhenCastingToString[0;38;5;208m: [1;38;5;208mfalse[0;38;5;208m[m
+        [0;38;5;208m}[m
+      [0;38;5;208m][m
+      [0;38;5;208m#[mtouches[0;38;5;208m: [][m
+      [0;38;5;208m+[mtimestamps[0;38;5;208m: [1;38;5;208mtrue[0;38;5;208m[m
+      [0;38;5;208m#[mhidden[0;38;5;208m: [][m
+      [0;38;5;208m#[mvisible[0;38;5;208m: [][m
+      [0;38;5;208m#[mfillable[0;38;5;208m: [38;5;38marray:4[0;38;5;208m [[m
+        [0;38;5;208m[38;5;38m0[0;38;5;208m => "[1;38;5;113mmensaje[0;38;5;208m"[m
+        [0;38;5;208m[38;5;38m1[0;38;5;208m => "[1;38;5;113muser_id[0;38;5;208m"[m
+        [0;38;5;208m[38;5;38m2[0;38;5;208m => "[1;38;5;113mcommentable_id[0;38;5;208m"[m
+        [0;38;5;208m[38;5;38m3[0;38;5;208m => "[1;38;5;113mcommentable_type[0;38;5;208m"[m
+      [0;38;5;208m][m
+      [0;38;5;208m#[mguarded[0;38;5;208m: [38;5;38marray:1[0;38;5;208m [[m
+        [0;38;5;208m[38;5;38m0[0;38;5;208m => "[1;38;5;113m*[0;38;5;208m"[m
+      [0;38;5;208m][m
+    [0;38;5;208m}[m
+  [0;38;5;208m][m
+  [0;38;5;208m#[mescapeWhenCastingToString[0;38;5;208m: [1;38;5;208mfalse[0;38;5;208m[m
+[0;38;5;208m}[m
+[0;38;5;208m]8;;file://D:\laragon\www\miBlog\tests\Feature\HomePostPageTest.php#L1367\[0;38;5;208m^[0;38;5;208m]8;;\[0;38;5;208m [0;38;5;208m[38;5;38mIlluminate\Database\Eloquent\Collection[0;38;5;208m]8;;file://D:\laragon\www\miBlog\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Collection.php#L18\^]8;;\ {[38;5;247m#3594[0;38;5;208m[m
+  [0;38;5;208m#[mitems[0;38;5;208m: [][m
+  [0;38;5;208m#[mescapeWhenCastingToString[0;38;5;208m: [1;38;5;208mfalse[0;38;5;208m[m
+[0;38;5;208m}[m
+

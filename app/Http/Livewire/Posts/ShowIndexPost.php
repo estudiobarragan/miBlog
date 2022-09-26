@@ -29,22 +29,15 @@ class ShowIndexPost extends Component
     if ($this->type == 'Ultimos Posts') {
       $posts = Post::select('id', 'slug', 'name', 'user_id', 'state_id', 'publicar', 'categoria_id', 'extract')
         ->where('state_id', 5)
-        ->with(['user', 'categoria', 'tags'])
+        ->with(['user', 'categoria', 'tags','image'])
         ->where('name', 'LIKE', '%' . $this->search . '%')
-        ->orderBy('publicar', 'desc')
-        ->paginate(5);
-    }
-    if ($this->type == 'Mis Posts') {
-      $posts = Post::select('id', 'slug', 'name', 'user_id', 'state_id', 'publicar', 'categoria_id', 'extract')
-        ->where('state_id', 5)
-        ->with(['user', 'categoria', 'tags'])
         ->orderBy('publicar', 'desc')
         ->paginate(5);
     }
     if ($this->type == 'Autor') {
       $posts = Post::select('id', 'slug', 'name', 'user_id', 'state_id', 'publicar', 'categoria_id', 'extract')
         ->where('state_id', 5)
-        ->with(['user', 'categoria', 'tags'])
+        ->with(['user', 'categoria', 'tags','image'])
         ->where('user_id', '=', $this->value->id)
         ->orderBy('publicar', 'desc')
         ->paginate(5);
@@ -52,7 +45,7 @@ class ShowIndexPost extends Component
     if ($this->type == 'Categoria') {
       $posts = Post::select('id', 'slug', 'name', 'user_id', 'state_id', 'publicar', 'categoria_id', 'extract')
         ->where('state_id', 5)
-        ->with(['user', 'categoria', 'tags'])
+        ->with(['user', 'categoria', 'tags','image'])
         ->where('categoria_id', '=', $this->value->id)
         ->orderBy('publicar', 'desc')
         ->paginate(5);
@@ -61,7 +54,7 @@ class ShowIndexPost extends Component
       $posts = $this->value->posts()
         ->select('posts.id', 'slug', 'name', 'user_id', 'state_id', 'publicar', 'categoria_id', 'extract')
         ->where('state_id', 5)
-        ->with(['user', 'categoria', 'tags'])
+        ->with(['user', 'categoria', 'tags','image'])
         ->orderBy('publicar', 'desc')
         ->paginate(5);
     }

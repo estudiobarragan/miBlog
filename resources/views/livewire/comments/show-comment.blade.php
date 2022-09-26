@@ -17,11 +17,7 @@
       <span class="w-16 ml-1 text-sm text-blue-600 mt-2 font-extralight">{{$comment->user->name}}</span>
 
       {{-- Comentario realizado --}}
-      @if($comment->replies->count()!=0)
-        <p wire:click="toogle" class="text-sm mt-2 ml-3 w-3/4 cursor-pointer">{{$comment->mensaje}}</p>
-      @else
-        <p class="text-sm mt-2 ml-3 w-3/4 ">{{$comment->mensaje}}</p>
-      @endif
+      <p class="text-sm mt-2 ml-3 w-3/4">{{$comment->mensaje}}</p>
       
       {{-- Lado derecho del comentario --}}
       <div class="sm:absolute sm:left-1/2 md:pl-40 lg:pl-32 pl-2 flex">

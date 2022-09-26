@@ -23,16 +23,17 @@ class PostController extends Controller
   public function index()
   {
 
-    /* if (request()->page) {
+/*     if (request()->page) {
       $key = 'posts' . request()->page;
     } else {
       $key =  'posts';
     }
 
     if (Cache::has($key)) {
+      
       $posts = Cache::get($key);
     } else {
-      $posts = Post::where('state_id', 5)
+        $posts = Post::where('state_id', 5)
         ->orderBy('publicar', 'desc')
         ->paginate(5);
 
@@ -88,9 +89,12 @@ class PostController extends Controller
   public function show(Post $post)
   {
 
-    $post->load('categoria', 'tags', 'comments', 'user');
     $this->authorize('published', $post);
+
+    $post->load('categoria', 'tags', 'comments', 'user','image');
     $similares = Post::where('categoria_id', $post->categoria_id)
+      ->select('id', 'slug', 'name', 'user_id', 'state_id', 'publicar', 'categoria_id', 'extract')
+      ->with(['user', 'categoria', 'tags','image','comments'])
       ->where('state_id', 5)
       ->where('id', '!=', $post->id)
       ->orderBy('publicar', 'DESC')
@@ -104,7 +108,7 @@ class PostController extends Controller
     $comments = Comment::where('commentable_type','App\Models\Post')
       ->where('commentable_id',$post->id)
       ->orderBy('id','DESC')
-      ->with('replies','user')
+      ->with(['replies','user'])
       ->get();
 
     return view('posts.show', compact('post', 'similares', 'role', 'comments'));

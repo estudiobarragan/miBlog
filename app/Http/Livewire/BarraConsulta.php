@@ -21,11 +21,11 @@ class BarraConsulta extends Component
       $this->soloFilter = 'hidden';
     }
 
-    $categorias = Categoria::all();
-    $etiquetas = Tag::all();
+    $categorias = Categoria::select('id','name')->get();
+    $etiquetas = Tag::select('id','name')->get();
     $autores = [];
     if(Role::where('name','=','Autor')->count()>0){
-      $autores = User::role('Autor')->with('roles')->get();
+      $autores = User::select('id','name')->role('Autor')->with('roles')->get();
     }
 
     return view('livewire.barra-consulta', compact('categorias', 'etiquetas', 'autores'));
